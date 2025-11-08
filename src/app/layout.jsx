@@ -7,6 +7,7 @@ import {
 import "./globals.css";
 import Header from "@/components/UI/Header";
 import Footer from "@/components/UI/Footer";
+import SmoothScroll from "@/components/UI/SmoothScroll";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -41,11 +42,12 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} antialiased pb-16`}
+				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-16 antialiased`}
 			>
+				<SmoothScroll />
 				<Header />
 				{children}
-				<Footer/>
+				<Footer />
 			</body>
 		</html>
 	);

@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 
 // Animation variants for the card
 const cardVariants = {
-	hidden: { opacity: 0, y: 30, filter: "blur(5px)" },
+	hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
 	visible: {
 		opacity: 1,
 		y: 0,
@@ -24,7 +24,7 @@ export default function EventCard({ event }) {
 			variants={cardVariants}
 			initial="hidden"
 			whileInView="visible"
-			viewport={{ once: true, amount: 0.3 }}
+			viewport={{ once: true }}
 			className="group"
 		>
 			<Link href={`/events/${event.id}`}>
