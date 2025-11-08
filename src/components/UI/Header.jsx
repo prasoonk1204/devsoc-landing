@@ -1,69 +1,61 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion } from "motion/react";
+import { Home, CalendarDays, Newspaper, UserSquare2 } from "lucide-react";
 
 export default function Header() {
-	const [scrolled, setScrolled] = useState(false);
-
-	useEffect(() => {
-		const handleScroll = () => {
-			setScrolled(window.scrollY > 10);
-		};
-
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
-
+	const [hovered, setHovered] = useState(null);
 	const navItems = [
 		{
-			name: "Home",
-			url: "/",
+			title: "Home",
+			href: "/",
+			icon: <Home size={20} />,
 		},
 		{
-			name: "About",
-			url: "/about",
+			title: "About",
+			href: "/about",
+			icon: <UserSquare2 size={20} />,
 		},
 		{
-			name: "Newletter",
-			url: "/newsletter",
+			title: "Newletter",
+			href: "/newsletter",
+			icon: <Newspaper size={20} />,
 		},
 		{
-			name: "Events",
-			url: "/events",
+			title: "Events",
+			href: "/events",
+			icon: <CalendarDays size={20} />,
 		},
 	];
 
 	return (
-		<div
-			className={`bg-accent/30 ease fixed top-0 left-0 right-0 z-50 mx-auto flex h-fit w-full items-center justify-between px-4 py-2 backdrop-blur-lg transition-all duration-300 ${scrolled ? "rounded-b-3xl" : "mt-4 max-w-6xl rounded-full"} `}
-		>
-			<div className="flex items-center gap-2">
-				<Image
-					src="/DevSocLogo.png"
-					alt="logo"
-					width={50}
-					height={50}
-					className=""
-				/>
-				<h1 className="text-2xl font-bold">
-					DEV<span className="text-orange-300">SOC</span>
-				</h1>
-			</div>
-			<div className="z-60 flex justify-between gap-8 rounded-full">
-				{navItems.map((item, index) => {
-					return (
-						<Link
-							key={index}
-							href={item.url}
-							className="mx-2 hover:cursor-pointer"
-						>
-							{item.name}
-						</Link>
-					);
-				})}
-			</div>
-		</div>
+		<nav className="ease fixed right-0 bottom-0 left-0 z-999 mx-auto mb-4 flex h-fit w-fit items-center justify-center rounded-4xl border border-black/20 bg-neutral-900 px-1 py-0.5 text-white shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)] backdrop-blur-lg transition-all duration-300 sm:top-0 sm:mt-4">
+			{navItems.map((item, idx) => (
+				<Link
+					key={item.title}
+					href={item.href}
+					onMouseEnter={() => setHovered(idx)}
+					onMouseLeave={() => setHovered(null)}
+					className="group relative w-full px-6 py-3 text-center text-white sm:px-8"
+				>
+					{hovered === idx && (
+						<motion.div
+							transition={{
+								ease: "easeInOut",
+							}}
+							layoutId="hover"
+							className="absolute inset-0 h-full w-full rounded-full bg-orange-200"
+						></motion.div>
+					)}
+
+					<p className="relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black">
+						{item.icon}
+						<span className="hidden sm:block">{item.title}</span>
+					</p>
+				</Link>
+			))}
+		</nav>
 	);
 }

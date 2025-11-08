@@ -53,7 +53,7 @@ const buttonVariants = {
 
 export default function Newsletter() {
 	return (
-		<div className="z-10 flex w-full flex-col items-start justify-center gap-8 bg-black p-4 pt-12 pb-16 text-white sm:pb-24">
+		<div className="z-2 flex w-full flex-col items-start justify-center gap-8 bg-black p-4 pt-12 pb-16 text-white sm:pb-24">
 			<motion.h1
 				className="font-iceland mx-auto w-full max-w-6xl text-6xl"
 				variants={headerVariants}
