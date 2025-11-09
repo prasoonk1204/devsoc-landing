@@ -40,9 +40,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-16 antialiased md:pb-0`}
+				suppressHydrationWarning
 			>
 				<SmoothScroll />
 				<Header />

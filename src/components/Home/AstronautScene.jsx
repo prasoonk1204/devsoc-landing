@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, Suspense } from "react";
 import { useGLTF, useAnimations, Environment } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
@@ -23,9 +23,8 @@ function AstronautModel({ mouse, isAstronautVisible }) {
 			return () => window.removeEventListener("resize", updateScale);
 		}
 	}, []);
-	console.log(scale);
 
-	const { scene, animations } = useGLTF("/astronaut.glb");
+	const { scene, animations } = useGLTF("/astronaut.glb", true);
 	const modelGroup = useRef();
 	const headRef = useRef();
 	const { actions } = useAnimations(animations, scene);
@@ -38,10 +37,10 @@ function AstronautModel({ mouse, isAstronautVisible }) {
 		}
 
 		// Log all bones to find the head
-		console.log("=== Model Structure ===");
+		// console.log("=== Model Structure ===");
 		scene.traverse((child) => {
 			if (child.isBone || child.isObject3D) {
-				console.log("Found:", child.name, child.type);
+				// console.log("Found:", child.name, child.type);
 			}
 
 			const name = child.name.toLowerCase();
@@ -53,16 +52,16 @@ function AstronautModel({ mouse, isAstronautVisible }) {
 					(name.includes("mixamorig") && name.includes("head")))
 			) {
 				headRef.current = child;
-				console.log("Using as head:", child.name);
+				// console.log("Using as head:", child.name);
 			}
 		});
 
-		if (!headRef.current) {
-			console.warn("⚠ No head found, listing all bones:");
-			scene.traverse((child) => {
-				if (child.isBone) console.log("Bone:", child.name);
-			});
-		}
+		// if (!headRef.current) {
+		// 	// console.warn("⚠ No head found, listing all bones:");
+		// 	scene.traverse((child) => {
+		// 		if (child.isBone) console.log("Bone:", child.name);
+		// 	});
+		// }
 	}, [scene, actions]);
 
 	// Animate head tracking with mouse
@@ -104,10 +103,21 @@ function AstronautModel({ mouse, isAstronautVisible }) {
 	);
 }
 
+// Loading placeholder component
+function LoadingPlaceholder() {
+	return (
+		<mesh>
+			<boxGeometry args={[1, 2, 1]} />
+			<meshStandardMaterial color="#ff6b35" opacity={0.3} transparent />
+		</mesh>
+	);
+}
+
 export default function AstronautScene() {
 	const mouse = useRef({ x: 0, y: 0 });
 	const containerRef = useRef(null);
 	const [isAstronautVisible, setIsAstronautVisible] = useState(true);
+	const [shouldLoad, setShouldLoad] = useState(false);
 
 	useEffect(() => {
 		// Initialize mouse position after mount
@@ -126,6 +136,11 @@ export default function AstronautScene() {
 				// Check if astronaut container is visible in viewport
 				const inView = rect.bottom > 0 && rect.top < window.innerHeight;
 				setIsAstronautVisible(inView);
+				
+				// Start loading when container is near viewport (500px buffer)
+				if (rect.top < window.innerHeight + 500 && !shouldLoad) {
+					setShouldLoad(true);
+				}
 			}
 		};
 
@@ -141,19 +156,32 @@ export default function AstronautScene() {
 				window.removeEventListener("scroll", handleScroll);
 			};
 		}
-	}, []);
+	}, [shouldLoad]);
 
 	return (
 		<div ref={containerRef} style={{ width: "100%", height: "100%" }}>
 			<Canvas
 				camera={{ position: [0, 0.5, 5], fov: 50 }}
 				style={{ width: "100%", height: "100%" }}
+				dpr={[1, 2]}
+				performance={{ min: 0.5 }}
 			>
 				<ambientLight intensity={0.6} />
 				<directionalLight position={[3, 5, 5]} intensity={1.5} />
 				<Environment preset="city" />
-				<AstronautModel mouse={mouse} isAstronautVisible={isAstronautVisible} />
+				{shouldLoad ? (
+					<Suspense fallback={<LoadingPlaceholder />}>
+						<AstronautModel mouse={mouse} isAstronautVisible={isAstronautVisible} />
+					</Suspense>
+				) : (
+					<LoadingPlaceholder />
+				)}
 			</Canvas>
 		</div>
 	);
+}
+
+// Preload the model when idle
+if (typeof window !== "undefined") {
+	useGLTF.preload("/astronaut.glb");
 }
