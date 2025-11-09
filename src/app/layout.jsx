@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-16 antialiased`}
+				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-16 md:m-0 antialiased`}
 			>
 				<SmoothScroll />
 				<Header />

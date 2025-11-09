@@ -9,12 +9,10 @@ function AstronautModel({ mouse }) {
   useEffect(() => {
     const updateScale = () => {
       if (typeof window !== 'undefined') {
-        if (window.innerWidth < 640) {
-          setScale(3.5);
-        } else if (window.innerWidth < 768) {
-          setScale(4.5);
+        if (window.innerWidth < 768) {
+          setScale(4.25);
         } else {
-          setScale(4);
+          setScale(4.5);
         }
       }
     };
@@ -88,7 +86,7 @@ function AstronautModel({ mouse }) {
 
   // Rotate model to face front (-90 degrees on Y axis)
   return (
-    <group ref={modelGroup} position={[0, -1.5, 0]} rotation={[0, -Math.PI / 2, 0]} scale={scale}>
+    <group ref={modelGroup} position={[0, -2.4, 0]} rotation={[0, -Math.PI / 2, 0]} scale={scale}>
       <primitive object={scene} />
     </group>
   );
