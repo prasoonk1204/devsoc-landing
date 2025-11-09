@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
+import AstronautScene from "./AstronautScene";
 
 export default function Hero() {
 	const headerVariants = {
@@ -54,7 +55,7 @@ export default function Hero() {
 				</h2>
 			</div>
 
-			<div className="z-2 flex h-85 w-full flex-col items-center justify-end pb-8 text-center sm:h-86 sm:pb-0">
+			<div className="z-2 flex h-100 w-full flex-col items-center justify-end pb-8 text-center sm:h-86 sm:pb-0">
 				<motion.h1
 					variants={headerVariants}
 					initial="hidden"
@@ -80,20 +81,15 @@ export default function Hero() {
 					Join our community
 				</motion.button>
 			</div>
-			<motion.div
+			{/* <motion.div
 				variants={imageVariants}
 				initial="hidden"
 				whileInView="visible"
-				className="absolute bottom-0 z-2"
+				className="absolute bottom-0 z-2 h-[400px] w-full"
 			>
-				<Image
-					src="/DevsocHero.png"
-					alt="DevSoc Hero Image"
-					width={505}
-					height={419}
-					className="w-sm sm:w-md"
-				/>
-			</motion.div>
+				
+			</motion.div> */}
+			<AstronautScene />
 			<div className="absolute bottom-0 z-2 w-full bg-black sm:h-10"></div>
 		</div>
 	);
