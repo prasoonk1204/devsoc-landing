@@ -30,7 +30,7 @@ export default function Page() {
 			<div className="mx-auto flex max-w-6xl flex-col items-center justify-center px-4 py-8 md:py-24">
 				<div className="mb-12 w-full text-center">
 					<motion.h1
-						className="font-iceland mb-4 text-6xl font-bold"
+						className="font-iceland mb-1 text-6xl font-bold"
 						variants={variants}
 						initial="hidden"
 						animate="visible"
