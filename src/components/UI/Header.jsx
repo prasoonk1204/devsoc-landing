@@ -33,7 +33,7 @@ export default function Header() {
 			icon: <UserSquare2 size={20} />,
 		},
 		{
-			title: "Newletter",
+			title: "Newsletter",
 			href: "/newsletter",
 			icon: <Newspaper size={20} />,
 		},

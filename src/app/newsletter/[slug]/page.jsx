@@ -1,7 +1,7 @@
 import { newsletterItems } from "@/constant/newsletter";
 import Image from "next/image";
-import Link from "next/link"; 
-import { ArrowLeft } from "lucide-react"; 
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 
 export default async function Page({ params }) {
@@ -37,24 +37,14 @@ export default async function Page({ params }) {
 					</div>
 				</div>
 
-				{/* Content Section */}
-				<div className="mb-8 font-sans text-base text-neutral-200 sm:text-lg">
-					{newsletter.content.map((paragraph, index) => (
-						<p key={index} className="mb-4">
-							{paragraph}
-						</p>
-					))}
-				</div>
-
-				{/* Image Grid */}
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					{newsletter.images.map((image, index) => (
 						<Image
 							key={index}
 							src={image}
 							alt={`${newsletter.title} image ${index + 1}`}
-							width={1000} 
-							height={1000} 
+							width={1000}
+							height={1000}
 							className="h-auto w-full rounded-lg"
 						/>
 					))}
