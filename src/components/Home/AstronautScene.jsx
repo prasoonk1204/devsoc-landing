@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, Suspense, useMemo } from "react";
 import { useGLTF, useAnimations, Environment } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
 import * as THREE from "three";
 
 function AstronautModel({ mouse, isAstronautVisible }) {
@@ -134,14 +135,9 @@ function AstronautModel({ mouse, isAstronautVisible }) {
 	);
 }
 
-// Loading placeholder component
+// Loading placeholder component - invisible during load
 function LoadingPlaceholder() {
-	return (
-		<mesh>
-			<boxGeometry args={[1, 2, 1]} />
-			<meshStandardMaterial color="#ff6b35" opacity={0.3} transparent />
-		</mesh>
-	);
+	return null;
 }
 
 export default function AstronautScene() {
@@ -181,6 +177,27 @@ export default function AstronautScene() {
 		}
 	}, []);
 
+	// Show static image on mobile devices for better performance
+	if (isMobile) {
+		return (
+			<div
+				ref={containerRef}
+				className="absolute right-0 bottom-0 left-0 flex items-end justify-center"
+			>
+				<div className="relative h-[300px] w-full max-w-[400px]">
+					<Image
+						src="/DevsocHero.png"
+						alt="DevSoc Astronaut"
+						fill
+						className="object-contain object-bottom"
+						priority
+						sizes="(max-width: 768px) 100vw, 400px"
+					/>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div ref={containerRef} style={{ width: "100%", height: "100%" }}>
 			<div
@@ -194,12 +211,12 @@ export default function AstronautScene() {
 				<Canvas
 					camera={{ position: [0, 0.5, 5], fov: 50 }}
 					style={{ width: "100%", height: "100%" }}
-					dpr={isMobile ? [0.5, 1] : [1, 2]}
+					dpr={[1, 2]}
 					performance={{ min: 0.5 }}
 					frameloop={isAstronautVisible ? "always" : "never"}
 					gl={{
 						powerPreference: "high-performance",
-						antialias: !isMobile,
+						antialias: true,
 						stencil: false,
 						depth: true,
 					}}
