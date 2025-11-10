@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
@@ -8,19 +8,7 @@ import { Home, CalendarDays, Newspaper, UserSquare2 } from "lucide-react";
 
 export default function Header() {
 	const [hovered, setHovered] = useState(null);
-	const [isSmallDevice, setIsSmallDevice] = useState(false);
 	const pathname = usePathname();
-
-	useEffect(() => {
-		const checkDevice = () => {
-			setIsSmallDevice(window.innerWidth < 768);
-		};
-
-		checkDevice();
-		window.addEventListener("resize", checkDevice);
-
-		return () => window.removeEventListener("resize", checkDevice);
-	}, []);
 	const navItems = [
 		{
 			title: "Home",
@@ -64,7 +52,7 @@ export default function Header() {
 						onMouseLeave={() => setHovered(null)}
 						className="group relative w-full px-6 py-3 text-center text-white lg:px-8"
 					>
-						{(hovered === idx || (active && isSmallDevice)) && (
+						{(hovered === idx || (active && hovered === null)) && (
 							<motion.div
 								transition={{
 									ease: "easeInOut",
@@ -75,7 +63,7 @@ export default function Header() {
 						)}
 
 						<p
-							className={`relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black ${active && isSmallDevice ? "text-black" : ""}`}
+							className={`relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black ${hovered === idx || (active && hovered === null) ? "text-black" : ""}`}
 						>
 							{item.icon}
 							<span className="hidden sm:block">{item.title}</span>

@@ -40,7 +40,7 @@ export default function Hero() {
 		},
 	};
 	return (
-		<div className="to-accent/30 relative flex h-screen w-full flex-col items-center bg-linear-to-t from-slate-300 px-4 pt-4 md:h-[768px]">
+		<div className="to-accent/30 relative flex h-dvh w-full flex-col items-center justify-end bg-linear-to-t from-slate-300 px-4 pt-4 md:h-[768px]">
 			<Image
 				src="/devsocbg.png"
 				alt="DevSoc Background"
@@ -81,19 +81,28 @@ export default function Hero() {
 					Join our community
 				</motion.button>
 			</div>
-			{/* <motion.div
-				variants={imageVariants}
-				initial="hidden"
-				whileInView="visible"
-				className="absolute bottom-0 z-2  w-full"
-			>
-				
-			</motion.div> */}
+
 			<motion.div
 				variants={imageVariants}
 				initial="hidden"
 				whileInView="visible"
-				className="z-2 h-[400px] w-full"
+				className="flex h-[400px] w-full justify-center md:hidden"
+			>
+				<div className="relative h-full w-full max-w-[400px]">
+					<Image
+						src="/DevsocHero.png"
+						alt="DevSoc Astronaut"
+						fill
+						className="object-contain object-bottom"
+						priority
+					/>
+				</div>
+			</motion.div>
+			<motion.div
+				variants={imageVariants}
+				initial="hidden"
+				whileInView="visible"
+				className="z-2 hidden h-[400px] w-full md:block"
 			>
 				<AstronautScene />
 			</motion.div>

@@ -27,7 +27,7 @@ const containerVariants = {
 export default function Page() {
 	return (
 		<div className="min-h-screen w-full bg-black text-white">
-			<div className="mx-auto flex max-w-7xl flex-col items-center justify-center px-4 py-8 sm:px-6 md:py-24 lg:px-8">
+			<div className="mx-auto flex max-w-6xl flex-col items-center justify-center px-4 py-8 md:py-24">
 				<div className="mb-12 w-full text-center">
 					<motion.h1
 						className="font-iceland mb-4 text-6xl font-bold"

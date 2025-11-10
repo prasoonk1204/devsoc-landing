@@ -134,14 +134,9 @@ function AstronautModel({ mouse, isAstronautVisible }) {
 	);
 }
 
-// Loading placeholder component
+// Loading placeholder component - invisible during load
 function LoadingPlaceholder() {
-	return (
-		<mesh>
-			<boxGeometry args={[1, 2, 1]} />
-			<meshStandardMaterial color="#ff6b35" opacity={0.3} transparent />
-		</mesh>
-	);
+	return null;
 }
 
 export default function AstronautScene() {
@@ -151,16 +146,8 @@ export default function AstronautScene() {
 		triggerOnce: false,
 		initialInView: true,
 	});
-	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
-		// Detect mobile device
-		const checkMobile = () => {
-			setIsMobile(window.innerWidth < 768);
-		};
-		checkMobile();
-		window.addEventListener("resize", checkMobile);
-
 		// Initialize mouse position after mount
 		mouse.current = {
 			x: typeof window !== "undefined" ? window.innerWidth / 2 : 0,
@@ -176,7 +163,6 @@ export default function AstronautScene() {
 
 			return () => {
 				window.removeEventListener("mousemove", handleMouseMove);
-				window.removeEventListener("resize", checkMobile);
 			};
 		}
 	}, []);
@@ -194,12 +180,12 @@ export default function AstronautScene() {
 				<Canvas
 					camera={{ position: [0, 0.5, 5], fov: 50 }}
 					style={{ width: "100%", height: "100%" }}
-					dpr={isMobile ? [0.5, 1] : [1, 2]}
+					dpr={[1, 2]}
 					performance={{ min: 0.5 }}
 					frameloop={isAstronautVisible ? "always" : "never"}
 					gl={{
 						powerPreference: "high-performance",
-						antialias: !isMobile,
+						antialias: true,
 						stencil: false,
 						depth: true,
 					}}
