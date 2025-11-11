@@ -13,10 +13,40 @@ export default function Page({ params }) {
 	const newsletter = newsletterItems.find((item) => item.slug === slug);
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 	const [isZoomed, setIsZoomed] = useState(false);
+	const [visibleImageIndex, setVisibleImageIndex] = useState(0);
 
 	if (!newsletter) {
 		notFound();
 	}
+
+	// Track which image is visible in mobile scroll
+	useEffect(() => {
+		const handleScroll = (e) => {
+			const container = e.target;
+			const scrollLeft = container.scrollLeft;
+			const containerWidth = container.offsetWidth;
+			const scrollWidth = container.scrollWidth;
+			const imageWidth = 288 + 16; // 72 * 4 (w-72) + 16px gap
+
+			// Check if we're at the end
+			const isAtEnd = scrollLeft + containerWidth >= scrollWidth - 10;
+
+			if (isAtEnd) {
+				// If at the end, show last image indicator
+				setVisibleImageIndex(newsletter.images.length - 1);
+			} else {
+				// Calculate based on scroll position
+				const index = Math.round(scrollLeft / imageWidth);
+				setVisibleImageIndex(Math.min(index, newsletter.images.length - 1));
+			}
+		};
+
+		const scrollContainer = document.querySelector(".mobile-scroll-container");
+		if (scrollContainer) {
+			scrollContainer.addEventListener("scroll", handleScroll);
+			return () => scrollContainer.removeEventListener("scroll", handleScroll);
+		}
+	}, [newsletter.images.length]);
 
 	// Lock body scroll when zoomed
 	useEffect(() => {
@@ -75,7 +105,7 @@ export default function Page({ params }) {
 						className="flex items-center gap-2 rounded-lg bg-neutral-800 px-4 py-2 text-neutral-200 transition-colors hover:bg-neutral-700 hover:text-white"
 					>
 						<ArrowLeft size={18} />
-						Back to all events
+						Back to all newsletters
 					</Link>
 				</motion.div>
 
@@ -93,100 +123,45 @@ export default function Page({ params }) {
 					</div>
 				</motion.div>
 
-				{/* Desktop Carousel */}
+				{/* Desktop Grid */}
 				<motion.div
-					className="relative mx-auto hidden md:flex md:items-center md:justify-center md:gap-4"
+					className="hidden grid-cols-2 gap-6 md:grid"
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.7, delay: 0.3 }}
 				>
-					{/* Left Arrow */}
-					{newsletter.images.length > 1 && (
-						<motion.button
-							onClick={prevImage}
-							className="z-10 rounded-full bg-neutral-800 p-2 text-white transition-all hover:scale-110 hover:cursor-pointer hover:bg-neutral-700"
-							aria-label="Previous image"
-							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 0.95 }}
+					{newsletter.images.map((image, index) => (
+						<motion.div
+							key={index}
+							className="group relative w-full cursor-zoom-in overflow-hidden"
+							onClick={() => {
+								setCurrentImageIndex(index);
+								toggleZoom();
+							}}
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.5, delay: 0.1 * index }}
+							whileHover={{ scale: 1.02 }}
+							whileTap={{ scale: 0.98 }}
 						>
-							<ChevronLeft size={24} />
-						</motion.button>
-					)}
-
-					{/* Image and Indicators Container */}
-					<div className="flex flex-col items-center gap-4">
-						<div
-							className="group relative h-[600px] cursor-zoom-in overflow-hidden rounded-3xl bg-neutral-900"
-							onClick={toggleZoom}
-						>
-							<AnimatePresence mode="wait" initial={false}>
-								<motion.div
-									key={currentImageIndex}
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
-									exit={{ opacity: 0 }}
-									transition={{ duration: 0.2 }}
-									className="relative h-full w-full"
-								>
-									<Image
-										src={newsletter.images[currentImageIndex]}
-										alt={`${newsletter.title} image ${currentImageIndex + 1}`}
-										width={1200}
-										height={1600}
-										className="h-full w-full"
-										priority={currentImageIndex === 0}
-									/>
-								</motion.div>
-							</AnimatePresence>
-
+							<Image
+								src={image}
+								alt={`${newsletter.title} image ${index + 1}`}
+								width={1200}
+								height={1600}
+								className="h-auto w-full rounded-3xl object-cover"
+								priority={index < 2}
+							/>
 							{/* Zoom Icon Indicator */}
 							<motion.div
-								className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white"
+								className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white opacity-0 transition-opacity group-hover:opacity-100"
 								initial={{ opacity: 0 }}
-								whileHover={{ opacity: 1 }}
-								transition={{ duration: 0.2 }}
+								whileHover={{ scale: 1.1 }}
 							>
 								<ZoomIn size={20} />
 							</motion.div>
-						</div>
-
-						{newsletter.images.length > 1 && (
-							<motion.div
-								className="flex items-center justify-center gap-2"
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ delay: 0.5 }}
-							>
-								{newsletter.images.map((_, index) => (
-									<motion.button
-										key={index}
-										onClick={() => goToImage(index)}
-										className={`h-2.5 rounded-full transition-all ${
-											index === currentImageIndex
-												? "w-8 bg-white"
-												: "w-2.5 bg-neutral-600 hover:bg-neutral-400"
-										}`}
-										aria-label={`Go to image ${index + 1}`}
-										whileHover={{ scale: 1.2 }}
-										whileTap={{ scale: 0.9 }}
-									/>
-								))}
-							</motion.div>
-						)}
-					</div>
-
-					{/* Right Arrow */}
-					{newsletter.images.length > 1 && (
-						<motion.button
-							onClick={nextImage}
-							className="z-10 rounded-full bg-neutral-800 p-2 text-white transition-all hover:scale-110 hover:cursor-pointer hover:bg-neutral-700"
-							aria-label="Next image"
-							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 0.95 }}
-						>
-							<ChevronRight size={24} />
-						</motion.button>
-					)}
+						</motion.div>
+					))}
 				</motion.div>
 
 				{/* Mobile Carousel */}
@@ -196,7 +171,7 @@ export default function Page({ params }) {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.7, delay: 0.3 }}
 				>
-					<div className="relative -mx-4 overflow-x-scroll overscroll-x-auto scroll-smooth py-4 [scrollbar-width:none]">
+					<div className="mobile-scroll-container relative -mx-4 overflow-x-scroll overscroll-x-auto scroll-smooth py-4 [scrollbar-width:none]">
 						<div className="flex gap-4 px-4">
 							{newsletter.images.map((image, index) => (
 								<motion.div
@@ -236,9 +211,19 @@ export default function Page({ params }) {
 						transition={{ delay: 0.6 }}
 					>
 						{newsletter.images.map((_, index) => (
-							<div
+							<motion.div
 								key={index}
-								className="h-1.5 w-1.5 rounded-full bg-neutral-600"
+								className={`h-1.5 rounded-full transition-all duration-300 ${
+									index === visibleImageIndex
+										? "w-6 bg-white"
+										: "w-1.5 bg-neutral-600"
+								}`}
+								animate={{
+									width: index === visibleImageIndex ? 24 : 6,
+									backgroundColor:
+										index === visibleImageIndex ? "#ffffff" : "#525252",
+								}}
+								transition={{ duration: 0.3 }}
 							/>
 						))}
 					</motion.div>

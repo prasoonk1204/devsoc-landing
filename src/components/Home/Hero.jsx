@@ -77,7 +77,7 @@ export default function Hero({ onModelLoaded, shouldAnimate }) {
 				<motion.h1
 					variants={headerVariants}
 					initial="hidden"
-					animate={shouldAnimate ? "visible" : "hidden"}
+					whileInView={shouldAnimate ? "visible" : "hidden"}
 					className="text-5xl font-bold sm:text-6xl"
 				>
 					Welcome to Dev<span className="text-orange-300">Soc</span>
@@ -85,7 +85,7 @@ export default function Hero({ onModelLoaded, shouldAnimate }) {
 				<motion.h2
 					variants={headerVariants}
 					initial="hidden"
-					animate={shouldAnimate ? "visible" : "hidden"}
+					whileInView={shouldAnimate ? "visible" : "hidden"}
 					className="text-xl sm:text-2xl"
 				>
 					Join our inclusive community
@@ -93,7 +93,7 @@ export default function Hero({ onModelLoaded, shouldAnimate }) {
 				<motion.button
 					variants={headerVariants}
 					initial="hidden"
-					animate={shouldAnimate ? "visible" : "hidden"}
+					whileInView={shouldAnimate ? "visible" : "hidden"}
 					className="mt-6 rounded-3xl bg-neutral-900 px-8 py-2.5 text-lg text-white transition-all duration-200 hover:scale-102 hover:cursor-pointer hover:bg-neutral-800 active:scale-97"
 				>
 					Join our community
@@ -103,7 +103,7 @@ export default function Hero({ onModelLoaded, shouldAnimate }) {
 			<motion.div
 				variants={imageVariants}
 				initial="hidden"
-				animate={shouldAnimate ? "visible" : "hidden"}
+				whileInView={shouldAnimate ? "visible" : "hidden"}
 				className="flex h-[400px] w-full justify-center md:hidden"
 			>
 				<div className="relative h-full w-full max-w-[400px]">
@@ -119,7 +119,7 @@ export default function Hero({ onModelLoaded, shouldAnimate }) {
 			<motion.div
 				variants={sceneVariants}
 				initial="hidden"
-				animate={shouldAnimate ? "visible" : "hidden"}
+				whileInView={shouldAnimate ? "visible" : "hidden"}
 				className="z-2 hidden h-[400px] w-full md:block"
 			>
 				<AstronautScene

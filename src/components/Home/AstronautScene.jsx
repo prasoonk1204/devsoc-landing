@@ -24,7 +24,7 @@ class CanvasErrorBoundary extends Component {
 	}
 
 	componentDidCatch(error) {
-		console.error("Canvas Error Boundary caught:", error);
+		// console.error("Canvas Error Boundary caught:", error);
 		this.props.onError?.(error);
 	}
 
@@ -192,6 +192,30 @@ function isWebGLAvailable() {
 	}
 }
 
+// Detect if we're on a mobile device
+function isMobileDevice() {
+	if (typeof window === "undefined") return false;
+	return (
+		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+			navigator.userAgent,
+		) ||
+		(navigator.maxTouchPoints && navigator.maxTouchPoints > 2)
+	);
+}
+
+// Check if this is likely the first visit (no cached resources)
+function isLikelyFirstVisit() {
+	if (typeof window === "undefined") return false;
+	// Check if performance API shows this is a fresh load
+	const perfEntries = performance.getEntriesByType("navigation");
+	if (perfEntries.length > 0) {
+		const navEntry = perfEntries[0];
+		// If it's a reload or back/forward, resources are likely cached
+		return navEntry.type === "navigate";
+	}
+	return true;
+}
+
 export default function AstronautScene({ onModelLoaded }) {
 	const mouse = useRef({ x: 0, y: 0 });
 	const [hasWebGLError, setHasWebGLError] = useState(false);
@@ -199,6 +223,7 @@ export default function AstronautScene({ onModelLoaded }) {
 	const [webglSupported, setWebglSupported] = useState(true);
 	const [showFallback, setShowFallback] = useState(false);
 	const [modelLoaded, setModelLoaded] = useState(false);
+	const [skipCanvas, setSkipCanvas] = useState(false);
 	const loadTimeoutRef = useRef(null);
 	const safetyTimeoutRef = useRef(null);
 	const mountTimeRef = useRef(Date.now());
@@ -208,14 +233,29 @@ export default function AstronautScene({ onModelLoaded }) {
 		initialInView: true,
 	});
 
-	// Check WebGL support on mount
+	// Early detection: Skip Canvas on mobile devices on first visit
 	useEffect(() => {
 		if (typeof window !== "undefined") {
+			const isMobile = isMobileDevice();
+			const isFirstVisit = isLikelyFirstVisit();
+
+			// On mobile devices on first visit, skip Canvas and go straight to fallback
+			if (isMobile && isFirstVisit) {
+				// console.log("Mobile device detected on first visit - using fallback image");
+				setSkipCanvas(true);
+				setWebglSupported(false);
+				setTimeout(() => {
+					setShowFallback(true);
+					onModelLoaded?.();
+				}, 1500);
+				return;
+			}
+
+			// Otherwise check WebGL support normally
 			const supported = isWebGLAvailable();
 			if (!supported) {
-				console.warn("WebGL not supported - showing fallback image");
+				// console.log("WebGL not supported - showing fallback image");
 				setWebglSupported(false);
-				// Wait at least 1.5 seconds to show loading screen, then show fallback
 				setTimeout(() => {
 					setShowFallback(true);
 					onModelLoaded?.();
@@ -246,26 +286,19 @@ export default function AstronautScene({ onModelLoaded }) {
 
 	// Set a timeout for model loading - if it doesn't load in time, show fallback
 	useEffect(() => {
-		// Detect if we're on mobile device (even in desktop mode)
-		const isMobileDevice =
-			typeof window !== "undefined" &&
-			(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-				navigator.userAgent,
-			) ||
-				(navigator.maxTouchPoints && navigator.maxTouchPoints > 2));
+		// Skip timeouts if we're already skipping Canvas
+		if (skipCanvas) return;
 
+		const isMobile = isMobileDevice();
 		// Use shorter timeout for mobile devices (2.5s) vs desktop (5s)
-		const timeout = isMobileDevice ? 2500 : 5000;
+		const timeout = isMobile ? 2500 : 5000;
 
 		// Primary timeout - starts immediately
 		if (webglSupported && !modelLoaded && !modelLoadTimeout) {
-			console.log(`Setting model load timeout: ${timeout}ms`);
 			loadTimeoutRef.current = setTimeout(() => {
 				// Only trigger timeout if model still hasn't loaded
 				if (!modelLoaded) {
-					console.warn(
-						`Model loading timeout after ${timeout}ms - showing fallback image`,
-					);
+					// console.log(`Model loading timeout after ${timeout}ms - showing fallback`);
 					setModelLoadTimeout(true);
 					setShowFallback(true);
 					onModelLoaded?.();
@@ -274,12 +307,10 @@ export default function AstronautScene({ onModelLoaded }) {
 		}
 
 		// Safety timeout - absolute maximum wait time (4s for mobile, 7s for desktop)
-		const safetyTimeout = isMobileDevice ? 4000 : 7000;
+		const safetyTimeout = isMobile ? 4000 : 7000;
 		safetyTimeoutRef.current = setTimeout(() => {
 			if (!modelLoaded && !showFallback) {
-				console.error(
-					`Safety timeout triggered after ${safetyTimeout}ms - forcing fallback`,
-				);
+				// console.log(`Safety timeout triggered after ${safetyTimeout}ms - forcing fallback`);
 				setModelLoadTimeout(true);
 				setShowFallback(true);
 				onModelLoaded?.();
@@ -295,12 +326,12 @@ export default function AstronautScene({ onModelLoaded }) {
 			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [webglSupported, modelLoaded, showFallback]);
+	}, [webglSupported, modelLoaded, showFallback, skipCanvas]);
 
 	// Handle WebGL and model loading errors
 	const handleCanvasError = (error) => {
 		if (error && typeof error === "object") {
-			console.error("Canvas Error:", error.message || "Unknown error");
+			// console.error("Canvas Error:", error.message || "Unknown error");
 		}
 		setHasWebGLError(true);
 		// Clear both timeouts since we're handling the error
@@ -310,13 +341,13 @@ export default function AstronautScene({ onModelLoaded }) {
 		if (safetyTimeoutRef.current) {
 			clearTimeout(safetyTimeoutRef.current);
 		}
-		
+
 		// Calculate how long to wait to ensure loading screen is visible
 		const elapsedTime = Date.now() - mountTimeRef.current;
 		const minLoadingTime = 1500;
 		const waitTime = Math.max(0, minLoadingTime - elapsedTime);
-		
-		console.log(`Waiting ${waitTime}ms before showing fallback`);
+
+		// console.log(`Waiting ${waitTime}ms before showing fallback`);
 		setTimeout(() => {
 			setShowFallback(true);
 			onModelLoaded?.();
@@ -325,8 +356,6 @@ export default function AstronautScene({ onModelLoaded }) {
 
 	// Handle successful model load
 	const handleModelLoaded = () => {
-		const loadTime = Date.now() - mountTimeRef.current;
-		console.log(`Model loaded successfully in ${loadTime}ms`);
 		// Mark model as loaded
 		setModelLoaded(true);
 		// Clear both timeouts since model loaded successfully
@@ -361,6 +390,26 @@ export default function AstronautScene({ onModelLoaded }) {
 		return null;
 	}
 
+	// Skip Canvas entirely if we detected it should be skipped
+	if (skipCanvas) {
+		if (showFallback) {
+			return (
+				<div className="flex h-full w-full items-end justify-center">
+					<div className="relative h-full w-full max-w-[500px]">
+						<Image
+							src="/DevsocHero.png"
+							alt="DevSoc Astronaut"
+							fill
+							className="object-contain object-bottom"
+							priority
+						/>
+					</div>
+				</div>
+			);
+		}
+		return null;
+	}
+
 	// Render Canvas with error handling
 	try {
 		return (
@@ -392,11 +441,11 @@ export default function AstronautScene({ onModelLoaded }) {
 								try {
 									const gl = state.gl.getContext();
 									if (!gl) {
-										console.error("WebGL context not available");
+										// console.error("WebGL context not available");
 										handleCanvasError(new Error("WebGL context not available"));
 									}
 								} catch (err) {
-									console.error("Error checking WebGL context:", err);
+									// console.error("Error checking WebGL context:", err);
 									handleCanvasError(err);
 								}
 							}}
@@ -422,7 +471,7 @@ export default function AstronautScene({ onModelLoaded }) {
 		);
 	} catch (error) {
 		// If Canvas rendering fails, trigger error handler and show fallback immediately
-		console.error("Canvas rendering error:", error);
+		// console.error("Canvas rendering error:", error);
 		if (!hasWebGLError) {
 			handleCanvasError(error);
 		}
