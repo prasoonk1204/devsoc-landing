@@ -1,8 +1,40 @@
-import React, { useRef, useEffect, useState, Suspense, useMemo } from "react";
+import React, {
+	useRef,
+	useEffect,
+	useState,
+	Suspense,
+	useMemo,
+	Component,
+} from "react";
 import { useGLTF, useAnimations, Environment } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
 import * as THREE from "three";
+
+// Error Boundary for catching React errors in 3D scene
+class CanvasErrorBoundary extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { hasError: false };
+	}
+
+	static getDerivedStateFromError() {
+		return { hasError: true };
+	}
+
+	componentDidCatch(error, errorInfo) {
+		// console.error("Canvas Error Boundary caught:", error, errorInfo);
+		this.props.onError?.(error);
+	}
+
+	render() {
+		if (this.state.hasError) {
+			return null;
+		}
+		return this.props.children;
+	}
+}
 
 function AstronautModel({ mouse, isAstronautVisible, onModelLoaded }) {
 	const [scale, setScale] = useState(5);
@@ -148,13 +180,46 @@ function LoadingPlaceholder() {
 	return null;
 }
 
-export default function AstronautScene({ onModelLoaded }) {
+// Check if WebGL is supported
+function isWebGLAvailable() {
+	try {
+		const canvas = document.createElement("canvas");
+		const gl =
+			canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+		return !!gl;
+	} catch (e) {
+		return false;
+	}
+}
+
+export default function AstronautScene({ onModelLoaded, shouldAnimate }) {
 	const mouse = useRef({ x: 0, y: 0 });
+	const [hasWebGLError, setHasWebGLError] = useState(false);
+	const [modelLoadTimeout, setModelLoadTimeout] = useState(false);
+	const [webglSupported, setWebglSupported] = useState(true);
+	const [showFallback, setShowFallback] = useState(false);
+	const loadTimeoutRef = useRef(null);
 	const { ref: containerRef, inView: isAstronautVisible } = useInView({
 		threshold: 0.1,
 		triggerOnce: false,
 		initialInView: true,
 	});
+
+	// Check WebGL support on mount
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			const supported = isWebGLAvailable();
+			if (!supported) {
+				console.warn("WebGL not supported - showing fallback image");
+				setWebglSupported(false);
+				// Wait at least 1.5 seconds to show loading screen, then show fallback
+				setTimeout(() => {
+					setShowFallback(true);
+					onModelLoaded?.();
+				}, 1500);
+			}
+		}
+	}, [onModelLoaded]);
 
 	useEffect(() => {
 		// Initialize mouse position after mount
@@ -176,47 +241,150 @@ export default function AstronautScene({ onModelLoaded }) {
 		}
 	}, []);
 
-	return (
-		<div ref={containerRef} style={{ width: "100%", height: "100%" }}>
-			<div
-				style={{
-					width: "100%",
-					height: "100%",
-					visibility: isAstronautVisible ? "visible" : "hidden",
-					pointerEvents: isAstronautVisible ? "auto" : "none",
-				}}
-			>
-				<Canvas
-					camera={{ position: [0, 0.5, 5], fov: 50 }}
-					style={{ width: "100%", height: "100%" }}
-					dpr={[1, 2]}
-					performance={{ min: 0.5 }}
-					frameloop={isAstronautVisible ? "always" : "never"}
-					gl={{
-						powerPreference: "high-performance",
-						antialias: true,
-						stencil: false,
-						depth: true,
+	// Set a timeout for model loading - if it doesn't load in 5 seconds, show fallback
+	useEffect(() => {
+		// Only set timeout if WebGL is supported
+		if (webglSupported) {
+			loadTimeoutRef.current = setTimeout(() => {
+				console.warn("Model loading timeout - showing fallback image");
+				setModelLoadTimeout(true);
+				setShowFallback(true);
+				onModelLoaded?.();
+			}, 5000);
+		}
+
+		return () => {
+			if (loadTimeoutRef.current) {
+				clearTimeout(loadTimeoutRef.current);
+			}
+		};
+	}, [onModelLoaded, webglSupported]);
+
+	// Handle WebGL and model loading errors
+	const handleCanvasError = (error) => {
+		if (error && typeof error === "object") {
+			console.error("Canvas Error:", error.message || "Unknown error");
+		}
+		setHasWebGLError(true);
+		// Clear the timeout since we're handling the error
+		if (loadTimeoutRef.current) {
+			clearTimeout(loadTimeoutRef.current);
+		}
+		// Wait at least 1.5 seconds to show loading screen, then show fallback
+		setTimeout(() => {
+			setShowFallback(true);
+			onModelLoaded?.();
+		}, 1500);
+	};
+
+	// Handle successful model load
+	const handleModelLoaded = () => {
+		// Clear the timeout since model loaded successfully
+		if (loadTimeoutRef.current) {
+			clearTimeout(loadTimeoutRef.current);
+		}
+		onModelLoaded?.();
+	};
+
+	// If WebGL is not supported, fails, or model doesn't load in time, show fallback image
+	if (showFallback && (!webglSupported || hasWebGLError || modelLoadTimeout)) {
+		return (
+			<div className="flex h-full w-full items-end justify-center">
+				<div className="relative h-full w-full max-w-[500px]">
+					<Image
+						src="/DevsocHero.png"
+						alt="DevSoc Astronaut"
+						fill
+						className="object-contain object-bottom"
+						priority
+					/>
+				</div>
+			</div>
+		);
+	}
+
+	// Don't render anything until we know if we need fallback or Canvas
+	if (!webglSupported && !showFallback) {
+		return null;
+	}
+
+	// Render Canvas with error handling
+	try {
+		return (
+			<div ref={containerRef} style={{ width: "100%", height: "100%" }}>
+				<div
+					style={{
+						width: "100%",
+						height: "100%",
+						visibility: isAstronautVisible ? "visible" : "hidden",
+						pointerEvents: isAstronautVisible ? "auto" : "none",
 					}}
 				>
-					<ambientLight intensity={0.6} />
-					<directionalLight
-						position={[3, 5, 5]}
-						intensity={1.5}
-						castShadow={false}
-					/>
-					<Environment preset="city" />
-					<Suspense fallback={<LoadingPlaceholder />}>
-						<AstronautModel
-							mouse={mouse}
-							isAstronautVisible={isAstronautVisible}
-							onModelLoaded={onModelLoaded}
-						/>
-					</Suspense>
-				</Canvas>
+					<CanvasErrorBoundary onError={handleCanvasError}>
+						<Canvas
+							camera={{ position: [0, 0.5, 5], fov: 50 }}
+							style={{ width: "100%", height: "100%" }}
+							dpr={[1, 2]}
+							performance={{ min: 0.5 }}
+							frameloop={isAstronautVisible ? "always" : "never"}
+							gl={{
+								powerPreference: "high-performance",
+								antialias: true,
+								stencil: false,
+								depth: true,
+								failIfMajorPerformanceCaveat: false,
+							}}
+							onCreated={(state) => {
+								// Check if WebGL context is valid
+								try {
+									const gl = state.gl.getContext();
+									if (!gl) {
+										handleCanvasError(new Error("WebGL context not available"));
+									}
+								} catch (err) {
+									handleCanvasError(err);
+								}
+							}}
+						>
+							<ambientLight intensity={0.6} />
+							<directionalLight
+								position={[3, 5, 5]}
+								intensity={1.5}
+								castShadow={false}
+							/>
+							<Environment preset="city" />
+							<Suspense fallback={<LoadingPlaceholder />}>
+								<AstronautModel
+									mouse={mouse}
+									isAstronautVisible={isAstronautVisible}
+									onModelLoaded={handleModelLoaded}
+								/>
+							</Suspense>
+						</Canvas>
+					</CanvasErrorBoundary>
+				</div>
 			</div>
-		</div>
-	);
+		);
+	} catch (error) {
+		// If Canvas rendering fails, show fallback
+		handleCanvasError(error);
+		if (showFallback) {
+			return (
+				<div className="flex h-full w-full items-end justify-center">
+					<div className="relative h-full w-full max-w-[500px]">
+						<Image
+							src="/DevsocHero.png"
+							alt="DevSoc Astronaut"
+							fill
+							className="object-contain object-bottom"
+							priority
+						/>
+					</div>
+				</div>
+			);
+		}
+		return null;
+	}
 }
 
 // Preload the model when idle

@@ -22,6 +22,16 @@ export default function Home() {
 			}
 		};
 		checkMobile();
+
+		// Adding error handler for uncaught errors
+		const handleError = (event) => {
+			// console.error("Global error caught:", event.error);
+			// Prevent the error from breaking the app
+			event.preventDefault();
+		};
+
+		window.addEventListener("error", handleError);
+		return () => window.removeEventListener("error", handleError);
 	}, []);
 
 	return (
