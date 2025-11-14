@@ -36,7 +36,9 @@ export default function EventCard({ event }) {
 							<h3 className="text-lg font-semibold text-white sm:text-xl">
 								{event.title}
 							</h3>
-							<p className="text-sm text-neutral-300">{formatEventDate(event.date)}</p>
+							<p className="text-sm text-neutral-300">
+								{formatEventDate(event.date)}
+							</p>
 						</div>
 					</div>
 				</Link>

@@ -324,7 +324,10 @@ export default function EventRegistrationForm({ event }) {
 				)}
 
 				{submitStatus && (
-					<StatusMessage type={submitStatus.type} message={submitStatus.message} />
+					<StatusMessage
+						type={submitStatus.type}
+						message={submitStatus.message}
+					/>
 				)}
 
 				<button

@@ -4,7 +4,7 @@ import { uploadToImageKit } from "@/lib/imagekit";
 const uploadAttempts = new Map<string, { count: number; resetTime: number }>();
 
 const MAX_UPLOADS_PER_HOUR = 5;
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000; 
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000;
 
 function checkRateLimit(identifier: string): boolean {
 	const now = Date.now();

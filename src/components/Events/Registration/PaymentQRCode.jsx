@@ -12,7 +12,7 @@ export default function PaymentQRCode() {
 					alt="Payment QR Code"
 					width={180}
 					height={180}
-					className="mx-auto h-32 w-32 object-contain sm:h-44 sm:h-44"
+					className="mx-auto h-32 w-32 object-contain sm:h-44"
 				/>
 			</div>
 			<p className="text-xs text-neutral-400 sm:text-sm">
