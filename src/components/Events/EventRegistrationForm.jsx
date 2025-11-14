@@ -2,8 +2,34 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import Image from "next/image";
 import { fadeInBlur } from "@/lib/motionVariants";
+import { useMutation } from "convex/react";
+import { api } from "convex/_generated/api";
+import { registrationSchema } from "@/lib/validations/registration";
+import FormInput from "./Registration/FormInput";
+import FormSelect from "./Registration/FormSelect";
+import FormTextarea from "./Registration/FormTextarea";
+import FileUpload from "./Registration/FileUpload";
+import PaymentQRCode from "./Registration/PaymentQRCode";
+import StatusMessage from "./Registration/StatusMessage";
+import { formatEventDate } from "@/lib/utils/eventUtils";
+
+const DEPARTMENTS = [
+	{ value: "CSE", label: "Computer Science Engineering" },
+	{ value: "ECE", label: "Electronics & Communication Engineering" },
+	{ value: "EEE", label: "Electrical & Electronics Engineering" },
+	{ value: "ME", label: "Mechanical Engineering" },
+	{ value: "CE", label: "Civil Engineering" },
+	{ value: "IT", label: "Information Technology" },
+	{ value: "Other", label: "Other" },
+];
+
+const YEARS = [
+	{ value: "1st Year", label: "1st Year" },
+	{ value: "2nd Year", label: "2nd Year" },
+	{ value: "3rd Year", label: "3rd Year" },
+	{ value: "4th Year", label: "4th Year" },
+];
 
 export default function EventRegistrationForm({ event }) {
 	const [formData, setFormData] = useState({
@@ -19,6 +45,12 @@ export default function EventRegistrationForm({ event }) {
 	});
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [uploadProgress, setUploadProgress] = useState(null);
+	const [errors, setErrors] = useState({});
+	const [submitStatus, setSubmitStatus] = useState(null);
+	const [fileInfo, setFileInfo] = useState(null);
+
+	const registerUser = useMutation(api.registrations.registerUser);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -26,28 +58,150 @@ export default function EventRegistrationForm({ event }) {
 			...prev,
 			[name]: value,
 		}));
+		if (errors[name]) {
+			setErrors((prev) => ({ ...prev, [name]: null }));
+		}
 	};
 
 	const handleFileChange = (e) => {
 		const file = e.target.files[0];
-		setFormData((prev) => ({
-			...prev,
-			paymentScreenshot: file,
-		}));
+
+		if (file) {
+			const maxSize = 5 * 1024 * 1024;
+			if (file.size > maxSize) {
+				setErrors((prev) => ({
+					...prev,
+					paymentScreenshot: `File size is ${(file.size / (1024 * 1024)).toFixed(2)}MB. Maximum allowed size is 5MB.`,
+				}));
+				e.target.value = "";
+				return;
+			}
+
+			const allowedTypes = [
+				"image/jpeg",
+				"image/jpg",
+				"image/png",
+				"image/webp",
+			];
+			if (!allowedTypes.includes(file.type)) {
+				setErrors((prev) => ({
+					...prev,
+					paymentScreenshot: "Only JPEG, PNG, and WebP images are allowed.",
+				}));
+				e.target.value = "";
+				return;
+			}
+
+			setFormData((prev) => ({
+				...prev,
+				paymentScreenshot: file,
+			}));
+
+			setFileInfo({
+				name: file.name,
+				size: (file.size / (1024 * 1024)).toFixed(2),
+			});
+
+			if (errors.paymentScreenshot) {
+				setErrors((prev) => ({ ...prev, paymentScreenshot: null }));
+			}
+		}
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
-		
-		// TODO: Implement form submission logic
-		console.log("Form submitted:", formData);
-		
-		// Simulate API call
-		setTimeout(() => {
+		setErrors({});
+		setSubmitStatus(null);
+
+		try {
+			const validatedData = registrationSchema.parse(formData);
+
+			setUploadProgress("Uploading payment screenshot...");
+
+			const uploadFormData = new FormData();
+			uploadFormData.append("file", validatedData.paymentScreenshot);
+			uploadFormData.append("eventSlug", event.slug);
+
+			const uploadResponse = await fetch("/api/upload-payment-screenshot", {
+				method: "POST",
+				body: uploadFormData,
+			});
+
+			if (!uploadResponse.ok) {
+				const errorData = await uploadResponse.json();
+				throw new Error(
+					errorData.error || "Failed to upload payment screenshot",
+				);
+			}
+
+			setUploadProgress("Payment screenshot uploaded successfully!");
+
+			const { data: uploadData } = await uploadResponse.json();
+
+			setUploadProgress("Saving registration details...");
+
+			const result = await registerUser({
+				name: validatedData.name,
+				roll: validatedData.roll,
+				phone: validatedData.phone,
+				email: validatedData.email,
+				department: validatedData.department,
+				year: validatedData.year,
+				questions: validatedData.questions,
+				eventSlug: event.slug,
+				eventTitle: event.title,
+				transactionId: validatedData.transactionId,
+				paymentScreenshotUrl: uploadData.url,
+				paymentScreenshotStorageId: uploadData.fileId,
+				amount: 50,
+			});
+
+			setUploadProgress(null);
+			setSubmitStatus({
+				type: "success",
+				message: result.message,
+			});
+
+			setFormData({
+				name: "",
+				roll: "",
+				phone: "",
+				email: "",
+				department: "",
+				year: "",
+				questions: "",
+				transactionId: "",
+				paymentScreenshot: null,
+			});
+
+			const fileInput = document.querySelector('input[type="file"]');
+			if (fileInput) fileInput.value = "";
+			setFileInfo(null);
+		} catch (error) {
+			console.error("Registration error:", error);
+
+			if (error.errors) {
+				const fieldErrors = {};
+				error.errors.forEach((err) => {
+					fieldErrors[err.path[0]] = err.message;
+				});
+				setErrors(fieldErrors);
+				setSubmitStatus({
+					type: "error",
+					message: "Please fix the errors in the form",
+				});
+			} else {
+				setSubmitStatus({
+					type: "error",
+					message:
+						error.message || "Failed to submit registration. Please try again.",
+				});
+			}
+		} finally {
 			setIsSubmitting(false);
-			alert("Registration submitted successfully!");
-		}, 2000);
+			setUploadProgress(null);
+		}
 	};
 
 	return (
@@ -56,190 +210,127 @@ export default function EventRegistrationForm({ event }) {
 			initial="hidden"
 			whileInView="visible"
 			viewport={{ once: true }}
-			className="mx-auto max-w-2xl rounded-3xl bg-neutral-900/50 p-4 sm:p-6 md:p-8 backdrop-blur-sm border border-neutral-800"
+			className="mx-auto max-w-2xl rounded-3xl border border-neutral-800 bg-neutral-900/50 p-4 backdrop-blur-sm sm:p-6 md:p-8"
 		>
-			<div className="mb-6 sm:mb-8 text-center">
-				<h2 className="mb-2 text-2xl sm:text-3xl font-bold text-white">
+			<div className="mb-6 text-center sm:mb-8">
+				<h2 className="mb-2 text-2xl font-bold text-white sm:text-3xl">
 					Event Registration
 				</h2>
-				<p className="text-sm sm:text-base text-neutral-400">
-					Register for {event.title} - {event.date}
+				<p className="text-sm text-neutral-400 sm:text-base">
+					Register for {event.title} - {formatEventDate(event.date)}
 				</p>
 			</div>
 
 			<form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						What's your name <span className="text-red-400">*</span>
-					</label>
-					<input
-						type="text"
-						name="name"
-						value={formData.name}
-						onChange={handleInputChange}
-						required
-						className="w-full rounded-lg bg-neutral-800 px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent"
-						placeholder="Enter your full name"
-					/>
-				</div>
+				<FormInput
+					label="What's your name"
+					name="name"
+					value={formData.name}
+					onChange={handleInputChange}
+					required
+					placeholder="Enter your full name"
+					error={errors.name}
+				/>
 
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						Enter your Roll <span className="text-red-400">*</span>
-					</label>
-					<input
-						type="text"
-						name="roll"
-						value={formData.roll}
-						onChange={handleInputChange}
-						required
-						className="w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent"
-						placeholder="Enter your roll number"
-					/>
-				</div>
+				<FormInput
+					label="Enter your Roll"
+					name="roll"
+					value={formData.roll}
+					onChange={handleInputChange}
+					required
+					placeholder="Enter your roll number"
+					error={errors.roll}
+				/>
 
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						Enter your Phone No. <span className="text-red-400">*</span>
-					</label>
-					<input
-						type="tel"
-						name="phone"
-						value={formData.phone}
-						onChange={handleInputChange}
-						required
-						className="w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent"
-						placeholder="Enter your phone number"
-					/>
-				</div>
+				<FormInput
+					label="Enter your Phone No."
+					name="phone"
+					type="tel"
+					value={formData.phone}
+					onChange={handleInputChange}
+					required
+					placeholder="Enter your phone number"
+					error={errors.phone}
+				/>
 
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						Enter your Email ID <span className="text-red-400">*</span>
-					</label>
-					<input
-						type="email"
-						name="email"
-						value={formData.email}
-						onChange={handleInputChange}
-						required
-						className="w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent"
-						placeholder="Enter your email address"
-					/>
-				</div>
+				<FormInput
+					label="Enter your Email ID"
+					name="email"
+					type="email"
+					value={formData.email}
+					onChange={handleInputChange}
+					required
+					placeholder="Enter your email address"
+					error={errors.email}
+				/>
 
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						What is your Dept? <span className="text-red-400">*</span>
-					</label>
-					<select
-						name="department"
-						value={formData.department}
-						onChange={handleInputChange}
-						required
-						className="w-full rounded-lg bg-neutral-800 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent"
-					>
-						<option value="">Select your department</option>
-						<option value="CSE">Computer Science Engineering</option>
-						<option value="ECE">Electronics & Communication Engineering</option>
-						<option value="EEE">Electrical & Electronics Engineering</option>
-						<option value="ME">Mechanical Engineering</option>
-						<option value="CE">Civil Engineering</option>
-						<option value="IT">Information Technology</option>
-						<option value="Other">Other</option>
-					</select>
-				</div>
+				<FormSelect
+					label="What is your Dept?"
+					name="department"
+					value={formData.department}
+					onChange={handleInputChange}
+					required
+					options={DEPARTMENTS}
+					placeholder="Select your department"
+					error={errors.department}
+				/>
 
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						What is your Year? <span className="text-red-400">*</span>
-					</label>
-					<select
-						name="year"
-						value={formData.year}
-						onChange={handleInputChange}
-						required
-						className="w-full rounded-lg bg-neutral-800 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent"
-					>
-						<option value="">Select your year</option>
-						<option value="1st Year">1st Year</option>
-						<option value="2nd Year">2nd Year</option>
-						<option value="3rd Year">3rd Year</option>
-						<option value="4th Year">4th Year</option>
-					</select>
-				</div>
+				<FormSelect
+					label="What is your Year?"
+					name="year"
+					value={formData.year}
+					onChange={handleInputChange}
+					required
+					options={YEARS}
+					placeholder="Select your year"
+					error={errors.year}
+				/>
 
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						Do you have any questions? <span className="text-red-400">*</span>
-					</label>
-					<textarea
-						name="questions"
-						value={formData.questions}
-						onChange={handleInputChange}
-						required
-						rows={4}
-						className="w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent resize-none"
-						placeholder="Please share any questions or special requirements"
-					/>
-				</div>
+				<FormTextarea
+					label="Any questions? (If none, write N/A)"
+					name="questions"
+					value={formData.questions}
+					onChange={handleInputChange}
+					required
+					placeholder="Please share any questions or special requirements"
+					error={errors.questions}
+				/>
 
-				<div className="text-center">
-					<p className="mb-4 text-sm sm:text-base text-white">
-						Scan to pay / Rs. 50 / person
-					</p>
-					<div className="mx-auto mb-4 w-fit rounded-lg bg-white p-3 sm:p-4">
-						<Image
-							src="/DevsocHero.png"
-							alt="Payment QR Code"
-							width={180}
-							height={180}
-							className="mx-auto w-32 h-32 sm:w-44 sm:h-44 object-contain"
-						/>
-					</div>
-					<p className="text-xs sm:text-sm text-neutral-400">
-						UPI ID: opsubham609@oksbi
-					</p>
-				</div>
+				<PaymentQRCode />
 
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						Enter Transaction ID <span className="text-red-400">*</span>
-					</label>
-					<input
-						type="text"
-						name="transactionId"
-						value={formData.transactionId}
-						onChange={handleInputChange}
-						required
-						className="w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent"
-						placeholder="Enter your transaction ID"
-					/>
-				</div>
+				<FormInput
+					label="Enter Transaction ID"
+					name="transactionId"
+					value={formData.transactionId}
+					onChange={handleInputChange}
+					required
+					placeholder="Enter your transaction ID"
+					error={errors.transactionId}
+				/>
 
-				<div>
-					<label className="mb-2 block text-sm font-medium text-white">
-						Enter the Payment Screenshot <span className="text-red-400">*</span>
-					</label>
-					<div className="relative">
-						<input
-							type="file"
-							name="paymentScreenshot"
-							onChange={handleFileChange}
-							accept="image/*"
-							required
-							className="w-full rounded-lg bg-neutral-800 px-4 py-3 text-white file:mr-4 file:rounded-lg file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-medium file:text-black hover:file:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-accent"
-						/>
-					</div>
-					<p className="mt-1 text-xs text-neutral-400">
-						Size limit: 5 MB
-					</p>
-				</div>
+				<FileUpload
+					label="Enter the Payment Screenshot"
+					name="paymentScreenshot"
+					onChange={handleFileChange}
+					required
+					accept="image/jpeg,image/jpg,image/png,image/webp"
+					error={errors.paymentScreenshot}
+					fileInfo={fileInfo}
+					helpText="Size limit: 5 MB | Formats: JPEG, PNG, WebP"
+				/>
+
+				{uploadProgress && (
+					<StatusMessage type="progress" message={uploadProgress} />
+				)}
+
+				{submitStatus && (
+					<StatusMessage type={submitStatus.type} message={submitStatus.message} />
+				)}
 
 				<button
 					type="submit"
 					disabled={isSubmitting}
-					className="w-full rounded-lg bg-accent px-6 py-3 font-medium text-black transition-colors hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed"
+					className="bg-accent hover:bg-accent/90 focus:ring-accent w-full rounded-lg px-6 py-3 font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					{isSubmitting ? "Submitting..." : "Submit"}
 				</button>

@@ -1,1 +1,1 @@
-# devsoc-landing
+# DevSoc Landing Page

@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from "react";
 import { eventsData } from "@/constant/events";
 import { Carousel, Card } from "@/components/UI/mobileCarousel";
 import { fadeInBlur, fadeInBlurFast } from "@/lib/motionVariants";
+import { formatEventDate } from "@/lib/utils/eventUtils";
 
 function useMediaQuery(query) {
 	const [matches, setMatches] = useState(null);
@@ -185,7 +186,9 @@ function FannedLayout({
 											<h3 className="text-lg font-bold text-white">
 												{event.title}
 											</h3>
-											<p className="text-sm text-gray-200">{event.date}</p>
+											<p className="text-sm text-gray-200">
+												{formatEventDate(event.date)}
+											</p>
 										</div>
 									</div>
 								</motion.div>
@@ -203,7 +206,7 @@ function AppleCardsCarouselSection() {
 
 	const cards = limitedEvents.map((event, index) => {
 		const cardData = {
-			category: event.date,
+			category: formatEventDate(event.date),
 			title: event.title,
 			src: event.image,
 			href: `/events/${event.slug}`,

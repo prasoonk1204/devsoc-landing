@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import BackButton from "@/components/UI/BackButton";
+import { formatEventDate } from "@/lib/utils/eventUtils";
 
 export default function EventDetailPage({ params }) {
 	const { slug } = use(params);
@@ -34,7 +35,7 @@ export default function EventDetailPage({ params }) {
 							{event.title}
 						</h1>
 						<p className="mb-6 text-lg text-neutral-300 sm:text-xl">
-							{event.date}
+							{formatEventDate(event.date)}
 						</p>
 						<p className="text-md font-sans leading-relaxed text-neutral-100 sm:text-lg">
 							{event.description}

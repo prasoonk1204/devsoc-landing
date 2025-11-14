@@ -1,37 +1,25 @@
-# dependencies
+# Dependencies
 node_modules
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Convex generated files
+convex/_generated
+convex/*.js
+convex/*.d.ts
+convex/*.js.map
+convex/*.d.ts.map
+
+# Lock files
 package-lock.json
-yarn.lock
 pnpm-lock.yaml
 bun.lock
+yarn.lock
 
-# environment
-.env
-.env.*.local
-
-# build outputs
-dist
-build
-coverage
-
-# Vite specific
-.vite
-
-# system files
+# Misc
 .DS_Store
-.vscode
-.idea
-
-# logs
-*.log
-
-# Prettier itself
-.prettierignore
-
-# Config/build tools outputs
-*.cache
-
-# Generated files
-public/vite.svg
-
-.next/*
+*.pem

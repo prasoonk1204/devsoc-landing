@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { DirectionAwareHover } from "@/components/UI/directionAwareHover";
 import { fadeInBlur } from "@/lib/motionVariants";
+import { formatEventDate } from "@/lib/utils/eventUtils";
 
 export default function EventCard({ event }) {
 	const [mounted, setMounted] = useState(false);
@@ -35,7 +36,7 @@ export default function EventCard({ event }) {
 							<h3 className="text-lg font-semibold text-white sm:text-xl">
 								{event.title}
 							</h3>
-							<p className="text-sm text-neutral-300">{event.date}</p>
+							<p className="text-sm text-neutral-300">{formatEventDate(event.date)}</p>
 						</div>
 					</div>
 				</Link>
@@ -66,7 +67,7 @@ export default function EventCard({ event }) {
 							<h3 className="text-xl font-semibold text-white">
 								{event.title}
 							</h3>
-							<p className="text-neutral-300">{event.date}</p>
+							<p className="text-neutral-300">{formatEventDate(event.date)}</p>
 						</div>
 					</div>
 				</Link>
@@ -86,7 +87,7 @@ export default function EventCard({ event }) {
 			<Link href={`/events/${event.slug}`} className="h-full w-full">
 				<DirectionAwareHover imageUrl={event.image} className="h-full w-full">
 					<p className="text-xl font-bold">{event.title}</p>
-					<p className="text-sm font-normal">{event.date}</p>
+					<p className="text-sm font-normal">{formatEventDate(event.date)}</p>
 				</DirectionAwareHover>
 			</Link>
 		</motion.div>

@@ -8,13 +8,17 @@
  * @module
  */
 
+import type * as registrations from "../registrations.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
 
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  registrations: typeof registrations;
+}>;
 
 /**
  * A utility for referencing Convex functions in your app's public API.
