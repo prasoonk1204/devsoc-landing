@@ -8,7 +8,8 @@
 		"start": "next start",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"setup": "rm -f convex/*.js convex/*.d.ts convex/*.js.map convex/*.d.ts.map && rm -rf convex/_generated && prettier --write . && convex dev"
+		"setup": "rm -f convex/*.js convex/*.d.ts convex/*.js.map convex/*.d.ts.map && rm -rf convex/_generated && prettier --write . && convex dev",
+		"prod:convex": "prettier --write . && convex codegen && convex deploy"
 	},
 	"dependencies": {
 		"@react-three/drei": "^10.7.6",
