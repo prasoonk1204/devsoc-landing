@@ -17,9 +17,9 @@ export default function EventDetailPage({ params }) {
 	}
 
 	return (
-		<div className="relative flex w-full flex-col items-center justify-center bg-black p-4 pt-20 pb-16 text-white sm:p-6 sm:pb-24 md:pt-40">
+		<div className="relative flex w-full flex-col items-center justify-center bg-black p-4 pt-20 pb-16 text-white sm:pt-20 sm:p-6 sm:pb-24 md:pt-40">
 			<div className="relative w-full max-w-6xl">
-				<BackButton href="/events" label="Back to all events" />
+				<BackButton href="/events" label="All Events" />
 
 				{/* Main Content Grid */}
 				<div className="mt-6 grid w-full grid-cols-1 gap-8 md:grid-cols-6 md:gap-12">

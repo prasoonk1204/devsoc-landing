@@ -30,12 +30,12 @@ export default function EventRegistrationPage({ params }) {
 	}
 
 	return (
-		<div className="relative flex w-full flex-col items-center justify-center bg-black p-4 pt-20 pb-16 text-white sm:p-6 sm:pb-24 md:pt-40">
+		<div className="relative flex w-full flex-col items-center justify-center bg-black p-4 pt-20 pb-16 text-white sm:pt-20 sm:p-6 sm:pb-24 md:pt-40">
 			<div className="relative w-full max-w-4xl">
-				<BackButton href="/events" label="Back to event details" />
+				<BackButton href="/events" label="All events" />
 
 				<motion.div
-					className="mt-6 mb-8 text-center"
+					className="mt-6  mb-8 text-center"
 					variants={fadeInBlur}
 					initial="hidden"
 					whileInView="visible"

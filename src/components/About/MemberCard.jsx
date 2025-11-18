@@ -15,18 +15,20 @@ export default function MemberCard({ member, index }) {
 			transition={{ delay: index * 0.05 }}
 		>
 			<Link href={member.link} className="group block">
-				<div className="relative overflow-hidden rounded-2xl bg-neutral-800/90 p-4 transition-all duration-300 hover:scale-101 hover:bg-neutral-700/80">
-					<div className="relative mb-3 aspect-square overflow-hidden rounded-xl bg-neutral-900">
-						<Image
-							src={member.image}
-							alt={member.name}
-							fill
-							className="object-contain"
-						/>
-					</div>
-					<div className="text-center">
-						<h3 className="font-semibold text-white">{member.name}</h3>
-						<p className="text-sm text-orange-300">{member.designation}</p>
+				<div className="relative mx-auto h-60 w-full max-w-[350px] overflow-hidden rounded-3xl bg-linear-to-b from-zinc-800 to-zinc-950 font-sans text-white transition-all duration-300">
+					<Image
+						src={member.image}
+						alt={member.name}
+						width={350}
+						height={280}
+						className="w-full object-cover transition-transform duration-300 group-hover:scale-105"
+					/>
+
+					<div className="absolute right-0 bottom-0 left-0 rounded-b-3xl bg-linear-to-b from-black/40 via-black/60 to-black/80 p-4 text-zinc-300 shadow-[inset_0_-4px_4px_rgba(255,255,255,0.15)] backdrop-blur-md">
+						<div className="text-lg font-semibold text-white md:text-xl">
+							{member.name}
+						</div>
+						<div className="text-sm md:text-[16px]">{member.designation}</div>
 					</div>
 				</div>
 			</Link>

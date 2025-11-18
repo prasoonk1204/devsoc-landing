@@ -8,17 +8,17 @@ import { Twitter, Instagram, Linkedin, Globe } from "lucide-react";
 const socialLinks = [
 	{
 		name: "Instagram",
-		url: "https://www.instagram.com",
+		url: "https://www.instagram.com/dev-soc_aec",
 		icon: <Instagram size={20} />,
 	},
 	{
 		name: "LinkedIn",
-		url: "https://www.linkedin.com",
+		url: "https://www.linkedin.com/company/development-society-aec/",
 		icon: <Linkedin size={20} />,
 	},
 	{
 		name: "Twitter",
-		url: "https://www.twitter.com",
+		url: "https://x.com/devsoc_aec",
 		icon: <Twitter size={20} />,
 	},
 ];
@@ -50,15 +50,15 @@ const devLinks = [
 	},
 	{
 		name: "Avik",
-		link: "https://www.instagram.com/nate_river007?igsh=MTRua3p3dzFqamR3Ng==",
+		link: "https://www.instagram.com/nate_river007",
 		type: "Instagram",
 		icon: <Instagram size={16} />,
 	},
 	{
 		name: "Pravanjan",
-		link: "https://www.instagram.com/nate_river007?igsh=MTRua3p3dzFqamR3Ng==",
-		type: "Instagram",
-		icon: <Instagram size={16} />,
+		link: "https://www.linkedin.com/in/pravanjan-roy-bb0a1a383",
+		type: "Linkedin",
+		icon: <Linkedin size={16} />,
 	},
 ];
 
@@ -183,7 +183,7 @@ const Footer = () => {
 				</>
 			)}
 
-			<div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between sm:flex-row">
+			<div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between md:flex-row">
 				<motion.div
 					className="text-md mb-4 text-center sm:text-base"
 					variants={itemVariants}
@@ -262,22 +262,6 @@ export default Footer;
 
 const DevLink = ({ dev }) => {
 	const [showTooltip, setShowTooltip] = useState(false);
-	const [isMobile, setIsMobile] = useState(false);
-
-	useEffect(() => {
-		const checkMobile = () => {
-			setIsMobile(window.innerWidth < 640);
-		};
-		checkMobile();
-		window.addEventListener("resize", checkMobile);
-		return () => window.removeEventListener("resize", checkMobile);
-	}, []);
-
-	const handleTooltipClick = () => {
-		if (isMobile) {
-			window.open(dev.link, "_blank", "noopener,noreferrer");
-		}
-	};
 
 	return (
 		<span className="relative inline-block">
@@ -287,21 +271,20 @@ const DevLink = ({ dev }) => {
 				rel="noopener noreferrer"
 				onMouseEnter={() => setShowTooltip(true)}
 				onMouseLeave={() => setShowTooltip(false)}
-				className="hover:text-accent transition-colors duration-200"
+				className="hover:text-accent tracking-wide transition-colors duration-200"
 			>
 				{dev.name}
 			</Link>
-			{/* {(showTooltip || isMobile) && (
+			{showTooltip && (
 				<motion.div
 					initial={{ opacity: 0, y: 5 }}
 					animate={{ opacity: 1, y: 0 }}
-					onClick={handleTooltipClick}
-					className={`absolute -top-8 left-1/2 z-50 -translate-x-1/2 rounded-lg border border-neutral-700 bg-neutral-800 px-2 py-1 shadow-lg ${isMobile ? "cursor-pointer" : ""}`}
+					className="absolute -top-8 left-1/2 z-50 -translate-x-1/2 rounded-lg border border-neutral-700 bg-neutral-800 px-2 py-1 shadow-lg"
 				>
 					<div className="flex items-center gap-1 text-white">{dev.icon}</div>
 					<div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-r border-b border-neutral-700 bg-neutral-800"></div>
 				</motion.div>
-			)} */}
+			)}
 		</span>
 	);
 };

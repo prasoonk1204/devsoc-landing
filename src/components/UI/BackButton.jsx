@@ -16,7 +16,7 @@ export default function BackButton({ href, label }) {
 		>
 			<Link
 				href={href}
-				className="flex items-center gap-2 rounded-3xl bg-neutral-800 px-4 py-2 text-neutral-200 transition-colors hover:bg-neutral-700 hover:text-white"
+				className="flex items-center gap-1 rounded-3xl bg-neutral-800/80 border border-accent/50 hover:gap-3 px-4 py-2 text-neutral-200 transition-all duration-300  hover:text-white"
 			>
 				<ArrowLeft size={18} />
 				{label}

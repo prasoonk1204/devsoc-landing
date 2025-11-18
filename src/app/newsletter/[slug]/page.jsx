@@ -9,6 +9,7 @@ import NewsletterDesktopGrid from "@/components/Newsletter/NewsletterDesktopGrid
 import NewsletterMobileCarousel from "@/components/Newsletter/NewsletterMobileCarousel";
 import ImageZoomModal from "@/components/Newsletter/ImageZoomModal";
 import { useNewsletterZoom } from "@/hooks/useNewsletterZoom";
+import { formatNewsletterDate } from "@/lib/utils/formatDate";
 
 export default function Page({ params }) {
 	const { slug } = use(params);
@@ -32,12 +33,12 @@ export default function Page({ params }) {
 	return (
 		<div className="flex w-full flex-col items-center justify-center gap-8 bg-black p-4 pt-20 pb-16 text-white sm:pb-24 md:pt-40">
 			<div className="relative w-full max-w-6xl">
-				<BackButton href="/newsletter" label="Back to all newsletters" />
+				<BackButton href="/newsletter" label="All Newsletters" />
 
 				<NewsletterHeader
 					title={newsletter.title}
 					author={newsletter.author}
-					date={newsletter.date}
+					date={formatNewsletterDate(newsletter.date)}
 				/>
 
 				<NewsletterDesktopGrid
