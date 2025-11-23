@@ -19,7 +19,9 @@ export const coreCommittee = [
 		designation: "Vice-President",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.25.43.jpeg",
-		link: "#",
+		socials: {
+			// Add social links here when available
+		},
 	},
 	{
 		id: 3,
@@ -28,11 +30,7 @@ export const coreCommittee = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Core-Committee/IMG_8083%20-%20Ishita%20Bej.jpeg?updatedAt=1763874083384",
 		socials: {
-			linkedin: "https://linkedin.com/in/username",
-			github: "https://github.com/username",
-			// twitter: "https://twitter.com/username",
-			// website: "https://example.com",
-			// email: "mailto:email@example.com",
+			instagram: "https://www.instagram.com/ishitaaa.xd?igsh=d24wcnlxbXhtejgy&utm_source=",
 		},
 	},
 	{
@@ -41,7 +39,9 @@ export const coreCommittee = [
 		designation: "Treasurer",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Image%20Proffessional%20AI%20-%20Subhayan%20Mukherjee.png",
-		link: "#",
+		socials: {
+			website: "https://www.subhayanmukherjee.tech/",
+		},
 	},
 	{
 		id: 5,
@@ -49,7 +49,9 @@ export const coreCommittee = [
 		designation: "Event Coordinator",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20250924-WA0166%20-%20148_soumyajit%20chattaraj.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/sagnikmukherjee/",
+		},
 	},
 	{
 		id: 6,
@@ -57,7 +59,9 @@ export const coreCommittee = [
 		designation: "Tech Lead",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251118-WA0009%20-%20Vikash.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/vikash2003",
+		},
 	},
 	{
 		id: 7,
@@ -65,7 +69,9 @@ export const coreCommittee = [
 		designation: "Management Lead",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20250622_034015_938%20(1)%20(1)%20-%20148_soumyajit%20chattaraj.webp",
-		link: "#",
+		socials: {
+			twitter: "https://x.com/Soumyaj85550463?t=zQR16l4sb9B6eBJ2VuyLlg&s=09",
+		},
 	},
 	{
 		id: 8,
@@ -73,7 +79,9 @@ export const coreCommittee = [
 		designation: "Tech Lead",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-17%20at%2021.08.55.jpeg",
-		link: "#",
+		socials: {
+			website: "https://amartya-dev.vercel.app",
+		},
 	},
 	{
 		id: 9,
@@ -81,7 +89,9 @@ export const coreCommittee = [
 		designation: "Events Lead",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251118_015208%20-%20Sayandeep%20Pal.png",
-		link: "#",
+		socials: {
+			twitter: "https://x.com/SayandeepPal06",
+		},
 	},
 	{
 		id: 10,
@@ -89,7 +99,9 @@ export const coreCommittee = [
 		designation: "Tech Lead",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20250909_190923_446%20-%2078_swarup%20Goswami_B3.webp",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/swarup-goswami-7a9444311?utm_source=share&",
+		},
 	},
 	{
 		id: 11,
@@ -97,7 +109,9 @@ export const coreCommittee = [
 		designation: "Socials & PR Lead",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251113-WA0148%20-%20Subham%20Guha.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/subham-guha",
+		},
 	},
 	{
 		id: 12,
@@ -105,7 +119,9 @@ export const coreCommittee = [
 		designation: "Socials & PR Lead",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251120_201621%20-%20Anika.png",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/aditi-hazra-5b3816341",
+		},
 	},
 ];
 
@@ -116,7 +132,9 @@ export const techTeam = [
 		designation: "Tech Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251010_233730%20-%20Asif%20Qamar.png",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/asif-qamar",
+		},
 	},
 	{
 		id: 2,
@@ -124,14 +142,18 @@ export const techTeam = [
 		designation: "Web Development",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251109-WA0058%20-%20Avik%20Ghosh.jpg",
-		link: "#",
+		socials: {
+			instagram: "https://www.instagram.com/nate_river007?igsh=MTRua3p3dzFqamR3Ng==",
+		},
 	},
 	{
 		id: 3,
 		name: "Elhan Yasir",
 		designation: "Tech Team",
 		image: "https://ik.imagekit.io/devsoc/Members/1763884229790.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/elhan-yasir-164445350?utm_source=share&utm_c",
+		},
 	},
 	{
 		id: 4,
@@ -139,21 +161,27 @@ export const techTeam = [
 		designation: "Machine Learning",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/20240416_214546-removebg-preview-1%20-%20Fatima%20Aslam.png",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/fa-aslam",
+		},
 	},
 	{
 		id: 5,
 		name: "Khushi Singh",
 		designation: "Tech Team",
 		image: "https://ik.imagekit.io/devsoc/Members/1746396179553.jpeg",
-		link: "#",
+		socials: {
+			// Add social links here when available
+		},
 	},
 	{
 		id: 6,
 		name: "Monu Kumar Singh",
 		designation: "Competitive Programming",
 		image: "https://ik.imagekit.io/devsoc/Members/1762792335315.png",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/monu-kumar-singh-3a5a4a397?utm_source=share",
+		},
 	},
 	{
 		id: 7,
@@ -161,7 +189,9 @@ export const techTeam = [
 		designation: "Tech Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251115_174759%20-%20Princi%20Kumari.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/nilam-kumari-mahato-5a2710307",
+		},
 	},
 	{
 		id: 8,
@@ -169,7 +199,9 @@ export const techTeam = [
 		designation: "Web Development",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.49.17.jpeg",
-		link: "#",
+		socials: {
+			// Add social links here when available
+		},
 	},
 	{
 		id: 9,
@@ -177,7 +209,9 @@ export const techTeam = [
 		designation: "Web Development",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251111_181720%20-%20Prasoon%20Kumar.jpg",
-		link: "#",
+		socials: {
+			website: "https://prasoonk.vercel.app",
+		},
 	},
 	{
 		id: 10,
@@ -185,7 +219,9 @@ export const techTeam = [
 		designation: "UI/UX Designer",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.42.31.jpeg",
-		link: "#",
+		socials: {
+			// Add social links here when available
+		},
 	},
 	{
 		id: 11,
@@ -193,7 +229,9 @@ export const techTeam = [
 		designation: "Tech Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20250729-WA0001%20-%20Prerna%20Priya.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/prerna-priya-ab3581329?utm_source=share&utm_",
+		},
 	},
 	{
 		id: 12,
@@ -201,7 +239,9 @@ export const techTeam = [
 		designation: "Web Development",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/1761978768025%20-%20Pinaki%20Ranjan%20Pal.jpg",
-		link: "#",
+		socials: {
+			instagram: "https://www.instagram.com/c_on.sole_?igsh=dTN0bm42emdqZWZn",
+		},
 	},
 	{
 		id: 13,
@@ -209,7 +249,9 @@ export const techTeam = [
 		designation: "Web Development",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251115-WA0212%20-%20Pravanjan%20Roy.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/pravanjan-roy-bb0a1a383?utm_source=share_via&",
+		},
 	},
 	{
 		id: 14,
@@ -217,7 +259,9 @@ export const techTeam = [
 		designation: "Machine Learning",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Rishika_image%20-%20Rishika%20Kaur.png",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/kaurrishika/",
+		},
 	},
 	{
 		id: 15,
@@ -225,7 +269,9 @@ export const techTeam = [
 		designation: "Tech Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251109-WA0009%20-%20Roshan%20Kumar.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/roshankumaryadav-/",
+		},
 	},
 	{
 		id: 16,
@@ -233,7 +279,9 @@ export const techTeam = [
 		designation: "Tech Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.44.56.jpeg",
-		link: "#",
+		socials: {
+			// Add social links here when available
+		},
 	},
 ];
 
@@ -244,7 +292,9 @@ export const managementTeam = [
 		designation: "Event Management & PR",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251115_193014%20-%20Amrit%20Kumar.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/amrit-kumar-319780329?utm_source=share&utm_",
+		},
 	},
 	// {
 	// 	id: 2,
@@ -259,7 +309,9 @@ export const managementTeam = [
 		designation: "Event Management & PR",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WIN_20250804_14_11_25_Pro%20-%20Anurag%20Singh.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/anurag-singh1204",
+		},
 	},
 	{
 		id: 4,
@@ -267,7 +319,10 @@ export const managementTeam = [
 		designation: "Management Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20250214-WA0030(2)%20-%20Mehroof%20Saba.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/mehroof-saba-295484329",
+			instagram: "https://www.instagram.com/ms_37ann?igsh=dWFrNGpmdms3aWFz",
+		},
 	},
 	{
 		id: 5,
@@ -275,7 +330,9 @@ export const managementTeam = [
 		designation: "Event Management & PR",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Picsart_25-06-10_12-41-50-696%20-%20NIKHIL.jpg",
-		link: "#",
+		socials: {
+			instagram: "https://www.instagram.com/n_ikhilgupta?igsh=MWR4ZzgyYnNzMmJvaA==",
+		},
 	},
 	{
 		id: 6,
@@ -283,7 +340,9 @@ export const managementTeam = [
 		designation: "Management Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-06%20at%2019.04.20_5acacb41%20-%20Prajakta%20Sarkhel.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/prajakta-sarkhel-942845272",
+		},
 	},
 	{
 		id: 7,
@@ -291,14 +350,18 @@ export const managementTeam = [
 		designation: "Management Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Screenshot_2025-11-16-12-43-56-96_439a3fec0400f8974d35eed09a31f914%20-%20176_Sana%20Chakraborty.jpg",
-		link: "#",
+		socials: {
+			instagram: "https://www.instagram.com/sanachakraborty79?igsh=MXN1OWxiNzI1MmRveQ",
+		},
 	},
 	{
 		id: 8,
 		name: "Sanjay Sharma",
 		designation: "Event Management & PR",
 		image: "https://ik.imagekit.io/devsoc/Members/1761717478199.jpeg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/expertcoder06",
+		},
 	},
 	{
 		id: 9,
@@ -306,7 +369,9 @@ export const managementTeam = [
 		designation: "Management Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251102-WA0012%20-%20117_Supriyo%20Das.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/supriyo-das-640994320",
+		},
 	},
 ];
 
@@ -317,7 +382,9 @@ export const designTeam = [
 		designation: "Graphics Designer",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251114-WA0075%20-%20Achhat%20kumar%20Gupta.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/achhat-kumar-gupta-034373200?utm_source=sha",
+		},
 	},
 	{
 		id: 2,
@@ -325,7 +392,9 @@ export const designTeam = [
 		designation: "Design Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251109-WA0016%20-%20Arpita%20Sharma.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/arpita-sharma-3089b928b",
+		},
 	},
 	{
 		id: 3,
@@ -333,14 +402,18 @@ export const designTeam = [
 		designation: "Design Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20241212_161821%20-%20Ayushi%20Kumari%20Shaw.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/ayushi-kumari-shaw-82b37828b",
+		},
 	},
 	{
 		id: 4,
 		name: "Gourav Yadav",
 		designation: "Design Team",
 		image: "/DevsocHero.png",
-		link: "#",
+		socials: {
+			// Add social links here when available
+		},
 	},
 	{
 		id: 5,
@@ -348,7 +421,9 @@ export const designTeam = [
 		designation: "Graphics Designer",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/20220421_231624-01(1)%20-%20Saikat%20Sinha.jpg",
-		link: "#",
+		socials: {
+			instagram: "https://www.instagram.com/saikat._sinha?igsh=ODlqenBzbjlvenpv",
+		},
 	},
 	{
 		id: 6,
@@ -356,7 +431,9 @@ export const designTeam = [
 		designation: "Video Editor",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Profile%20Picture%20-%20Sohom%20Paul.jpg",
-		link: "#",
+		socials: {
+			instagram: "https://www.instagram.com/sohom_since_006?igsh=cXlqajRvODF6OGsw",
+		},
 	},
 	{
 		id: 7,
@@ -364,6 +441,8 @@ export const designTeam = [
 		designation: "Design Team",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251116-WA0021%20-%20121_Taniya%20Digar.jpg",
-		link: "#",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/taniya-digar-0714a0329?utm_source=share&utm_c",
+		},
 	},
 ];
