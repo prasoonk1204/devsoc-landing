@@ -44,7 +44,7 @@ export default function EventDetailPage({ params }) {
 
 					{/* RIGHT SIDE (Image) */}
 					<motion.div
-						className="relative w-full overflow-hidden rounded-3xl bg-neutral-800 md:col-span-2"
+						className="relative w-full overflow-hidden md:col-span-2"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
@@ -55,7 +55,7 @@ export default function EventDetailPage({ params }) {
 							alt={event.title}
 							width={600}
 							height={800}
-							className="h-auto w-full object-contain"
+							className="h-auto w-full object-contain rounded-3xl"
 							priority
 							sizes="(max-width: 768px) 100vw, 40vw"
 						/>
@@ -74,7 +74,7 @@ export default function EventDetailPage({ params }) {
 						<h2 className="font-iceland mb-6 text-5xl font-bold">
 							Event Snaps
 						</h2>
-						<div className="columns-2 gap-4 lg:columns-4">
+						<div className="columns-2 gap-4 md:columns-4 md:gap-6 space-y-4">
 							{event.gallery.map((photoUrl, index) => (
 								<motion.div
 									key={index}
@@ -87,8 +87,8 @@ export default function EventDetailPage({ params }) {
 									<Image
 										src={photoUrl}
 										alt={`Event snapshot ${index + 1}`}
-										width={400}
-										height={600}
+										width={500}
+										height={500}
 										className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105"
 										sizes="(max-width: 768px) 50vw, 25vw"
 									/>

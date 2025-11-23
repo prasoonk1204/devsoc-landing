@@ -27,9 +27,7 @@ export const eventsData = [
 		date: "2023-06-17",
 		description:
 			"DevSoc welcomed first-year students with an orientation introducing them to our community, activities, and growth opportunities. A great start to their journey at AEC.",
-		gallery: [
-			"https://ik.imagekit.io/kenma/devsoc/demo1.png?updatedAt=1762520902924",
-		],
+		gallery: [],
 	},
 	{
 		title: "Hacktoberfest 2023",
@@ -153,15 +151,15 @@ export const eventsData = [
 		description:
 			"The SAMURAI Bootcamp and SMASH Hackathon delivered a week of learning and hands-on development across frontend, backend, and AI. The 6-day bootcamp concluded with an exciting offline hackathon.",
 		gallery: [
-			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1735060334519.jpg?updatedAt=1763394650173",
-			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1735060331334.jpg?updatedAt=1763394649977",
-			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1733749519997.jpg?updatedAt=1763394649587",
-			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1733629621312.jpg?updatedAt=1763394649543",
-			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1735060328645.jpg?updatedAt=1763394649408",
 			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1733457779929.jpg?updatedAt=1763394649289",
+			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1733319306169.jpg?updatedAt=1763394648908",
 			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1735060320729.jpg?updatedAt=1763394649249",
 			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1735060320715.jpg?updatedAt=1763394649273",
-			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1733319306169.jpg?updatedAt=1763394648908",
+			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1733749519997.jpg?updatedAt=1763394649587",
+			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1735060334519.jpg?updatedAt=1763394650173",
+			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1735060328645.jpg?updatedAt=1763394649408",
+			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1735060331334.jpg?updatedAt=1763394649977",
+			"https://ik.imagekit.io/devsoc/events/2024/Samurai%20&%20Smash/1733629621312.jpg?updatedAt=1763394649543",
 		],
 	},
 	{
@@ -182,11 +180,7 @@ export const eventsData = [
 		date: "2025-03-16",
 		description:
 			"A practical session on backend fundamentals, scalability, load testing, and system performance, led by Arnab Chatterjee. Students learned how to build more reliable backends.",
-		gallery: [
-			"https://ik.imagekit.io/kenma/devsoc/demo1.png?updatedAt=1762520902924",
-			"https://ik.imagekit.io/kenma/devsoc/demo2.png?updatedAt=1762520903089",
-			"https://ik.imagekit.io/kenma/devsoc/demo3.png?updatedAt=1762520903280",
-		],
+		gallery: [],
 	},
 	{
 		title: "MindMaze -The CP Arena",
@@ -197,19 +191,17 @@ export const eventsData = [
 		description:
 			"MindMaze was a multi-session CP event featuring daily quizzes, problem-solving, and an offline finale. Participants strengthened DSA skills through interactive challenges.",
 		gallery: [
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099529956.jpg?updatedAt=1763394765911",
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099529956.jpg?updatedAt=1763394765911",
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099528822.jpg?updatedAt=1763394765826",
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099529103.jpg?updatedAt=1763394765809",
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099527361.jpg?updatedAt=1763394765759",
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099526989.jpg?updatedAt=1763394765707",
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099529310.jpg?updatedAt=1763394765689",
 			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/Poster%202.jpg?updatedAt=1763394765646",
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/Poster%201.jpg?updatedAt=1763394765592",
-			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1754644608429.jpg?updatedAt=1763394765612",
 			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1754070123587.jpg?updatedAt=1763394765496",
 			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1753376791148.jpg?updatedAt=1763394765364",
+			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1754644608429.jpg?updatedAt=1763394765612",
+			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099529103.jpg?updatedAt=1763394765809",
+			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099528822.jpg?updatedAt=1763394765826",
+			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099529956.jpg?updatedAt=1763394765911",
+			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099527361.jpg?updatedAt=1763394765759",
+			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099529310.jpg?updatedAt=1763394765689",
 			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099527117.jpg?updatedAt=1763394765266",
+			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099526989.jpg?updatedAt=1763394765707",
 			"https://ik.imagekit.io/devsoc/events/2025/MindMaze/1756099527282.jpg?updatedAt=1763394765287",
 		],
 	},
@@ -242,11 +234,11 @@ export const eventsData = [
 		description:
 			"DevSoc inducted the new batch through an orientation highlighting our culture, achievements, and opportunities. Students learned how the club fosters collaboration and innovation.",
 		gallery: [
-			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562645466.jpg?updatedAt=1763395007632",
+			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562645585.jpg?updatedAt=1763395007463",
 			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562644052.jpg?updatedAt=1763395007620",
+			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562645466.jpg?updatedAt=1763395007632",
 			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562643798.jpg?updatedAt=1763395007572",
 			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562644150.jpg?updatedAt=1763395007550",
-			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562645585.jpg?updatedAt=1763395007463",
 			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562643617.jpg?updatedAt=1763395007428",
 			"https://ik.imagekit.io/devsoc/events/2025/Induction/1759562645023.jpg?updatedAt=1763395006937",
 		],
@@ -261,8 +253,8 @@ export const eventsData = [
 			"DevSoc conducted its 2025 Onboarding Session, where new students interacted with seniors, learned about development paths, and participated in an engaging quiz with top performers recognized.",
 		gallery: [
 			"https://ik.imagekit.io/devsoc/events/2025/Onboarding%20session%20%202025/1760038397333.jpg?updatedAt=1763395124758",
-			"https://ik.imagekit.io/devsoc/events/2025/Onboarding%20session%20%202025/1760038396370.jpg?updatedAt=1763395124779",
 			"https://ik.imagekit.io/devsoc/events/2025/Onboarding%20session%20%202025/1760038396857.jpg?updatedAt=1763395124775",
+			"https://ik.imagekit.io/devsoc/events/2025/Onboarding%20session%20%202025/1760038396370.jpg?updatedAt=1763395124779",
 			"https://ik.imagekit.io/devsoc/events/2025/Onboarding%20session%20%202025/1760038397723.jpg?updatedAt=1763395124547",
 			"https://ik.imagekit.io/devsoc/events/2025/Onboarding%20session%20%202025/1760038396658.jpg?updatedAt=1763395124398",
 			"https://ik.imagekit.io/devsoc/events/2025/Onboarding%20session%20%202025/1760038396415.jpg?updatedAt=1763395124172",

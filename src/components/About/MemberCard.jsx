@@ -72,17 +72,12 @@ export default function MemberCard({ member, index }) {
 					}}
 				>
 					<div className={styles.flipCardFront}>
-						<div className="relative h-full w-full">
-							<Image
-								src={member.image}
-								alt={member.name}
-								fill
-								sizes="(max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
-								className="object-cover object-center"
-								priority={index < 6}
-							/>
-						</div>
-
+						<Image
+							src={member.image}
+							alt={member.name}
+							height={500}
+							width={500}
+						/>
 						<div className="absolute right-0 bottom-0 left-0 rounded-b-3xl bg-linear-to-b from-black/40 via-black/60 to-black/80 p-4 text-zinc-300 shadow-[inset_0_-4px_4px_rgba(255,255,255,0.15)] backdrop-blur-md">
 							<div className="text-lg font-semibold text-white md:text-xl">
 								{member.name}
@@ -147,15 +142,12 @@ export default function MemberCard({ member, index }) {
 					className="group block"
 				>
 					<div className="relative mx-auto h-60 w-full max-w-[350px] overflow-hidden rounded-3xl bg-linear-to-b from-zinc-800 to-zinc-950 font-sans text-white transition-all duration-300">
-						<div className="relative h-full w-full">
-							<Image
-								src={member.image}
-								alt={member.name}
-								fill
-								sizes="50vw"
-								className="object-contain object-top transition-transform duration-300 group-active:scale-105"
-							/>
-						</div>
+						<Image
+							src={member.image}
+							alt={member.name}
+							height={500}
+							width={500}
+						/>
 
 						<div className="absolute right-0 bottom-0 left-0 rounded-b-3xl bg-linear-to-b from-black/40 via-black/60 to-black/80 p-4 text-zinc-300 shadow-[inset_0_-4px_4px_rgba(255,255,255,0.15)] backdrop-blur-md">
 							<div className="text-lg font-semibold text-white md:text-xl">

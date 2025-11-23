@@ -33,7 +33,7 @@ export default function Page() {
 					whileInView="visible"
 					viewport={{ once: true }}
 				>
-					<div className="mb-8 px-4 md:px-0">
+					<div className="mb-8">
 						<h2 className="font-iceland mb-2 text-5xl font-bold text-white">
 							Latest Event
 						</h2>
@@ -79,13 +79,13 @@ export default function Page() {
 							)}
 						</div>
 
-						<div className="relative mx-4 w-full overflow-hidden rounded-3xl bg-neutral-800 md:col-span-2 md:mx-0">
+						<div className="relative w-full md:col-span-2">
 							<Image
 								src={latestEvent.image}
 								alt={latestEvent.title}
 								width={600}
 								height={800}
-								className="h-auto w-full object-contain"
+								className="h-auto w-full rounded-3xl"
 								priority
 								sizes="(max-width: 768px) 100vw, 40vw"
 							/>
@@ -97,19 +97,19 @@ export default function Page() {
 			{previousEvents.length > 0 && (
 				<motion.div
 					className="w-full"
-					variants={staggerContainer}
+					variants={{ ...staggerContainer, ...fadeInBlur }}
 					initial="hidden"
 					whileInView="visible"
 					viewport={{ once: true }}
 				>
-					<div className="mb-8 px-4 md:px-0">
+					<motion.div className="mb-8">
 						<h2 className="font-iceland mb-2 text-5xl font-bold text-white">
 							Previous Events
 						</h2>
 						<div className="bg-accent h-1 w-20 rounded-full"></div>
-					</div>
+					</motion.div>
 
-					<div className="grid w-full grid-cols-1 gap-6 px-4 sm:grid-cols-2 md:px-0 lg:grid-cols-3 xl:grid-cols-4">
+					<div className="grid w-full grid-cols-2 gap-4 md:px-0 lg:grid-cols-3 xl:grid-cols-4">
 						{previousEvents.map((event) => (
 							<motion.div key={event.slug} variants={fadeInBlur}>
 								<EventCard event={event} />

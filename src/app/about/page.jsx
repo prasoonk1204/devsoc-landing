@@ -128,9 +128,9 @@ export default function AboutPage() {
 					initial="hidden"
 					whileInView="visible"
 					viewport={{ once: true, margin: "-100px" }}
-					className="mb-20"
+					className="mb-6"
 				>
-					<h2 className="mb-8 text-4xl font-bold text-orange-300 md:text-5xl">
+					<h2 className="text-4xl font-bold text-orange-300 md:text-5xl">
 						Meet The Team
 					</h2>
 				</motion.div>

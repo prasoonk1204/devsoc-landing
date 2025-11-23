@@ -26,7 +26,7 @@ export const coreCommittee = [
 		name: "Ishita Bej",
 		designation: "Secretary",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/Core-Committee/IMG_8083%20-%20Ishita%20Bej.jpeg?updatedAt=1763874083384",
+			"https://ik.imagekit.io/devsoc/Members/Core-Committee/v4325r3brfbwcar973_3hh8q474r?updatedAt=1763908190115",
 		socials: {
 			linkedin: "https://linkedin.com/in/username",
 			github: "https://github.com/username",
@@ -56,7 +56,7 @@ export const coreCommittee = [
 		name: "Vikash Kumar Pandey",
 		designation: "Tech Lead",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/IMG-20251118-WA0009%20-%20Vikash.jpg",
+			"https://ik.imagekit.io/devsoc/Members/Core-Committee/fwet346437_QhV4yC41US?updatedAt=1763907663691",
 		link: "#",
 	},
 	{
@@ -64,7 +64,7 @@ export const coreCommittee = [
 		name: "Soumyajit Chattaraj",
 		designation: "Management Lead",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/IMG_20250622_034015_938%20(1)%20(1)%20-%20148_soumyajit%20chattaraj.webp",
+			"https://ik.imagekit.io/devsoc/Members/Core-Committee/wft34645765h_oNzHS2Nsg?updatedAt=1763907746265",
 		link: "#",
 	},
 	{
@@ -111,7 +111,7 @@ export const coreCommittee = [
 		id: 13,
 		name: "Gourav Yadav",
 		designation: "Design Lead",
-		image: "/DevsocHero.png",
+		image: "https://ik.imagekit.io/devsoc/Members/IMG_3174%201.png",
 		link: "#",
 	},
 ];
@@ -137,7 +137,7 @@ export const techTeam = [
 		id: 3,
 		name: "Elhan Yasir",
 		designation: "Tech Team",
-		image: "https://ik.imagekit.io/devsoc/Members/1763884229790.jpg",
+		image: "https://ik.imagekit.io/devsoc/Members/r20837r923r2br3c.png",
 		link: "#",
 	},
 	{
@@ -281,7 +281,7 @@ export const managementTeam = [
 		name: "Nikhil Gupta",
 		designation: "Event Management & PR",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/Picsart_25-06-10_12-41-50-696%20-%20NIKHIL.jpg",
+			"https://ik.imagekit.io/devsoc/Members/Picsgw4t26HIL.jpg?updatedAt=1763907567669",
 		link: "#",
 	},
 	{
@@ -363,7 +363,7 @@ export const designTeam = [
 		name: "Taniya Digar",
 		designation: "Design Team",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/IMG-20251116-WA0021%20-%20121_Taniya%20Digar.jpg",
+			"https://ik.imagekit.io/devsoc/Members/c3br3brfbwcar973_IJby0IZMF?updatedAt=1763907900755",
 		link: "#",
 	},
 ];
