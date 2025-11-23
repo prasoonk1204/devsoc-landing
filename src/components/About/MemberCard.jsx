@@ -12,7 +12,7 @@ import {
 	Instagram,
 } from "lucide-react";
 import { fadeInBlur } from "@/lib/motionVariants";
-import { useRef } from "react";
+import { useState } from "react";
 import styles from "./MemberCard.module.css";
 
 const socialIcons = {
@@ -25,24 +25,27 @@ const socialIcons = {
 };
 
 export default function MemberCard({ member, index }) {
-	const cardRef = useRef(null);
-	const directionSetRef = useRef(false);
+	const [isFlipped, setIsFlipped] = useState(false);
+	const [direction, setDirection] = useState(0);
 
 	const handleMouseEnter = (e) => {
-		if (!cardRef.current || directionSetRef.current) return;
-
-		const rect = cardRef.current.getBoundingClientRect();
+		const card = e.currentTarget;
+		const rect = card.getBoundingClientRect();
 		const mouseX = e.clientX - rect.left;
 		const cardCenter = rect.width / 2;
 
-		// Set flip direction once on enter
-		const rotation = mouseX < cardCenter ? "180deg" : "-180deg";
-		cardRef.current.style.setProperty("--flip-rotation", rotation);
-		directionSetRef.current = true;
+		// Determine direction: if entering from left, rotate positive (clockwise from top)
+		// If entering from right, rotate negative
+		// Actually, standard flip:
+		// Mouse on left -> rotate Y 180
+		// Mouse on right -> rotate Y -180
+		const newDirection = mouseX < cardCenter ? 180 : -180;
+		setDirection(newDirection);
+		setIsFlipped(true);
 	};
 
 	const handleMouseLeave = () => {
-		directionSetRef.current = false;
+		setIsFlipped(false);
 	};
 
 	return (
@@ -55,13 +58,18 @@ export default function MemberCard({ member, index }) {
 				viewport={{ once: true, margin: "-50px" }}
 				transition={{ delay: index * 0.05 }}
 				className={`${styles.flipCardContainer} hidden md:block`}
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
 			>
-				<div
-					ref={cardRef}
+				<motion.div
 					className={styles.flipCard}
-					onMouseEnter={handleMouseEnter}
-					onMouseLeave={handleMouseLeave}
-					style={{ "--flip-rotation": "180deg" }}
+					animate={{ rotateY: isFlipped ? direction : 0 }}
+					transition={{
+						duration: 0.6,
+						type: "spring",
+						stiffness: 260,
+						damping: 20,
+					}}
 				>
 					<div className={styles.flipCardFront}>
 						<div className="relative h-full w-full">
@@ -83,7 +91,10 @@ export default function MemberCard({ member, index }) {
 						</div>
 					</div>
 
-					<div className={styles.flipCardBack}>
+					<div
+						className={styles.flipCardBack}
+						style={{ transform: "rotateY(180deg)" }}
+					>
 						<div className="flex h-full flex-col items-center justify-center gap-6 p-6">
 							<div className="text-center">
 								<h3 className="mb-1 text-lg font-bold text-white">
@@ -117,7 +128,7 @@ export default function MemberCard({ member, index }) {
 							)}
 						</div>
 					</div>
-				</div>
+				</motion.div>
 			</motion.div>
 
 			{/* Mobile Card */}

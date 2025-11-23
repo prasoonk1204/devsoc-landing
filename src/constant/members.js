@@ -107,6 +107,13 @@ export const coreCommittee = [
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251120_201621%20-%20Anika.png",
 		link: "#",
 	},
+	{
+		id: 13,
+		name: "Gourav Yadav",
+		designation: "Design Lead",
+		image: "/DevsocHero.png",
+		link: "#",
+	},
 ];
 
 export const techTeam = [
@@ -337,13 +344,6 @@ export const designTeam = [
 	},
 	{
 		id: 4,
-		name: "Gourav Yadav",
-		designation: "Design Team",
-		image: "/DevsocHero.png",
-		link: "#",
-	},
-	{
-		id: 5,
 		name: "Saikat Sinha",
 		designation: "Graphics Designer",
 		image:
@@ -351,7 +351,7 @@ export const designTeam = [
 		link: "#",
 	},
 	{
-		id: 6,
+		id: 5,
 		name: "Sohom Paul",
 		designation: "Video Editor",
 		image:
@@ -359,7 +359,7 @@ export const designTeam = [
 		link: "#",
 	},
 	{
-		id: 7,
+		id: 6,
 		name: "Taniya Digar",
 		designation: "Design Team",
 		image:

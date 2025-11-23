@@ -5,18 +5,9 @@
 .flipCard {
 	position: relative;
 	width: 100%;
-	/* max-width: 350px; */
 	height: 264px;
 	margin: 0 auto;
 	transform-style: preserve-3d;
-	transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-	--flip-rotation: 180deg;
-	will-change: transform;
-	transform: translateZ(0);
-}
-
-.flipCard:hover {
-	transform: rotateY(var(--flip-rotation));
 }
 
 .flipCardFront,
@@ -29,14 +20,8 @@
 	overflow: hidden;
 	background: linear-gradient(to bottom, rgb(39, 39, 42), rgb(24, 24, 27));
 	transform-style: preserve-3d;
-	will-change: transform;
 }
 
 .flipCardFront {
-	transform: rotateY(0deg) translateZ(0);
 	z-index: 2;
-}
-
-.flipCardBack {
-	transform: rotateY(180deg) translateZ(0);
 }
