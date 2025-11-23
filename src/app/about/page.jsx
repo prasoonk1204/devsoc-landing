@@ -2,7 +2,12 @@
 
 import { motion } from "motion/react";
 import { Code, GraduationCap, Users, Globe } from "lucide-react";
-import { committeeMembers, subCommitteeMembers } from "@/constant/members";
+import {
+	coreCommittee,
+	techTeam,
+	designTeam,
+	managementTeam,
+} from "@/constant/members";
 import {
 	fadeInBlur,
 	fadeInBlurFast,
@@ -125,11 +130,57 @@ export default function AboutPage() {
 					viewport={{ once: true, margin: "-100px" }}
 					className="mb-20"
 				>
-					<h2 className="mb-8 text-3xl font-bold text-orange-300 md:text-4xl">
-						Committee Members:
+					<h2 className="mb-8 text-4xl font-bold text-orange-300 md:text-5xl">
+						Meet The Team
 					</h2>
-					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-						{committeeMembers.map((member, index) => (
+				</motion.div>
+
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-16"
+				>
+					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+						Core Committee
+					</h3>
+					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+						{coreCommittee.map((member, index) => (
+							<MemberCard key={member.id} member={member} index={index} />
+						))}
+					</div>
+				</motion.div>
+
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-16"
+				>
+					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+						Management Team
+					</h3>
+					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+						{managementTeam.map((member, index) => (
+							<MemberCard key={member.id} member={member} index={index} />
+						))}
+					</div>
+				</motion.div>
+
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-16"
+				>
+					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+						Tech Team
+					</h3>
+					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+						{techTeam.map((member, index) => (
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
@@ -141,11 +192,11 @@ export default function AboutPage() {
 					whileInView="visible"
 					viewport={{ once: true, margin: "-100px" }}
 				>
-					<h2 className="mb-8 text-3xl font-bold text-orange-300 md:text-4xl">
-						Sub-Committee Members:
-					</h2>
-					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-						{subCommitteeMembers.map((member, index) => (
+					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+						Design Team
+					</h3>
+					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+						{designTeam.map((member, index) => (
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>

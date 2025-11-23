@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import { registrationSchema } from "@/lib/validations/registration";
+import { useQuery } from "convex/react";
+import { api } from "convex/_generated/api";
 import FormInput from "./Registration/FormInput";
 import FormSelect from "./Registration/FormSelect";
 import FormTextarea from "./Registration/FormTextarea";
@@ -47,6 +49,34 @@ export default function EventRegistrationForm({ event }) {
 	const [errors, setErrors] = useState({});
 	const [submitStatus, setSubmitStatus] = useState(null);
 	const [fileInfo, setFileInfo] = useState(null);
+
+	// Check if email is already registered for this event
+	const emailCheck = useQuery(
+		api.registrations.checkEmailRegistration,
+		formData.email && formData.email.length >= 5
+			? { email: formData.email.toLowerCase(), eventSlug: event.slug }
+			: "skip",
+	);
+
+	// Fetch payment settings for this event
+	const paymentSettings = useQuery(api.settings.getPaymentSettings, {
+		eventSlug: event.slug,
+	});
+
+	useEffect(() => {
+		if (emailCheck?.isRegistered) {
+			setErrors((prev) => ({
+				...prev,
+				email: `This email is already registered for ${event.title}. Each email can only register once per event.`,
+			}));
+		} else if (errors.email?.includes("already registered")) {
+			setErrors((prev) => {
+				const newErrors = { ...prev };
+				delete newErrors.email;
+				return newErrors;
+			});
+		}
+	}, [emailCheck, event.title]);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -106,6 +136,15 @@ export default function EventRegistrationForm({ event }) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		if (emailCheck?.isRegistered) {
+			setSubmitStatus({
+				type: "error",
+				message: `This email is already registered for ${event.title}. Please use a different email address.`,
+			});
+			return;
+		}
+
 		setIsSubmitting(true);
 		setErrors({});
 		setSubmitStatus(null);
@@ -126,7 +165,10 @@ export default function EventRegistrationForm({ event }) {
 			registrationFormData.append("eventSlug", event.slug);
 			registrationFormData.append("eventTitle", event.title);
 			registrationFormData.append("transactionId", validatedData.transactionId);
-			registrationFormData.append("amount", "50");
+			registrationFormData.append(
+				"amount",
+				String(paymentSettings?.amount || 50),
+			);
 			registrationFormData.append("file", validatedData.paymentScreenshot);
 
 			const response = await fetch("/api/register-event", {
@@ -137,7 +179,19 @@ export default function EventRegistrationForm({ event }) {
 			const result = await response.json();
 
 			if (!response.ok) {
-				throw new Error(result.error || "Failed to submit registration");
+				const errorMessage = result.error || "Failed to submit registration";
+
+				if (errorMessage.includes("already registered")) {
+					throw new Error(
+						`You have already registered for ${event.title} with this email. Each email can only register once per event.`,
+					);
+				} else if (errorMessage.includes("transaction ID")) {
+					throw new Error(
+						"This transaction ID has already been used. Please check your transaction ID or use a different one.",
+					);
+				} else {
+					throw new Error(errorMessage);
+				}
 			}
 
 			setUploadProgress(null);
@@ -172,13 +226,35 @@ export default function EventRegistrationForm({ event }) {
 				setErrors(fieldErrors);
 				setSubmitStatus({
 					type: "error",
-					message: "Please fix the errors in the form",
+					message: "Please fix the errors in the form and try again.",
 				});
 			} else {
+				let userMessage =
+					"We're having trouble processing your registration. Please try again.";
+
+				if (error.message) {
+					const errorMsg = error.message.toLowerCase();
+
+					if (
+						errorMsg.includes("already registered") ||
+						errorMsg.includes("transaction id") ||
+						errorMsg.includes("email") ||
+						errorMsg.includes("rate limit") ||
+						errorMsg.includes("too many")
+					) {
+						userMessage = error.message;
+					} else if (
+						errorMsg.includes("network") ||
+						errorMsg.includes("fetch")
+					) {
+						userMessage =
+							"Network error. Please check your internet connection and try again.";
+					}
+				}
+
 				setSubmitStatus({
 					type: "error",
-					message:
-						error.message || "Failed to submit registration. Please try again.",
+					message: userMessage,
 				});
 			}
 		} finally {
@@ -279,7 +355,7 @@ export default function EventRegistrationForm({ event }) {
 					error={errors.questions}
 				/>
 
-				<PaymentQRCode />
+				<PaymentQRCode eventSlug={event.slug} />
 
 				<FormInput
 					label="Enter Transaction ID"
@@ -315,10 +391,14 @@ export default function EventRegistrationForm({ event }) {
 
 				<button
 					type="submit"
-					disabled={isSubmitting}
+					disabled={isSubmitting || emailCheck?.isRegistered}
 					className="bg-accent hover:bg-accent/90 focus:ring-accent w-full rounded-lg px-6 py-3 font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 				>
-					{isSubmitting ? "Submitting..." : "Submit"}
+					{isSubmitting
+						? "Submitting..."
+						: emailCheck?.isRegistered
+							? "Email Already Registered"
+							: "Submit"}
 				</button>
 			</form>
 		</motion.div>

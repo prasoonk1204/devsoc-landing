@@ -16,14 +16,19 @@ export const createPendingRegistration = mutation({
 		amount: v.number(),
 	},
 	handler: async (ctx, args) => {
+		// Normalize email to lowercase for consistent checking
+		const normalizedEmail = args.email.toLowerCase();
+
 		const existingRegistration = await ctx.db
 			.query("users")
-			.withIndex("by_email", (q) => q.eq("email", args.email))
+			.withIndex("by_email", (q) => q.eq("email", normalizedEmail))
 			.filter((q) => q.eq(q.field("eventSlug"), args.eventSlug))
 			.first();
 
 		if (existingRegistration) {
-			throw new Error("You have already registered for this event");
+			throw new Error(
+				`You have already registered for this event with the email ${normalizedEmail}. Each email can only register once per event.`,
+			);
 		}
 
 		const existingTransaction = await ctx.db
@@ -34,7 +39,9 @@ export const createPendingRegistration = mutation({
 			.first();
 
 		if (existingTransaction) {
-			throw new Error("This transaction ID has already been used");
+			throw new Error(
+				`This transaction ID (${args.transactionId}) has already been used. Please verify your transaction ID or use a different one.`,
+			);
 		}
 
 		const now = Date.now();
@@ -43,7 +50,7 @@ export const createPendingRegistration = mutation({
 			name: args.name,
 			roll: args.roll,
 			phone: args.phone,
-			email: args.email,
+			email: normalizedEmail,
 			department: args.department,
 			year: args.year,
 			questions: args.questions,
@@ -163,6 +170,29 @@ export const getUserRegistration = query({
 		return {
 			...user,
 			payment,
+		};
+	},
+});
+
+export const checkEmailRegistration = query({
+	args: {
+		email: v.string(),
+		eventSlug: v.string(),
+	},
+	handler: async (ctx, args) => {
+		if (!args.email || args.email.length < 5) {
+			return { isRegistered: false };
+		}
+
+		const existingRegistration = await ctx.db
+			.query("users")
+			.withIndex("by_email", (q) => q.eq("email", args.email.toLowerCase()))
+			.filter((q) => q.eq(q.field("eventSlug"), args.eventSlug))
+			.first();
+
+		return {
+			isRegistered: !!existingRegistration,
+			registrationDate: existingRegistration?.registeredAt,
 		};
 	},
 });

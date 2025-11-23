@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from "react";
 import { eventsData } from "@/constant/events";
 import { Carousel, Card } from "@/components/UI/mobileCarousel";
 import { fadeInBlur, fadeInBlurFast } from "@/lib/motionVariants";
-import { formatEventDate } from "@/lib/utils/eventUtils";
+import { formatEventDate, sortEventsByDate } from "@/lib/utils/eventUtils"; // Updated import
 
 function useMediaQuery(query) {
 	const [matches, setMatches] = useState(null);
@@ -40,6 +40,10 @@ export default function Events() {
 		[0, 0.5, 1],
 		[0.98, 1, 0.98],
 	);
+
+    // Sort by date (descending) and take the first 5
+    const sortedEvents = sortEventsByDate(eventsData, "desc");
+    const recentEvents = sortedEvents.slice(0, 5);
 
 	if (!mounted) {
 		return (
@@ -81,10 +85,10 @@ export default function Events() {
 
 				{/* Responsive layout switch */}
 				{isMobile ? (
-					<AppleCardsCarouselSection />
+					<AppleCardsCarouselSection events={recentEvents} />
 				) : (
 					<FannedLayout
-						eventsData={eventsData}
+						eventsData={recentEvents}
 						globalScale={globalScale}
 						hoveredIndex={hoveredIndex}
 						setHoveredIndex={setHoveredIndex}
@@ -201,10 +205,10 @@ function FannedLayout({
 	);
 }
 
-function AppleCardsCarouselSection() {
-	const limitedEvents = eventsData.slice(0, 3);
+function AppleCardsCarouselSection({ events }) {
+    const displayEvents = events || [];
 
-	const cards = limitedEvents.map((event, index) => {
+	const cards = displayEvents.map((event, index) => {
 		const cardData = {
 			category: formatEventDate(event.date),
 			title: event.title,

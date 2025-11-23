@@ -114,7 +114,23 @@ export const registerUserWithImage = action({
 				}
 			}
 
-			throw new Error(error.message || "Registration failed");
+			let userMessage = "Registration failed. Please try again.";
+
+			if (error.message) {
+				const errorMsg = error.message.toLowerCase();
+
+				if (
+					errorMsg.includes("already registered") ||
+					errorMsg.includes("transaction id")
+				) {
+					userMessage = error.message;
+				} else if (errorMsg.includes("imagekit")) {
+					userMessage =
+						"Failed to upload payment screenshot. Please try again.";
+				}
+			}
+
+			throw new Error(userMessage);
 		}
 	},
 });

@@ -25,16 +25,10 @@ const socialLinks = [
 
 const devLinks = [
 	{
-		name: "Princi",
-		link: "https://www.linkedin.com/in/princi-kumari-a6422b326",
-		type: "linkedin",
-		icon: <Linkedin size={16} />,
-	},
-	{
-		name: "Prasoon",
-		link: "https://prasoonk.vercel.app",
-		type: "website",
-		icon: <Globe size={16} />,
+		name: "Avik",
+		link: "https://www.instagram.com/nate_river007",
+		type: "Instagram",
+		icon: <Instagram size={16} />,
 	},
 	{
 		name: "Prantor",
@@ -43,20 +37,26 @@ const devLinks = [
 		icon: <Twitter size={16} />,
 	},
 	{
-		name: "Souvik",
-		link: "https://www.linkedin.com/in/souvik-majee-4b1b88292/",
-		type: "Linkedin",
-		icon: <Linkedin size={16} />,
-	},
-	{
-		name: "Avik",
-		link: "https://www.instagram.com/nate_river007",
-		type: "Instagram",
-		icon: <Instagram size={16} />,
+		name: "Prasoon",
+		link: "https://prasoonk.vercel.app",
+		type: "website",
+		icon: <Globe size={16} />,
 	},
 	{
 		name: "Pravanjan",
 		link: "https://www.linkedin.com/in/pravanjan-roy-bb0a1a383",
+		type: "Linkedin",
+		icon: <Linkedin size={16} />,
+	},
+	{
+		name: "Princi",
+		link: "https://www.linkedin.com/in/princi-kumari-a6422b326",
+		type: "linkedin",
+		icon: <Linkedin size={16} />,
+	},
+	{
+		name: "Souvik",
+		link: "https://www.linkedin.com/in/souvik-majee-4b1b88292/",
 		type: "Linkedin",
 		icon: <Linkedin size={16} />,
 	},

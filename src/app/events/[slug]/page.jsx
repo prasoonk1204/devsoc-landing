@@ -17,7 +17,7 @@ export default function EventDetailPage({ params }) {
 	}
 
 	return (
-		<div className="relative flex w-full flex-col items-center justify-center bg-black p-4 pt-20 pb-16 text-white sm:pt-20 sm:p-6 sm:pb-24 md:pt-40">
+		<div className="relative flex w-full flex-col items-center justify-center bg-black p-4 pt-20 pb-16 text-white sm:p-6 sm:pt-20 sm:pb-24 md:pt-40">
 			<div className="relative w-full max-w-6xl">
 				<BackButton href="/events" label="All Events" />
 

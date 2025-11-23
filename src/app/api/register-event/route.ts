@@ -132,10 +132,34 @@ export async function POST(request: NextRequest) {
 	} catch (error: any) {
 		// console.error("Registration error:", error);
 
+		let userMessage =
+			"We're having trouble processing your registration. Please try again.";
+
+		if (error.message) {
+			const errorMsg = error.message.toLowerCase();
+
+			if (errorMsg.includes("already registered")) {
+				userMessage = error.message;
+			} else if (errorMsg.includes("transaction id")) {
+				userMessage = error.message;
+			} else if (errorMsg.includes("imagekit")) {
+				userMessage =
+					"There was an issue uploading your payment screenshot. Please try again.";
+			} else if (errorMsg.includes("credentials not configured")) {
+				userMessage =
+					"Registration service is temporarily unavailable. Please try again later.";
+			} else if (
+				errorMsg.includes("rate limit") ||
+				errorMsg.includes("too many")
+			) {
+				userMessage =
+					"Too many attempts. Please wait a few minutes and try again.";
+			}
+		}
+
 		return NextResponse.json(
 			{
-				error:
-					error.message || "Failed to submit registration. Please try again.",
+				error: userMessage,
 			},
 			{ status: 500 },
 		);

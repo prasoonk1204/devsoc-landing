@@ -2,10 +2,14 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
+import { useQuery } from "convex/react";
+import { api } from "convex/_generated/api";
 import AstronautScene from "./AstronautScene";
 import { fadeInBlurFast, fadeInFromBottom } from "@/lib/motionVariants";
 
 export default function Hero({ onModelLoaded, shouldAnimate }) {
+	// Fetch community links from settings
+	const communityLinks = useQuery(api.settings.getCommunityLinks, {});
 	return (
 		<div className="to-accent/30 relative flex h-dvh w-full flex-col items-center justify-end bg-linear-to-t from-slate-300 px-4 pt-4 md:h-[768px]">
 			<Image
@@ -41,15 +45,20 @@ export default function Hero({ onModelLoaded, shouldAnimate }) {
 				>
 					Join our inclusive community
 				</motion.h2>
-				<motion.button
-					variants={fadeInBlurFast}
-					initial="hidden"
-					whileInView={shouldAnimate ? "visible" : "hidden"}
-					viewport={{ once: true }}
-					className="mt-6 rounded-3xl bg-neutral-900 px-8 py-2.5 text-lg text-white transition-all duration-200 hover:scale-102 hover:cursor-pointer hover:bg-neutral-800 active:scale-97"
-				>
-					Join our community
-				</motion.button>
+				{(communityLinks?.whatsapp || communityLinks?.discord) && (
+					<motion.a
+						href={communityLinks?.whatsapp || communityLinks?.discord}
+						target="_blank"
+						rel="noopener noreferrer"
+						variants={fadeInBlurFast}
+						initial="hidden"
+						whileInView={shouldAnimate ? "visible" : "hidden"}
+						viewport={{ once: true }}
+						className="mt-6 rounded-3xl bg-neutral-900 px-8 py-2.5 text-lg text-white transition-all duration-200 hover:scale-102 hover:cursor-pointer hover:bg-neutral-800 active:scale-97"
+					>
+						Join our community
+					</motion.a>
+				)}
 			</div>
 
 			<motion.div

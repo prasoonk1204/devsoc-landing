@@ -36,4 +36,12 @@ export default defineSchema({
 		.index("by_transaction", ["transactionId"])
 		.index("by_event", ["eventSlug"])
 		.index("by_status", ["status"]),
+
+	settings: defineTable({
+		key: v.string(),
+		value: v.string(),
+		description: v.optional(v.string()),
+		updatedAt: v.number(),
+		updatedBy: v.optional(v.string()),
+	}).index("by_key", ["key"]),
 });
