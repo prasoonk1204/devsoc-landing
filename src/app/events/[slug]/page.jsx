@@ -55,7 +55,7 @@ export default function EventDetailPage({ params }) {
 							alt={event.title}
 							width={600}
 							height={800}
-							className="h-auto w-full object-contain rounded-3xl"
+							className="h-auto w-full rounded-3xl object-contain"
 							priority
 							sizes="(max-width: 768px) 100vw, 40vw"
 						/>
@@ -74,7 +74,7 @@ export default function EventDetailPage({ params }) {
 						<h2 className="font-iceland mb-6 text-5xl font-bold">
 							Event Snaps
 						</h2>
-						<div className="columns-2 gap-4 md:columns-4 md:gap-6 space-y-4">
+						<div className="columns-2 gap-4 space-y-4 md:columns-4 md:gap-6">
 							{event.gallery.map((photoUrl, index) => (
 								<motion.div
 									key={index}

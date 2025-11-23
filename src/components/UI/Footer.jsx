@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { Twitter, Instagram, Linkedin, Globe } from "lucide-react";
+import { MorphingText } from "./morphingText";
 
 const socialLinks = [
 	{
 		name: "Instagram",
-		url: "https://www.instagram.com/dev-soc_aec",
+		url: "https://www.instagram.com/dev.soc_aec/",
 		icon: <Instagram size={20} />,
 	},
 	{
@@ -43,12 +44,6 @@ const devLinks = [
 		icon: <Globe size={16} />,
 	},
 	{
-		name: "Pravanjan",
-		link: "https://www.linkedin.com/in/pravanjan-roy-bb0a1a383",
-		type: "Linkedin",
-		icon: <Linkedin size={16} />,
-	},
-	{
 		name: "Princi",
 		link: "https://www.linkedin.com/in/princi-kumari-a6422b326",
 		type: "linkedin",
@@ -66,6 +61,9 @@ const Footer = () => {
 	const [mousePos, setMousePos] = useState({ x: -9999, y: -9999 });
 	const [showBlobs, setShowBlobs] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
+	const [isHovered, setIsHovered] = useState(false);
+	const creditRef = useRef(null);
+	const isInView = useInView(creditRef, { margin: "0px 0px -50px 0px" });
 
 	useEffect(() => {
 		const checkMobile = () => {
@@ -183,35 +181,79 @@ const Footer = () => {
 				</>
 			)}
 
-			<div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between md:flex-row">
+			<div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-6 md:flex-row md:gap-4">
 				<motion.div
-					className="text-md mb-4 text-center sm:text-base"
+					className="relative flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-center md:justify-start"
 					variants={itemVariants}
 					initial="hidden"
 					whileInView="visible"
 					viewport={{ once: true }}
+					onMouseEnter={() => !isMobile && setIsHovered(true)}
+					onMouseLeave={() => !isMobile && setIsHovered(false)}
+					ref={creditRef}
 				>
-					Made with ❤️ by{" "}
-					{devLinks.map((dev, index) => (
-						<span key={dev.name}>
-							<DevLink dev={dev} />
-							{index === 0 && ", "}
-							{index === 1 && ", "}
-							{index === 2 && ", "}
-							{index === 3 && ", "}
-							{index === 4 && " & "}
-						</span>
-					))}
+					<span className="text-lg whitespace-nowrap text-neutral-300 sm:text-base md:text-lg">
+						Made with ❤️ by
+					</span>
+					<div className="relative inline-flex h-[1.375rem] items-center justify-center overflow-visible sm:h-[1.5rem] md:h-[1.75rem]">
+						<AnimatePresence mode="wait" initial={false}>
+							{isHovered ? (
+								<motion.div
+									key="full-list"
+									initial={{ opacity: 0, scaleX: 0.8 }}
+									animate={{ opacity: 1, scaleX: 1 }}
+									exit={{ opacity: 0, scaleX: 0.8 }}
+									transition={{
+										duration: 0.3,
+										ease: [0.34, 1.56, 0.64, 1],
+									}}
+									className="inline-flex items-center whitespace-nowrap"
+								>
+									{devLinks.map((dev, index) => (
+										<span
+											key={dev.name}
+											className="inline-flex text-lg font-medium text-white sm:text-base md:text-lg"
+										>
+											<DevLink dev={dev} isMobile={isMobile} />
+											{index < devLinks.length - 2 && ",\u00A0"}
+											{index === devLinks.length - 2 && "\u00A0&\u00A0"}
+										</span>
+									))}
+								</motion.div>
+							) : (
+								<motion.div
+									key="morphing-text"
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									exit={{ opacity: 0 }}
+									transition={{
+										duration: 0.25,
+										ease: [0.4, 0, 0.2, 1],
+									}}
+									className="inline-flex items-center"
+								>
+									{isInView && (
+										<MorphingText
+											texts={devLinks.map((dev) => dev.name)}
+											className="text-lg font-bold text-white sm:text-base md:text-lg"
+										/>
+									)}
+								</motion.div>
+							)}
+						</AnimatePresence>
+					</div>
 				</motion.div>
 
 				<motion.div
-					className="mb-4 flex items-center justify-center gap-2 sm:justify-start sm:gap-3"
+					className="flex items-center justify-center gap-3 sm:justify-start sm:gap-4"
 					variants={itemVariants}
 					initial="hidden"
 					whileInView="visible"
 					viewport={{ once: true }}
 				>
-					<h1>Follow us on</h1>
+					<h1 className="text-base text-neutral-300 sm:text-lg">
+						Follow us on
+					</h1>
 					{socialLinks.map((link, i) => (
 						<Link
 							key={link.name}
@@ -220,7 +262,7 @@ const Footer = () => {
 							rel="noopener noreferrer"
 						>
 							<motion.div
-								className="hover:border-accent hover:text-accent rounded-full border border-transparent bg-neutral-800/80 p-3 text-xl transition-all duration-300 hover:-translate-y-1"
+								className="hover:border-accent hover:text-accent rounded-full border border-neutral-700/50 bg-neutral-800/80 p-3 text-xl transition-all duration-300 hover:-translate-y-1 hover:border-orange-500/50 hover:bg-neutral-700/80 hover:shadow-lg hover:shadow-orange-500/20"
 								custom={i}
 								initial="hidden"
 								whileInView="visible"
@@ -236,7 +278,7 @@ const Footer = () => {
 			</div>
 
 			<motion.div
-				className="sm:space-x-auto mt-10 bg-linear-to-b from-white/50 via-[#1c1c1c] to-[#000000b9] bg-clip-text text-center text-[5rem] leading-none font-bold text-transparent font-stretch-50% select-none sm:text-[10rem] md:px-4 md:text-[12rem] lg:text-[14rem] xl:text-[18rem]"
+				className="sm:space-x-auto mt-12 bg-gradient-to-b from-white/50 via-[#1c1c1c] to-[#000000b9] bg-clip-text text-center text-[5rem] leading-none font-bold text-transparent font-stretch-50% select-none sm:text-[10rem] md:px-4 md:text-[12rem] lg:text-[14rem] xl:text-[18rem]"
 				variants={devsocVariants}
 				initial="hidden"
 				whileInView="visible"
@@ -260,8 +302,21 @@ const Footer = () => {
 
 export default Footer;
 
-const DevLink = ({ dev }) => {
+const DevLink = ({ dev, isMobile }) => {
 	const [showTooltip, setShowTooltip] = useState(false);
+
+	if (isMobile) {
+		return (
+			<Link
+				href={dev.link}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="tracking-wide transition-colors duration-200 ease-out active:text-orange-400"
+			>
+				{dev.name}
+			</Link>
+		);
+	}
 
 	return (
 		<span className="relative inline-block">
@@ -271,20 +326,30 @@ const DevLink = ({ dev }) => {
 				rel="noopener noreferrer"
 				onMouseEnter={() => setShowTooltip(true)}
 				onMouseLeave={() => setShowTooltip(false)}
-				className="hover:text-accent tracking-wide transition-colors duration-200"
+				className="tracking-wide transition-colors duration-200 ease-out hover:text-orange-400"
 			>
 				{dev.name}
 			</Link>
-			{showTooltip && (
-				<motion.div
-					initial={{ opacity: 0, y: 5 }}
-					animate={{ opacity: 1, y: 0 }}
-					className="absolute -top-8 left-1/2 z-50 -translate-x-1/2 rounded-lg border border-neutral-700 bg-neutral-800 px-2 py-1 shadow-lg"
-				>
-					<div className="flex items-center gap-1 text-white">{dev.icon}</div>
-					<div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-r border-b border-neutral-700 bg-neutral-800"></div>
-				</motion.div>
-			)}
+			<AnimatePresence>
+				{showTooltip && (
+					<motion.div
+						initial={{ opacity: 0, y: 5, scale: 0.95 }}
+						animate={{ opacity: 1, y: 0, scale: 1 }}
+						exit={{ opacity: 0, y: 5, scale: 0.95 }}
+						transition={{
+							duration: 0.15,
+							ease: [0.4, 0, 0.2, 1],
+						}}
+						className="absolute -top-9 left-1/2 z-50 -translate-x-1/2 rounded-lg border border-neutral-600 bg-neutral-800/95 px-2.5 py-1.5 shadow-xl backdrop-blur-sm will-change-transform"
+						style={{ transform: "translateZ(0)" }}
+					>
+						<div className="flex items-center gap-1 text-neutral-200">
+							{dev.icon}
+						</div>
+						<div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-r border-b border-neutral-600 bg-neutral-800/95"></div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</span>
 	);
 };
