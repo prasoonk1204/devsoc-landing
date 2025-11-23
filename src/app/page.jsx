@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Events from "@/components/Home/Events";
 import Hero from "@/components/Home/Hero";
 import Newsletter from "@/components/Home/Newsletter";
-import Gallery from "@/components/Home/Gallery";
+// import Gallery from "@/components/Home/Gallery";
 import LoadingScreen from "@/components/Home/LoadingScreen";
 import ModelPreloader from "@/components/Home/ModelPreloader";
 import {
@@ -50,7 +50,7 @@ export default function Home() {
 				/>
 				<Newsletter />
 				<Events />
-				<Gallery />
+				{/* <Gallery /> */}
 			</div>
 		</>
 	);
