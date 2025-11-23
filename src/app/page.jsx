@@ -14,6 +14,7 @@ import {
 
 export default function Home() {
 	const [isModelLoaded, setIsModelLoaded] = useState(false);
+	const [isDataLoaded, setIsDataLoaded] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 
 	// For mobile devices or small viewports, set model as loaded immediately
@@ -36,16 +37,20 @@ export default function Home() {
 		return () => window.removeEventListener("error", handleError);
 	}, []);
 
+	// Check if both model and data are loaded
+	const allLoaded = isModelLoaded && isDataLoaded;
+
 	return (
 		<>
 			<ModelPreloader />
 			<LoadingScreen
-				isModelLoaded={isModelLoaded}
+				isModelLoaded={allLoaded}
 				onLoadComplete={() => setIsLoaded(true)}
 			/>
 			<div className="mx-auto flex max-w-[1800px] flex-col items-center justify-center bg-neutral-50">
 				<Hero
 					onModelLoaded={() => setIsModelLoaded(true)}
+					onDataLoaded={() => setIsDataLoaded(true)}
 					shouldAnimate={isLoaded}
 				/>
 				<Newsletter />

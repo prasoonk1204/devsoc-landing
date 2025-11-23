@@ -4,7 +4,13 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { Home, CalendarDays, Newspaper, UserSquare2 } from "lucide-react";
+import {
+	Home,
+	CalendarDays,
+	Newspaper,
+	UserSquare2,
+	Brain,
+} from "lucide-react";
 
 export default function Header() {
 	const [hovered, setHovered] = useState(null);
@@ -31,6 +37,12 @@ export default function Header() {
 			title: "Events",
 			href: "/events",
 			icon: <CalendarDays size={20} />,
+		},
+		{
+			title: "Quiz",
+			href: "https://rapid-quiz-relay.vercel.app/",
+			icon: <Brain size={20} />,
+			external: true,
 		},
 	];
 
@@ -82,6 +94,26 @@ export default function Header() {
 			{navItems.map((item, idx) => {
 				const active = isActive(item.href);
 
+				if (item.external) {
+					return (
+						<a
+							key={item.title}
+							href={item.href}
+							ref={(el) => (navRefs.current[idx] = el)}
+							onMouseEnter={() => setHovered(idx)}
+							onMouseLeave={() => setHovered(null)}
+							className="group relative w-full px-4 py-3 text-center text-white min-[1120px]:px-6 lg:px-8"
+						>
+							<p
+								className={`relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black ${hovered === idx ? "text-black" : ""}`}
+							>
+								{item.icon}
+								<span className="hidden min-[1120px]:block">{item.title}</span>
+							</p>
+						</a>
+					);
+				}
+
 				return (
 					<Link
 						key={item.title}
@@ -89,13 +121,13 @@ export default function Header() {
 						ref={(el) => (navRefs.current[idx] = el)}
 						onMouseEnter={() => setHovered(idx)}
 						onMouseLeave={() => setHovered(null)}
-						className="group relative w-full px-6 py-3 text-center text-white lg:px-8"
+						className="group relative w-full px-4 py-3 text-center text-white min-[1120px]:px-6 lg:px-8"
 					>
 						<p
 							className={`relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black ${hovered === idx || (active && hovered === null) ? "text-black" : ""}`}
 						>
 							{item.icon}
-							<span className="hidden sm:block">{item.title}</span>
+							<span className="hidden min-[1120px]:block">{item.title}</span>
 						</p>
 					</Link>
 				);

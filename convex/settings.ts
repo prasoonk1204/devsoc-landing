@@ -176,7 +176,8 @@ export const getCommunityLinks = query({
 			.withIndex("by_key", (q) => q.eq("key", "community_links"))
 			.first();
 
-		if (!setting) {
+		// Early return with default values if no setting found
+		if (!setting?.value) {
 			return {
 				whatsapp: null,
 				discord: null,
@@ -184,7 +185,11 @@ export const getCommunityLinks = query({
 		}
 
 		try {
-			return JSON.parse(setting.value);
+			const parsed = JSON.parse(setting.value);
+			return {
+				whatsapp: parsed.whatsapp || null,
+				discord: parsed.discord || null,
+			};
 		} catch {
 			return {
 				whatsapp: null,

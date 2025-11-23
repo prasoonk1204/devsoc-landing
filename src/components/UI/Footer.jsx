@@ -195,7 +195,7 @@ const Footer = () => {
 					<span className="text-lg whitespace-nowrap text-neutral-300 sm:text-base md:text-lg">
 						Made with ❤️ by
 					</span>
-					<div className="relative inline-flex h-[1.375rem] items-center justify-center overflow-visible sm:h-[1.5rem] md:h-[1.75rem]">
+					<div className="relative inline-flex h-[1.75rem] min-w-[95px] items-center justify-start overflow-hidden sm:h-[1.5rem] sm:min-w-0 sm:overflow-visible md:h-[1.75rem]">
 						<AnimatePresence mode="wait" initial={false}>
 							{isHovered ? (
 								<motion.div
@@ -231,6 +231,7 @@ const Footer = () => {
 										ease: [0.4, 0, 0.2, 1],
 									}}
 									className="inline-flex items-center"
+									style={{ transform: "translate3d(0, 0, 0)" }}
 								>
 									{isInView && (
 										<MorphingText

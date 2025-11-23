@@ -206,7 +206,7 @@ export const eventsData = [
 		],
 	},
 	{
-		title: "DevSoc in action as SIH",
+		title: "DevSoc in action at SIH",
 		slug: "devsoc-in-action-sih-2025",
 		image:
 			"https://ik.imagekit.io/devsoc/events/2025/DevSoc%20%20in%20action%20(Sih)/1758214994227.jpg?updatedAt=1763394936513",

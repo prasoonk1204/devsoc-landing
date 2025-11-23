@@ -6,11 +6,8 @@ export const coreCommittee = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.22.03.jpeg",
 		socials: {
-			linkedin: "https://linkedin.com/in/username",
-			github: "https://github.com/username",
-			// twitter: "https://twitter.com/username",
-			// website: "https://example.com",
-			// email: "mailto:email@example.com",
+			linkedin: "https://www.linkedin.com/in/arnab-chatterjee-905ab3219",
+			twitter: "https://x.com/arnabch20k",
 		},
 	},
 	{
@@ -20,7 +17,7 @@ export const coreCommittee = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.25.43.jpeg",
 		socials: {
-			// Add social links here when available
+			linkedin: "https://www.linkedin.com/in/debarjun-thakur",
 		},
 	},
 	{
@@ -30,7 +27,9 @@ export const coreCommittee = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Core-Committee/v4325r3brfbwcar973_3hh8q474r?updatedAt=1763908190115",
 		socials: {
-			instagram: "https://www.instagram.com/ishitaaa.xd?igsh=d24wcnlxbXhtejgy&utm_source=",
+			instagram:
+				"https://www.instagram.com/ishitaaa.xd?igsh=d24wcnlxbXhtejgy&utm_source=",
+			linkedin: "https://in.linkedin.com/in/ishita-bej",
 		},
 	},
 	{
@@ -100,7 +99,8 @@ export const coreCommittee = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20250909_190923_446%20-%2078_swarup%20Goswami_B3.webp",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/swarup-goswami-7a9444311?utm_source=share&",
+			linkedin:
+				"https://www.linkedin.com/in/swarup-goswami-7a9444311?utm_source=share&",
 		},
 	},
 	{
@@ -128,7 +128,9 @@ export const coreCommittee = [
 		name: "Gourav Yadav",
 		designation: "Design Lead",
 		image: "https://ik.imagekit.io/devsoc/Members/IMG_3174%201.png",
-		link: "#",
+		socials: {
+			github: "https://github.com/73LIX",
+		},
 	},
 ];
 
@@ -150,7 +152,8 @@ export const techTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251109-WA0058%20-%20Avik%20Ghosh.jpg",
 		socials: {
-			instagram: "https://www.instagram.com/nate_river007?igsh=MTRua3p3dzFqamR3Ng==",
+			instagram:
+				"https://www.instagram.com/nate_river007?igsh=MTRua3p3dzFqamR3Ng==",
 		},
 	},
 	{
@@ -159,7 +162,8 @@ export const techTeam = [
 		designation: "Tech Team",
 		image: "https://ik.imagekit.io/devsoc/Members/r20837r923r2br3c.png",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/elhan-yasir-164445350?utm_source=share&utm_c",
+			linkedin:
+				"https://www.linkedin.com/in/elhan-yasir-164445350?utm_source=share&utm_c",
 		},
 	},
 	{
@@ -178,7 +182,7 @@ export const techTeam = [
 		designation: "Tech Team",
 		image: "https://ik.imagekit.io/devsoc/Members/1746396179553.jpeg",
 		socials: {
-			// Add social links here when available
+			linkedin: "https://www.linkedin.com/in/khushi-singh-3k",
 		},
 	},
 	{
@@ -187,7 +191,8 @@ export const techTeam = [
 		designation: "Competitive Programming",
 		image: "https://ik.imagekit.io/devsoc/Members/1762792335315.png",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/monu-kumar-singh-3a5a4a397?utm_source=share",
+			linkedin:
+				"https://www.linkedin.com/in/monu-kumar-singh-3a5a4a397?utm_source=share",
 		},
 	},
 	{
@@ -208,7 +213,7 @@ export const techTeam = [
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.49.17.jpeg",
 		socials: {
 			linkedin: "https://www.linkedin.com/in/prantor-das/",
-      twitter: "https://x.com/das_prantor"
+			twitter: "https://x.com/das_prantor",
 		},
 	},
 	{
@@ -219,7 +224,7 @@ export const techTeam = [
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251111_181720%20-%20Prasoon%20Kumar.jpg",
 		socials: {
 			website: "https://prasoonk.vercel.app",
-      twitter: "https://x.com/kenma_dev"
+			twitter: "https://x.com/kenma_dev",
 		},
 	},
 	{
@@ -229,7 +234,7 @@ export const techTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.42.31.jpeg",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/princi-kumari-a6422b326"
+			linkedin: "https://www.linkedin.com/in/princi-kumari-a6422b326",
 		},
 	},
 	{
@@ -239,7 +244,8 @@ export const techTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20250729-WA0001%20-%20Prerna%20Priya.jpg",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/prerna-priya-ab3581329?utm_source=share&utm_",
+			linkedin:
+				"https://www.linkedin.com/in/prerna-priya-ab3581329?utm_source=share&utm_",
 		},
 	},
 	{
@@ -259,7 +265,8 @@ export const techTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251115-WA0212%20-%20Pravanjan%20Roy.jpg",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/pravanjan-roy-bb0a1a383?utm_source=share_via&",
+			linkedin:
+				"https://www.linkedin.com/in/pravanjan-roy-bb0a1a383?utm_source=share_via&",
 		},
 	},
 	{
@@ -289,7 +296,7 @@ export const techTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.44.56.jpeg",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/souvik-majee-4b1b88292/"
+			linkedin: "https://www.linkedin.com/in/souvik-majee-4b1b88292/",
 		},
 	},
 ];
@@ -302,7 +309,8 @@ export const managementTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251115_193014%20-%20Amrit%20Kumar.jpg",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/amrit-kumar-319780329?utm_source=share&utm_",
+			linkedin:
+				"https://www.linkedin.com/in/amrit-kumar-319780329?utm_source=share&utm_",
 		},
 	},
 	// {
@@ -340,7 +348,8 @@ export const managementTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Picsgw4t26HIL.jpg?updatedAt=1763907567669",
 		socials: {
-			instagram: "https://www.instagram.com/n_ikhilgupta?igsh=MWR4ZzgyYnNzMmJvaA==",
+			instagram:
+				"https://www.instagram.com/n_ikhilgupta?igsh=MWR4ZzgyYnNzMmJvaA==",
 		},
 	},
 	{
@@ -360,7 +369,8 @@ export const managementTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Screenshot_2025-11-16-12-43-56-96_439a3fec0400f8974d35eed09a31f914%20-%20176_Sana%20Chakraborty.jpg",
 		socials: {
-			instagram: "https://www.instagram.com/sanachakraborty79?igsh=MXN1OWxiNzI1MmRveQ",
+			instagram:
+				"https://www.instagram.com/sanachakraborty79?igsh=MXN1OWxiNzI1MmRveQ",
 		},
 	},
 	{
@@ -392,7 +402,8 @@ export const designTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/IMG-20251114-WA0075%20-%20Achhat%20kumar%20Gupta.jpg",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/achhat-kumar-gupta-034373200?utm_source=sha",
+			linkedin:
+				"https://www.linkedin.com/in/achhat-kumar-gupta-034373200?utm_source=sha",
 		},
 	},
 	{
@@ -422,7 +433,8 @@ export const designTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/20220421_231624-01(1)%20-%20Saikat%20Sinha.jpg",
 		socials: {
-			instagram: "https://www.instagram.com/saikat._sinha?igsh=ODlqenBzbjlvenpv",
+			instagram:
+				"https://www.instagram.com/saikat._sinha?igsh=ODlqenBzbjlvenpv",
 		},
 	},
 	{
@@ -432,7 +444,8 @@ export const designTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Profile%20Picture%20-%20Sohom%20Paul.jpg",
 		socials: {
-			instagram: "https://www.instagram.com/sohom_since_006?igsh=cXlqajRvODF6OGsw",
+			instagram:
+				"https://www.instagram.com/sohom_since_006?igsh=cXlqajRvODF6OGsw",
 		},
 	},
 	{
@@ -442,7 +455,8 @@ export const designTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/c3br3brfbwcar973_IJby0IZMF?updatedAt=1763907900755",
 		socials: {
-			linkedin: "https://www.linkedin.com/in/taniya-digar-0714a0329?utm_source=share&utm_c",
+			linkedin:
+				"https://www.linkedin.com/in/taniya-digar-0714a0329?utm_source=share&utm_c",
 		},
 	},
 ];
