@@ -12,7 +12,7 @@ import {
 	Instagram,
 } from "lucide-react";
 import { fadeInBlur } from "@/lib/motionVariants";
-import { useRef } from "react";
+import { useState } from "react";
 import styles from "./MemberCard.module.css";
 
 const socialIcons = {
@@ -25,24 +25,27 @@ const socialIcons = {
 };
 
 export default function MemberCard({ member, index }) {
-	const cardRef = useRef(null);
-	const directionSetRef = useRef(false);
+	const [isFlipped, setIsFlipped] = useState(false);
+	const [direction, setDirection] = useState(0);
 
 	const handleMouseEnter = (e) => {
-		if (!cardRef.current || directionSetRef.current) return;
-
-		const rect = cardRef.current.getBoundingClientRect();
+		const card = e.currentTarget;
+		const rect = card.getBoundingClientRect();
 		const mouseX = e.clientX - rect.left;
 		const cardCenter = rect.width / 2;
 
-		// Set flip direction once on enter
-		const rotation = mouseX < cardCenter ? "180deg" : "-180deg";
-		cardRef.current.style.setProperty("--flip-rotation", rotation);
-		directionSetRef.current = true;
+		// Determine direction: if entering from left, rotate positive (clockwise from top)
+		// If entering from right, rotate negative
+		// Actually, standard flip:
+		// Mouse on left -> rotate Y 180
+		// Mouse on right -> rotate Y -180
+		const newDirection = mouseX < cardCenter ? 180 : -180;
+		setDirection(newDirection);
+		setIsFlipped(true);
 	};
 
 	const handleMouseLeave = () => {
-		directionSetRef.current = false;
+		setIsFlipped(false);
 	};
 
 	return (
@@ -55,26 +58,26 @@ export default function MemberCard({ member, index }) {
 				viewport={{ once: true, margin: "-50px" }}
 				transition={{ delay: index * 0.05 }}
 				className={`${styles.flipCardContainer} hidden md:block`}
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
 			>
-				<div
-					ref={cardRef}
+				<motion.div
 					className={styles.flipCard}
-					onMouseEnter={handleMouseEnter}
-					onMouseLeave={handleMouseLeave}
-					style={{ "--flip-rotation": "180deg" }}
+					animate={{ rotateY: isFlipped ? direction : 0 }}
+					transition={{
+						duration: 0.6,
+						type: "spring",
+						stiffness: 260,
+						damping: 20,
+					}}
 				>
 					<div className={styles.flipCardFront}>
-						<div className="relative h-full w-full">
-							<Image
-								src={member.image}
-								alt={member.name}
-								fill
-								sizes="(max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
-								className="object-cover object-center"
-								priority={index < 6}
-							/>
-						</div>
-
+						<Image
+							src={member.image}
+							alt={member.name}
+							height={500}
+							width={500}
+						/>
 						<div className="absolute right-0 bottom-0 left-0 rounded-b-3xl bg-linear-to-b from-black/40 via-black/60 to-black/80 p-4 text-zinc-300 shadow-[inset_0_-4px_4px_rgba(255,255,255,0.15)] backdrop-blur-md">
 							<div className="text-lg font-semibold text-white md:text-xl">
 								{member.name}
@@ -83,7 +86,10 @@ export default function MemberCard({ member, index }) {
 						</div>
 					</div>
 
-					<div className={styles.flipCardBack}>
+					<div
+						className={styles.flipCardBack}
+						style={{ transform: "rotateY(180deg)" }}
+					>
 						<div className="flex h-full flex-col items-center justify-center gap-6 p-6">
 							<div className="text-center">
 								<h3 className="mb-1 text-lg font-bold text-white">
@@ -117,7 +123,7 @@ export default function MemberCard({ member, index }) {
 							)}
 						</div>
 					</div>
-				</div>
+				</motion.div>
 			</motion.div>
 
 			{/* Mobile Card */}
@@ -136,15 +142,12 @@ export default function MemberCard({ member, index }) {
 					className="group block"
 				>
 					<div className="relative mx-auto h-60 w-full max-w-[350px] overflow-hidden rounded-3xl bg-linear-to-b from-zinc-800 to-zinc-950 font-sans text-white transition-all duration-300">
-						<div className="relative h-full w-full">
-							<Image
-								src={member.image}
-								alt={member.name}
-								fill
-								sizes="50vw"
-								className="object-contain object-top transition-transform duration-300 group-active:scale-105"
-							/>
-						</div>
+						<Image
+							src={member.image}
+							alt={member.name}
+							height={500}
+							width={500}
+						/>
 
 						<div className="absolute right-0 bottom-0 left-0 rounded-b-3xl bg-linear-to-b from-black/40 via-black/60 to-black/80 p-4 text-zinc-300 shadow-[inset_0_-4px_4px_rgba(255,255,255,0.15)] backdrop-blur-md">
 							<div className="text-lg font-semibold text-white md:text-xl">

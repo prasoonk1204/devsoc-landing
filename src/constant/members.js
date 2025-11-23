@@ -28,7 +28,7 @@ export const coreCommittee = [
 		name: "Ishita Bej",
 		designation: "Secretary",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/Core-Committee/IMG_8083%20-%20Ishita%20Bej.jpeg?updatedAt=1763874083384",
+			"https://ik.imagekit.io/devsoc/Members/Core-Committee/v4325r3brfbwcar973_3hh8q474r?updatedAt=1763908190115",
 		socials: {
 			instagram: "https://www.instagram.com/ishitaaa.xd?igsh=d24wcnlxbXhtejgy&utm_source=",
 		},
@@ -58,7 +58,7 @@ export const coreCommittee = [
 		name: "Vikash Kumar Pandey",
 		designation: "Tech Lead",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/IMG-20251118-WA0009%20-%20Vikash.jpg",
+			"https://ik.imagekit.io/devsoc/Members/Core-Committee/fwet346437_QhV4yC41US?updatedAt=1763907663691",
 		socials: {
 			linkedin: "https://www.linkedin.com/in/vikash2003",
 		},
@@ -68,7 +68,7 @@ export const coreCommittee = [
 		name: "Soumyajit Chattaraj",
 		designation: "Management Lead",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/IMG_20250622_034015_938%20(1)%20(1)%20-%20148_soumyajit%20chattaraj.webp",
+			"https://ik.imagekit.io/devsoc/Members/Core-Committee/wft34645765h_oNzHS2Nsg?updatedAt=1763907746265",
 		socials: {
 			twitter: "https://x.com/Soumyaj85550463?t=zQR16l4sb9B6eBJ2VuyLlg&s=09",
 		},
@@ -123,6 +123,13 @@ export const coreCommittee = [
 			linkedin: "https://www.linkedin.com/in/aditi-hazra-5b3816341",
 		},
 	},
+	{
+		id: 13,
+		name: "Gourav Yadav",
+		designation: "Design Lead",
+		image: "https://ik.imagekit.io/devsoc/Members/IMG_3174%201.png",
+		link: "#",
+	},
 ];
 
 export const techTeam = [
@@ -150,7 +157,7 @@ export const techTeam = [
 		id: 3,
 		name: "Elhan Yasir",
 		designation: "Tech Team",
-		image: "https://ik.imagekit.io/devsoc/Members/1763884229790.jpg",
+		image: "https://ik.imagekit.io/devsoc/Members/r20837r923r2br3c.png",
 		socials: {
 			linkedin: "https://www.linkedin.com/in/elhan-yasir-164445350?utm_source=share&utm_c",
 		},
@@ -200,7 +207,8 @@ export const techTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.49.17.jpeg",
 		socials: {
-			// Add social links here when available
+			linkedin: "https://www.linkedin.com/in/prantor-das/",
+      twitter: "https://x.com/das_prantor"
 		},
 	},
 	{
@@ -211,6 +219,7 @@ export const techTeam = [
 			"https://ik.imagekit.io/devsoc/Members/IMG_20251111_181720%20-%20Prasoon%20Kumar.jpg",
 		socials: {
 			website: "https://prasoonk.vercel.app",
+      twitter: "https://x.com/kenma_dev"
 		},
 	},
 	{
@@ -220,7 +229,7 @@ export const techTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.42.31.jpeg",
 		socials: {
-			// Add social links here when available
+			linkedin: "https://www.linkedin.com/in/princi-kumari-a6422b326"
 		},
 	},
 	{
@@ -280,7 +289,7 @@ export const techTeam = [
 		image:
 			"https://ik.imagekit.io/devsoc/Members/WhatsApp%20Image%202025-11-23%20at%2012.44.56.jpeg",
 		socials: {
-			// Add social links here when available
+			linkedin: "https://www.linkedin.com/in/souvik-majee-4b1b88292/"
 		},
 	},
 ];
@@ -329,7 +338,7 @@ export const managementTeam = [
 		name: "Nikhil Gupta",
 		designation: "Event Management & PR",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/Picsart_25-06-10_12-41-50-696%20-%20NIKHIL.jpg",
+			"https://ik.imagekit.io/devsoc/Members/Picsgw4t26HIL.jpg?updatedAt=1763907567669",
 		socials: {
 			instagram: "https://www.instagram.com/n_ikhilgupta?igsh=MWR4ZzgyYnNzMmJvaA==",
 		},
@@ -408,15 +417,6 @@ export const designTeam = [
 	},
 	{
 		id: 4,
-		name: "Gourav Yadav",
-		designation: "Design Team",
-		image: "/DevsocHero.png",
-		socials: {
-			// Add social links here when available
-		},
-	},
-	{
-		id: 5,
 		name: "Saikat Sinha",
 		designation: "Graphics Designer",
 		image:
@@ -426,7 +426,7 @@ export const designTeam = [
 		},
 	},
 	{
-		id: 6,
+		id: 5,
 		name: "Sohom Paul",
 		designation: "Video Editor",
 		image:
@@ -436,11 +436,11 @@ export const designTeam = [
 		},
 	},
 	{
-		id: 7,
+		id: 6,
 		name: "Taniya Digar",
 		designation: "Design Team",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/IMG-20251116-WA0021%20-%20121_Taniya%20Digar.jpg",
+			"https://ik.imagekit.io/devsoc/Members/c3br3brfbwcar973_IJby0IZMF?updatedAt=1763907900755",
 		socials: {
 			linkedin: "https://www.linkedin.com/in/taniya-digar-0714a0329?utm_source=share&utm_c",
 		},

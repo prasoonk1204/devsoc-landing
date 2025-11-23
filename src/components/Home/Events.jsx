@@ -41,9 +41,9 @@ export default function Events() {
 		[0.98, 1, 0.98],
 	);
 
-    // Sort by date (descending) and take the first 5
-    const sortedEvents = sortEventsByDate(eventsData, "desc");
-    const recentEvents = sortedEvents.slice(0, 5);
+	// Sort by date (descending) and take the first 5
+	const sortedEvents = sortEventsByDate(eventsData, "desc");
+	const recentEvents = sortedEvents.slice(0, 5);
 
 	if (!mounted) {
 		return (
@@ -206,7 +206,7 @@ function FannedLayout({
 }
 
 function AppleCardsCarouselSection({ events }) {
-    const displayEvents = events || [];
+	const displayEvents = events || [];
 
 	const cards = displayEvents.map((event, index) => {
 		const cardData = {
