@@ -57,11 +57,12 @@ export default function AboutPage() {
 					className="mb-16 text-center"
 				>
 					<p className="mx-auto max-w-4xl text-lg leading-relaxed text-neutral-300">
-						At Development Society (DevSoc), Asansol Engineering College, we are
-						more than just a student club; we are a thriving community of
-						coders, designers, and problem-solvers. Founded with the vision of
-						empowering students through technology, Devsoc serves as a hub where
-						creativity meets engineering excellence.
+						DevSoc at Asansol Engineering College is where tech feels fun and
+						creative. We bring coders, designers, and thinkers into one space
+						where ideas turn into real work. The aim is simple, help each other
+						grow, make cool projects, and keep the energy open for anyone who
+						wants to learn and try something new. If you want a space that
+						sparks your drive to create, this is the place.
 					</p>
 				</motion.div>
 

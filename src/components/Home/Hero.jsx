@@ -54,7 +54,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 					viewport={{ once: true }}
 					className="text-xl sm:text-2xl"
 				>
-					Join our inclusive community
+					where we build for fun and learn on the way
 				</motion.h2>
 				{communityLink && (
 					<motion.a
@@ -67,7 +67,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 						viewport={{ once: true }}
 						className="mt-6 inline-block rounded-3xl bg-neutral-900 px-8 py-2.5 text-lg text-white transition-all duration-200 hover:scale-102 hover:cursor-pointer hover:bg-neutral-800 active:scale-97"
 					>
-						Join our community
+						Step into our space
 					</motion.a>
 				)}
 			</div>
