@@ -108,12 +108,11 @@ export default function MemberCard({ member, index }) {
 					<Image
 						src={member.image}
 						alt={member.name}
-						fill
-						sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-						className="object-cover"
+						height={500}
+						width={500}
 						loading={index < 8 ? "eager" : "lazy"}
 					/>
-					<div className="absolute right-0 bottom-0 left-0 rounded-b-3xl bg-gradient-to-b from-black/40 via-black/60 to-black/80 p-4 text-zinc-300 shadow-[inset_0_-4px_4px_rgba(255,255,255,0.15)] backdrop-blur-md">
+					<div className="absolute right-0 bottom-0 left-0 rounded-b-3xl bg-linear-to-b from-black/40 via-black/60 to-black/80 p-4 text-zinc-300 shadow-[inset_0_-4px_4px_rgba(255,255,255,0.15)] backdrop-blur-md">
 						<div className="text-lg font-semibold text-white">
 							{member.name}
 						</div>

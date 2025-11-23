@@ -253,7 +253,7 @@ export const techTeam = [
 		name: "Pinaki Ranjan Pal",
 		designation: "Web Development",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/1761978768025%20-%20Pinaki%20Ranjan%20Pal.jpg",
+			"https://ik.imagekit.io/devsoc/Members/1761978768qwfdw.jpg?updatedAt=1763929690292",
 		socials: {
 			instagram: "https://www.instagram.com/c_on.sole_?igsh=dTN0bm42emdqZWZn",
 		},

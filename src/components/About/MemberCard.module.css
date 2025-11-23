@@ -27,3 +27,9 @@
 .flipCardBack {
 	transform: rotateY(180deg);
 }
+
+@media (max-width: 768px) {
+	.flipCard {
+		height: 236px;
+	}
+}
