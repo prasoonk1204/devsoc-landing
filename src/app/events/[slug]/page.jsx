@@ -9,7 +9,7 @@ import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import BackButton from "@/components/UI/BackButton";
 import { formatEventDate, getLatestEvent } from "@/lib/utils/eventUtils";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, Download } from "lucide-react";
 
 export default function EventDetailPage({ params }) {
 	const { slug } = use(params);
@@ -194,6 +194,32 @@ export default function EventDetailPage({ params }) {
 											sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
 										/>
 										<div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+										
+										{/* Download Button */}
+										<button
+											onClick={async (e) => {
+												e.stopPropagation();
+												try {
+													const response = await fetch(photoUrl);
+													const blob = await response.blob();
+													const blobUrl = window.URL.createObjectURL(blob);
+													const link = document.createElement('a');
+													link.href = blobUrl;
+													link.download = `event-snap-${index + 1}.jpg`;
+													document.body.appendChild(link);
+													link.click();
+													document.body.removeChild(link);
+													window.URL.revokeObjectURL(blobUrl);
+												} catch (error) {
+													console.error('Download failed:', error);
+													window.open(photoUrl, '_blank');
+												}
+											}}
+											className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white opacity-100 backdrop-blur-md transition-all duration-300 hover:bg-black/70 hover:scale-110 lg:opacity-0 lg:group-hover:opacity-100"
+											title="Download Image"
+										>
+											<Download className="h-5 w-5" />
+										</button>
 									</div>
 								</motion.div>
 							))}

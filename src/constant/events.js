@@ -377,7 +377,6 @@ Hype, enthusiasm, and tech energy across campus
 
 A signature line used often: "Kuch log commentary likhte rehte, kuch log scoreboard badalte rehte."`,
 		gallery: [
-			"https://ik.imagekit.io/devsoc/events/2025_Over_square/Roadmap.jpeg",
 			"https://ik.imagekit.io/devsoc/events/2025_Over_square/120+registrations.jpg?updatedAt=1763925616250",
 		],
 	},
