@@ -102,7 +102,7 @@ export default function Header() {
 							ref={(el) => (navRefs.current[idx] = el)}
 							onMouseEnter={() => setHovered(idx)}
 							onMouseLeave={() => setHovered(null)}
-							className="group relative w-full px-4 py-3 text-center text-white min-[1120px]:px-6 lg:px-8"
+							className="group relative w-full px-5 py-3 text-center text-white min-[1120px]:px-6 lg:px-8"
 						>
 							<p
 								className={`relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black ${hovered === idx ? "text-black" : ""}`}
@@ -121,7 +121,7 @@ export default function Header() {
 						ref={(el) => (navRefs.current[idx] = el)}
 						onMouseEnter={() => setHovered(idx)}
 						onMouseLeave={() => setHovered(null)}
-						className="group relative w-full px-4 py-3 text-center text-white min-[1120px]:px-6 lg:px-8"
+						className="group relative w-full px-5 py-3 text-center text-white min-[1120px]:px-6 lg:px-8"
 					>
 						<p
 							className={`relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black ${hovered === idx || (active && hovered === null) ? "text-black" : ""}`}

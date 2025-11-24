@@ -32,7 +32,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 			/>
 			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
 				<Image src="/DevSocLogo.png" alt="DevSoc Logo" height={50} width={50} />
-				<h2 className="font-iceland text-4xl font-bold">
+				<h2 className="font-iceland text-2xl font-bold min-[400px]:text-3xl sm:text-4xl">
 					DEV<span className="text-orange-300">SOC</span>
 				</h2>
 			</div>
@@ -43,7 +43,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 					initial="hidden"
 					whileInView={shouldAnimate ? "visible" : "hidden"}
 					viewport={{ once: true }}
-					className="text-5xl font-bold sm:text-6xl"
+					className="text-4xl font-bold min-[400px]:text-5xl sm:text-6xl"
 				>
 					Welcome to Dev<span className="text-orange-300">Soc</span>
 				</motion.h1>

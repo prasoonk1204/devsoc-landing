@@ -236,6 +236,7 @@ const Footer = () => {
 									{isInView && (
 										<MorphingText
 											texts={devLinks.map((dev) => dev.name)}
+											links={devLinks.map((dev) => dev.link)}
 											className="text-lg font-bold text-white sm:text-base md:text-lg"
 										/>
 									)}
@@ -279,7 +280,7 @@ const Footer = () => {
 			</div>
 
 			<motion.div
-				className="sm:space-x-auto mt-12 bg-gradient-to-b from-white/50 via-[#1c1c1c] to-[#000000b9] bg-clip-text text-center text-[5rem] leading-none font-bold text-transparent font-stretch-50% select-none sm:text-[10rem] md:px-4 md:text-[12rem] lg:text-[14rem] xl:text-[18rem]"
+				className="sm:space-x-auto mt-12 bg-linear-to-b from-white/50 via-[#1c1c1c] to-[#000000b9] bg-clip-text text-center text-[5rem] leading-none font-bold text-transparent font-stretch-50% select-none sm:text-[10rem] md:px-4 md:text-[12rem] lg:text-[14rem] xl:text-[18rem]"
 				variants={devsocVariants}
 				initial="hidden"
 				whileInView="visible"

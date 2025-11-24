@@ -9,6 +9,7 @@ import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import BackButton from "@/components/UI/BackButton";
 import { formatEventDate, getLatestEvent } from "@/lib/utils/eventUtils";
+import { ArrowRight, Calendar } from "lucide-react";
 
 export default function EventDetailPage({ params }) {
 	const { slug } = use(params);
@@ -41,113 +42,139 @@ export default function EventDetailPage({ params }) {
 	};
 
 	return (
-		<div className="relative flex w-full flex-col items-center justify-center bg-black p-4 pt-20 pb-16 text-white sm:p-6 sm:pt-20 sm:pb-24 md:pt-40">
-			<div className="relative w-full max-w-6xl">
-				<BackButton href="/events" label="All Events" />
+		<div className="relative flex min-h-screen w-full flex-col items-center bg-neutral-950 pt-24 pb-16 text-white sm:pt-32 sm:pb-24">
+			{/* Background Elements */}
+			<div className="pointer-events-none absolute inset-0 overflow-hidden">
+				<div className="absolute -top-[20%] -left-[10%] h-[500px] w-[500px] rounded-full bg-purple-900/20 blur-[120px]" />
+				<div className="absolute top-[10%] -right-[10%] h-[400px] w-[400px] rounded-full bg-blue-900/20 blur-[100px]" />
+			</div>
+
+			<div className="relative z-10 w-full max-w-7xl px-4 sm:px-6">
+				<BackButton href="/events" label="Back to Events" />
 
 				{/* Main Content Grid */}
-				<div className="mt-6 grid w-full grid-cols-1 gap-8 md:grid-cols-6 md:gap-12">
+				<div className="mt-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
 					{/* LEFT SIDE (Content) */}
 					<motion.div
-						className="md:col-span-4"
+						className="lg:col-span-7"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
 						viewport={{ once: true }}
 					>
-						<h1 className="font-iceland mb-2 text-5xl font-bold sm:text-7xl">
-							{event.title}
-						</h1>
-						<p className="mb-6 text-lg text-neutral-300 sm:text-xl">
-							{formatEventDate(event.date)}
-						</p>
-						<p className="text-md font-sans leading-relaxed text-neutral-100 sm:text-lg">
-							{event.description}
-						</p>
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.5 }}
+						>
+							<h1 className="font-iceland mb-4 text-4xl font-bold tracking-wide text-white sm:text-6xl md:text-7xl">
+								{event.title}
+							</h1>
 
-						{/* Registration Button - Only show for latest event */}
-						{isLatestEvent && isRegistrationEnabled && (
-							<div className="mt-8">
-								<Link
-									href={`/events/${event.slug}/register`}
-									className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-6 py-3 text-center font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
-								>
-									Register for Event
-								</Link>
+							<div className="mb-6 flex flex-wrap items-center gap-6 text-neutral-300">
+								<div className="flex items-center gap-2">
+									<Calendar className="text-accent h-5 w-5" />
+									<span className="text-base font-medium sm:text-lg">
+										{formatEventDate(event.date)}
+									</span>
+								</div>
 							</div>
+
+							<p className="mb-8 text-base leading-relaxed text-neutral-200 sm:text-lg md:max-w-2xl">
+								{event.description}
+							</p>
+
+							{/* Registration Button - Only show for latest event */}
+							{isLatestEvent && isRegistrationEnabled && (
+								<div className="mb-10">
+									<Link
+										href={`/events/${event.slug}/register`}
+										className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-lg font-semibold text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+									>
+										Register Now
+										<ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+									</Link>
+								</div>
+							)}
+						</motion.div>
+
+						{/* Detailed Description Section */}
+						{event.detailedDescription && (
+							<motion.div
+								className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm sm:p-8"
+								variants={fadeInBlur}
+							>
+								<h3 className="font-iceland text-accent mb-4 text-2xl font-bold sm:text-3xl">
+									About the Event
+								</h3>
+								<div className="font-sans text-sm leading-relaxed whitespace-pre-line text-neutral-300 sm:text-base">
+									{showFullDescription ? (
+										<>
+											{event.detailedDescription}
+											<button
+												onClick={() => setShowFullDescription(false)}
+												className="text-accent hover:text-accent/80 mt-4 flex items-center gap-1 font-medium transition-colors hover:underline"
+											>
+												Show less
+											</button>
+										</>
+									) : (
+										<>
+											{getPreviewText(event.detailedDescription)}
+											<button
+												onClick={() => setShowFullDescription(true)}
+												className="text-accent hover:text-accent/80 mt-2 flex items-center gap-1 font-medium transition-colors hover:underline"
+											>
+												Read more
+											</button>
+										</>
+									)}
+								</div>
+							</motion.div>
 						)}
 					</motion.div>
 
 					{/* RIGHT SIDE (Image) */}
 					<motion.div
-						className="relative w-full overflow-hidden md:col-span-2"
+						className="relative lg:col-span-5"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
 						viewport={{ once: true }}
 					>
-						<Image
-							src={event.image}
-							alt={event.title}
-							width={600}
-							height={800}
-							className="h-auto w-full rounded-3xl object-contain"
-							priority
-							sizes="(max-width: 768px) 100vw, 40vw"
-						/>
-					</motion.div>
-				</div>
-
-				{/* Detailed Description Section */}
-				{event.detailedDescription && (
-					<motion.div
-						className="mt-12 w-full"
-						variants={fadeInBlur}
-						initial="hidden"
-						whileInView="visible"
-						viewport={{ once: true }}
-					>
-						<div className="rounded-2xl border border-neutral-800 bg-neutral-900/30 p-6 sm:p-8">
-							<div className="font-sans text-sm leading-relaxed whitespace-pre-line text-neutral-300 sm:text-base">
-								{showFullDescription ? (
-									<>
-										{event.detailedDescription}
-										<button
-											onClick={() => setShowFullDescription(false)}
-											className="mt-4 inline-block text-orange-300 transition-colors hover:cursor-pointer hover:text-orange-200"
-										>
-											...view less
-										</button>
-									</>
-								) : (
-									<>
-										{getPreviewText(event.detailedDescription)}
-										<button
-											onClick={() => setShowFullDescription(true)}
-											className="ml-1 inline-block text-orange-300 transition-colors hover:cursor-pointer hover:text-orange-200"
-										>
-											...view more
-										</button>
-									</>
-								)}
+						<div className="sticky top-32">
+							<div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 shadow-2xl">
+								<div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+								<Image
+									src={event.image}
+									alt={event.title}
+									width={600}
+									height={800}
+									className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105"
+									priority
+									sizes="(max-width: 768px) 100vw, 40vw"
+								/>
 							</div>
 						</div>
 					</motion.div>
-				)}
+				</div>
 
 				{/* Event Gallery Section */}
 				{event.gallery && event.gallery.length > 0 && (
 					<motion.div
-						className="w-full pt-12"
+						className="mt-24 w-full"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
 						viewport={{ once: true }}
 					>
-						<h2 className="font-iceland mb-6 text-5xl font-bold">
-							Event Snaps
-						</h2>
-						<div className="columns-2 gap-4 space-y-4 md:columns-4 md:gap-6">
+						<div className="mb-10 flex items-end justify-between">
+							<h2 className="font-iceland text-4xl font-bold text-white sm:text-5xl">
+								Event <span className="text-accent">Snaps</span>
+							</h2>
+						</div>
+
+						<div className="columns-1 gap-6 space-y-6 sm:columns-2 lg:columns-3 xl:columns-4">
 							{event.gallery.map((photoUrl, index) => (
 								<motion.div
 									key={index}
@@ -155,16 +182,19 @@ export default function EventDetailPage({ params }) {
 									initial="hidden"
 									whileInView="visible"
 									viewport={{ once: true }}
-									className="group relative mb-4 w-full break-inside-avoid overflow-hidden rounded-3xl bg-neutral-800"
+									className="break-inside-avoid"
 								>
-									<Image
-										src={photoUrl}
-										alt={`Event snapshot ${index + 1}`}
-										width={500}
-										height={500}
-										className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105"
-										sizes="(max-width: 768px) 50vw, 25vw"
-									/>
+									<div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-neutral-900 transition-all duration-300 hover:border-white/20 hover:shadow-xl">
+										<Image
+											src={photoUrl}
+											alt={`Event snapshot ${index + 1}`}
+											width={500}
+											height={500}
+											className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-110"
+											sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+										/>
+										<div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+									</div>
 								</motion.div>
 							))}
 						</div>

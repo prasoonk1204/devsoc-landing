@@ -93,15 +93,40 @@ const useMorphingText = (texts) => {
 		};
 	}, [doMorph, doCooldown]);
 
-	return { text1Ref, text2Ref };
+	return { text1Ref, text2Ref, textIndexRef, cooldownRef };
 };
 
-const Texts = ({ texts }) => {
-	const { text1Ref, text2Ref } = useMorphingText(texts);
+const Texts = ({ texts, links }) => {
+	const { text1Ref, text2Ref, textIndexRef, cooldownRef } =
+		useMorphingText(texts);
+
+	const handleClick = () => {
+		if (links && links.length > 0) {
+			let currentIndex = textIndexRef.current;
+			// If we are in the morphing phase (cooldown <= 0), the index hasn't updated yet,
+			// but the user sees the next person fading in. So we target the next person.
+			if (cooldownRef.current <= 0) {
+				currentIndex += 1;
+			}
+			const link = links[currentIndex % links.length];
+			if (link) {
+				window.open(link, "_blank", "noopener,noreferrer");
+			}
+		}
+	};
+
 	return (
 		<>
-			<span className="inline-block w-full" ref={text1Ref} />
-			<span className="absolute inset-0 inline-block w-full" ref={text2Ref} />
+			<span
+				className="inline-block w-full cursor-pointer"
+				ref={text1Ref}
+				onClick={handleClick}
+			/>
+			<span
+				className="absolute inset-0 inline-block w-full cursor-pointer"
+				ref={text2Ref}
+				onClick={handleClick}
+			/>
 		</>
 	);
 };
@@ -127,14 +152,14 @@ const SvgFilters = () => (
 	</svg>
 );
 
-export const MorphingText = ({ texts, className }) => (
+export const MorphingText = ({ texts, className, links }) => (
 	<span
 		className={cn(
 			"relative inline-block text-left font-sans leading-none font-bold [filter:url(#threshold)_blur(0.4px)]",
 			className,
 		)}
 	>
-		<Texts texts={texts} />
+		<Texts texts={texts} links={links} />
 		<SvgFilters />
 	</span>
 );
