@@ -9,17 +9,17 @@ export default function Error({ error, reset }) {
 	}, [error]);
 
 	return (
-		<div className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 px-4">
+		<div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 px-4">
 			<div className="max-w-md text-center">
-				<h2 className="mb-4 text-2xl font-bold text-neutral-900">
+				<h2 className="mb-4 text-2xl font-bold text-zinc-900">
 					Something went wrong!
 				</h2>
-				<p className="mb-6 text-neutral-600">
+				<p className="mb-6 text-zinc-600">
 					We encountered an unexpected error. Please try again.
 				</p>
 				<button
 					onClick={() => reset()}
-					className="rounded-lg bg-neutral-900 px-6 py-3 text-white transition-colors hover:bg-neutral-800"
+					className="rounded-lg bg-zinc-900 px-6 py-3 text-white transition-colors hover:bg-zinc-800"
 				>
 					Try again
 				</button>

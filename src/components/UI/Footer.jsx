@@ -192,10 +192,10 @@ const Footer = () => {
 					onMouseLeave={() => !isMobile && setIsHovered(false)}
 					ref={creditRef}
 				>
-					<span className="text-lg whitespace-nowrap text-neutral-300 sm:text-base md:text-lg">
+					<span className="text-lg whitespace-nowrap text-zinc-300 sm:text-base md:text-lg">
 						Made with ❤️ by
 					</span>
-					<div className="relative inline-flex h-[1.75rem] min-w-[95px] items-center justify-start overflow-hidden sm:h-[1.5rem] sm:min-w-0 sm:overflow-visible md:h-[1.75rem]">
+					<div className="relative inline-flex h-7 min-w-[95px] items-center justify-start overflow-hidden sm:h-6 sm:min-w-0 sm:overflow-visible md:h-7">
 						<AnimatePresence mode="wait" initial={false}>
 							{isHovered ? (
 								<motion.div
@@ -253,9 +253,7 @@ const Footer = () => {
 					whileInView="visible"
 					viewport={{ once: true }}
 				>
-					<h1 className="text-base text-neutral-300 sm:text-lg">
-						Follow us on
-					</h1>
+					<h1 className="text-base text-zinc-300 sm:text-lg">Follow us on</h1>
 					{socialLinks.map((link, i) => (
 						<Link
 							key={link.name}
@@ -264,7 +262,7 @@ const Footer = () => {
 							rel="noopener noreferrer"
 						>
 							<motion.div
-								className="hover:border-accent hover:text-accent rounded-full border border-neutral-700/50 bg-neutral-800/80 p-3 text-xl transition-all duration-300 hover:-translate-y-1 hover:border-orange-500/50 hover:bg-neutral-700/80 hover:shadow-lg hover:shadow-orange-500/20"
+								className="hover:text-accent rounded-full border border-zinc-700/50 bg-zinc-800/80 p-3 text-xl transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:bg-zinc-700/80 hover:shadow-lg hover:shadow-orange-500/20"
 								custom={i}
 								initial="hidden"
 								whileInView="visible"
@@ -328,7 +326,7 @@ const DevLink = ({ dev, isMobile }) => {
 				rel="noopener noreferrer"
 				onMouseEnter={() => setShowTooltip(true)}
 				onMouseLeave={() => setShowTooltip(false)}
-				className="tracking-wide transition-colors duration-200 ease-out hover:text-orange-400"
+				className="tracking-wide transition-colors duration-200 ease-out hover:text-accent"
 			>
 				{dev.name}
 			</Link>
@@ -342,13 +340,13 @@ const DevLink = ({ dev, isMobile }) => {
 							duration: 0.15,
 							ease: [0.4, 0, 0.2, 1],
 						}}
-						className="absolute -top-9 left-1/2 z-50 -translate-x-1/2 rounded-lg border border-neutral-600 bg-neutral-800/95 px-2.5 py-1.5 shadow-xl backdrop-blur-sm will-change-transform"
+						className="absolute -top-9 left-1/2 z-50 -translate-x-1/2 rounded-lg border border-zinc-600 bg-zinc-800/95 px-2.5 py-1.5 shadow-xl backdrop-blur-sm will-change-transform"
 						style={{ transform: "translateZ(0)" }}
 					>
-						<div className="flex items-center gap-1 text-neutral-200">
+						<div className="flex items-center gap-1 text-zinc-200">
 							{dev.icon}
 						</div>
-						<div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-r border-b border-neutral-600 bg-neutral-800/95"></div>
+						<div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-r border-b border-zinc-600 bg-zinc-800/95"></div>
 					</motion.div>
 				)}
 			</AnimatePresence>

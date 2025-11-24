@@ -95,7 +95,7 @@ export default function ImageZoomModal({
 											className={`h-2.5 rounded-full transition-all ${
 												index === currentIndex
 													? "w-8 bg-white"
-													: "w-2.5 bg-neutral-600 hover:bg-neutral-400"
+													: "w-2.5 bg-zinc-600 hover:bg-zinc-400"
 											}`}
 											aria-label={`Go to image ${index + 1}`}
 											whileHover={{ scale: 1.2 }}
@@ -170,7 +170,7 @@ export default function ImageZoomModal({
 											className={`h-2.5 rounded-full transition-all ${
 												index === currentIndex
 													? "w-8 bg-white"
-													: "w-2.5 bg-neutral-600 hover:bg-neutral-400"
+													: "w-2.5 bg-zinc-600 hover:bg-zinc-400"
 											}`}
 											aria-label={`Go to image ${index + 1}`}
 											whileTap={{ scale: 0.9 }}

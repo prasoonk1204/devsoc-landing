@@ -269,13 +269,13 @@ export default function EventRegistrationForm({ event }) {
 			initial="hidden"
 			whileInView="visible"
 			viewport={{ once: true }}
-			className="mx-auto max-w-2xl rounded-3xl border border-neutral-800 bg-neutral-900/50 p-4 backdrop-blur-sm sm:p-6 md:p-8"
+			className="mx-auto max-w-2xl rounded-3xl border border-zinc-800 bg-zinc-900/50 p-4 backdrop-blur-sm sm:p-6 md:p-8"
 		>
 			<div className="mb-6 text-center sm:mb-8">
 				<h2 className="mb-2 text-2xl font-bold text-white sm:text-3xl">
 					Event Registration
 				</h2>
-				<p className="text-sm text-neutral-400 sm:text-base">
+				<p className="text-sm text-zinc-400 sm:text-base">
 					Register for {event.title} - {formatEventDate(event.date)}
 				</p>
 			</div>
@@ -392,7 +392,7 @@ export default function EventRegistrationForm({ event }) {
 				<button
 					type="submit"
 					disabled={isSubmitting || emailCheck?.isRegistered}
-					className="bg-accent hover:bg-accent/90 focus:ring-accent w-full rounded-lg px-6 py-3 font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-900 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+					className="bg-accent hover:bg-accent/90 focus:ring-accent w-full rounded-lg px-6 py-3 font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					{isSubmitting
 						? "Submitting..."

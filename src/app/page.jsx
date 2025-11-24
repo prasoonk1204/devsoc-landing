@@ -47,7 +47,7 @@ export default function Home() {
 				isModelLoaded={allLoaded}
 				onLoadComplete={() => setIsLoaded(true)}
 			/>
-			<div className="mx-auto flex max-w-[1800px] flex-col items-center justify-center bg-neutral-50">
+			<div className="mx-auto flex max-w-[1800px] flex-col items-center justify-center bg-zinc-50">
 				<Hero
 					onModelLoaded={() => setIsModelLoaded(true)}
 					onDataLoaded={() => setIsDataLoaded(true)}

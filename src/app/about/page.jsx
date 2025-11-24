@@ -56,7 +56,7 @@ export default function AboutPage() {
 					viewport={{ once: true }}
 					className="mb-16 text-center"
 				>
-					<p className="mx-auto max-w-4xl text-lg leading-relaxed text-neutral-300">
+					<p className="mx-auto max-w-4xl text-lg leading-relaxed text-zinc-300">
 						DevSoc at Asansol Engineering College is where tech feels fun and
 						creative. We bring coders, designers, and thinkers into one space
 						where ideas turn into real work. The aim is simple, help each other
@@ -79,7 +79,7 @@ export default function AboutPage() {
 					>
 						Our Mission:
 					</motion.h2>
-					<motion.ul className="space-y-4 text-neutral-300">
+					<motion.ul className="space-y-4 text-zinc-300">
 						<motion.li variants={fadeInBlurFast} className="flex gap-3">
 							<span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-orange-300" />
 							<span className="text-lg">

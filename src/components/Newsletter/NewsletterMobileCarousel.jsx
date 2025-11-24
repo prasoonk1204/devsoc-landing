@@ -32,7 +32,7 @@ export default function NewsletterMobileCarousel({
 								delay: 0.1 * index,
 								ease: "easeOut",
 							}}
-							className="relative w-72 shrink-0 overflow-hidden rounded-3xl bg-neutral-900 shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+							className="relative w-72 shrink-0 overflow-hidden rounded-3xl bg-zinc-900 shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
 							onClick={() => onImageClick(index)}
 							whileTap={{ scale: 0.95 }}
 						>
@@ -61,9 +61,7 @@ export default function NewsletterMobileCarousel({
 					<motion.div
 						key={index}
 						className={`h-1.5 rounded-full transition-all duration-300 ${
-							index === visibleImageIndex
-								? "w-6 bg-white"
-								: "w-1.5 bg-neutral-600"
+							index === visibleImageIndex ? "w-6 bg-white" : "w-1.5 bg-zinc-600"
 						}`}
 						animate={{
 							width: index === visibleImageIndex ? 24 : 6,

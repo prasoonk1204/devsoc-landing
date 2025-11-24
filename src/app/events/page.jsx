@@ -45,10 +45,10 @@ export default function Page() {
 							<h1 className="font-iceland mb-2 text-4xl font-bold text-white sm:text-6xl">
 								{latestEvent.title}
 							</h1>
-							<p className="mb-6 text-lg text-neutral-300 sm:text-xl">
+							<p className="mb-6 text-lg text-zinc-300 sm:text-xl">
 								{formatEventDate(latestEvent.date)}
 							</p>
-							<p className="text-md mb-8 font-sans leading-relaxed text-neutral-100 sm:text-lg">
+							<p className="text-md mb-8 font-sans leading-relaxed text-zinc-100 sm:text-lg">
 								{latestEvent.description}
 							</p>
 
@@ -56,13 +56,13 @@ export default function Page() {
 								<div className="flex flex-col gap-4 sm:flex-row">
 									<Link
 										href={`/events/${latestEvent.slug}/register`}
-										className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-6 py-3 text-center font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+										className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none font-sans"
 									>
 										Register for Event
 									</Link>
 									<Link
 										href={`/events/${latestEvent.slug}`}
-										className="inline-flex items-center justify-center rounded-3xl border border-neutral-600 px-6 py-3 text-center font-medium text-white transition-colors hover:bg-neutral-800 focus:ring-2 focus:ring-neutral-600 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+										className="inline-flex items-center justify-center rounded-3xl border border-zinc-600 px-8 py-3 text-center font-medium text-white transition-colors hover:bg-zinc-800 focus:ring-2 focus:ring-zinc-600 focus:ring-offset-2 focus:ring-offset-black focus:outline-none font-sans"
 									>
 										View Details
 									</Link>
@@ -72,7 +72,7 @@ export default function Page() {
 							{!isRegistrationEnabled && (
 								<Link
 									href={`/events/${latestEvent.slug}`}
-									className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-6 py-3 text-center font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+									className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-6 py-3 text-center font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none font-sans"
 								>
 									View Details
 								</Link>
@@ -109,7 +109,7 @@ export default function Page() {
 						<div className="bg-accent h-1 w-20 rounded-full"></div>
 					</motion.div>
 
-					<div className="grid w-full grid-cols-2 gap-4 md:px-0 lg:grid-cols-3 xl:grid-cols-4">
+					<div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 md:px-0 lg:grid-cols-4">
 						{previousEvents.map((event) => (
 							<motion.div key={event.slug} variants={fadeInBlur}>
 								<EventCard event={event} />

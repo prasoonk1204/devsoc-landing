@@ -18,7 +18,7 @@ export default function FormSelect({
 				value={value}
 				onChange={onChange}
 				required={required}
-				className={`focus:ring-accent w-full rounded-lg bg-neutral-800 px-4 py-3 text-white focus:ring-2 focus:outline-none ${
+				className={`focus:ring-accent w-full rounded-lg bg-zinc-800 px-4 py-3 text-white focus:ring-2 focus:outline-none ${
 					error ? "border-2 border-red-500" : ""
 				}`}
 			>

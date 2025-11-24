@@ -261,7 +261,7 @@ export const eventsData = [
 		title: "Onboarding session 2025",
 		slug: "onboarding-session-2025",
 		image:
-			"https://ik.imagekit.io/devsoc/events/2025_Onboarding_session/cover.png?updatedAt=1763926072891",
+			"https://ik.imagekit.io/devsoc/events/2025_Onboarding_session/cover.png?updatedAt=1764007718967",
 		date: "2025-10-08",
 		description:
 			"DevSoc conducted its 2025 Onboarding Session, where new students interacted with seniors, learned about development paths, and participated in an engaging quiz with top performers recognized.",

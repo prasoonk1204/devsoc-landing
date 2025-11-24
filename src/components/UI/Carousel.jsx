@@ -188,13 +188,13 @@ export const Card = ({ card, index, layout = false }) => {
 							exit={{ opacity: 0 }}
 							ref={containerRef}
 							layoutId={layout ? `card-${card.title}` : undefined}
-							className="relative z-60 mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
+							className="relative z-60 mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-zinc-900"
 						>
 							<button
 								className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
 								onClick={handleClose}
 							>
-								<IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+								<IconX className="h-6 w-6 text-zinc-100 dark:text-zinc-900" />
 							</button>
 							<motion.p
 								layoutId={layout ? `category-${card.title}` : undefined}
@@ -204,7 +204,7 @@ export const Card = ({ card, index, layout = false }) => {
 							</motion.p>
 							<motion.p
 								layoutId={layout ? `title-${card.title}` : undefined}
-								className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
+								className="mt-4 text-2xl font-semibold text-zinc-700 md:text-5xl dark:text-white"
 							>
 								{card.title}
 							</motion.p>
@@ -216,7 +216,7 @@ export const Card = ({ card, index, layout = false }) => {
 			<motion.button
 				layoutId={layout ? `card-${card.title}` : undefined}
 				onClick={handleOpen}
-				className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-160 md:w-96 dark:bg-neutral-900"
+				className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-160 md:w-96 dark:bg-zinc-900"
 			>
 				<div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-linear-to-b from-black/50 via-transparent to-transparent" />
 				<div className="relative z-40 p-8">

@@ -17,7 +17,7 @@ export default function PageHeader({ title, subtitle }) {
 			</motion.h1>
 			{subtitle && (
 				<motion.p
-					className="text-xl text-neutral-200"
+					className="text-xl text-zinc-200"
 					variants={fadeInBlur}
 					initial="hidden"
 					whileInView="visible"

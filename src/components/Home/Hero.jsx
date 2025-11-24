@@ -65,7 +65,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 						initial="hidden"
 						whileInView={shouldAnimate ? "visible" : "hidden"}
 						viewport={{ once: true }}
-						className="mt-6 inline-block rounded-3xl bg-neutral-900 px-8 py-2.5 text-lg text-white transition-all duration-200 hover:scale-102 hover:cursor-pointer hover:bg-neutral-800 active:scale-97"
+						className="mt-6 inline-block rounded-3xl bg-zinc-950 px-8 py-2.5 text-lg text-white transition-all duration-200 hover:scale-102 hover:cursor-pointer hover:bg-zinc-900 active:scale-97 shadow-lg hover:shadow-xl"
 					>
 						Step into our space
 					</motion.a>

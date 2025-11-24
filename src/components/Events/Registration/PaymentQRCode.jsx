@@ -13,8 +13,8 @@ export default function PaymentQRCode({ eventSlug }) {
 	if (paymentSettings === undefined) {
 		return (
 			<div className="text-center">
-				<div className="mx-auto mb-4 h-44 w-44 animate-pulse rounded-lg bg-neutral-800" />
-				<p className="text-xs text-neutral-400">Loading payment details...</p>
+				<div className="mx-auto mb-4 h-44 w-44 animate-pulse rounded-lg bg-zinc-800" />
+				<p className="text-xs text-zinc-400">Loading payment details...</p>
 			</div>
 		);
 	}
@@ -22,7 +22,7 @@ export default function PaymentQRCode({ eventSlug }) {
 	if (!paymentSettings) {
 		return (
 			<div className="text-center">
-				<p className="text-sm text-neutral-400">
+				<p className="text-sm text-zinc-400">
 					Payment details will be displayed here
 				</p>
 			</div>
@@ -43,7 +43,7 @@ export default function PaymentQRCode({ eventSlug }) {
 					className="mx-auto h-32 w-32 object-contain sm:h-44 sm:w-44"
 				/>
 			</div>
-			<p className="text-xs text-neutral-400 sm:text-sm">
+			<p className="text-xs text-zinc-400 sm:text-sm">
 				UPI ID: {paymentSettings.upiId}
 			</p>
 		</div>
