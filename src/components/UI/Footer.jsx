@@ -262,7 +262,7 @@ const Footer = () => {
 							rel="noopener noreferrer"
 						>
 							<motion.div
-								className="hover:text-accent rounded-full border border-zinc-700/50 bg-zinc-800/80 p-3 text-xl transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:bg-zinc-700/80 hover:shadow-lg hover:shadow-orange-500/20"
+								className="hover:text-accent hover:border-accent rounded-full border border-zinc-700/50 bg-zinc-800/80 p-3 text-xl transition-all duration-300 hover:-translate-y-1 hover:bg-zinc-700/80 hover:shadow-lg hover:shadow-orange-500/20"
 								custom={i}
 								initial="hidden"
 								whileInView="visible"
@@ -326,7 +326,7 @@ const DevLink = ({ dev, isMobile }) => {
 				rel="noopener noreferrer"
 				onMouseEnter={() => setShowTooltip(true)}
 				onMouseLeave={() => setShowTooltip(false)}
-				className="tracking-wide transition-colors duration-200 ease-out hover:text-accent"
+				className="hover:text-accent tracking-wide transition-colors duration-200 ease-out"
 			>
 				{dev.name}
 			</Link>

@@ -82,7 +82,7 @@ export default function EventDetailPage({ params }) {
 							{isLatestEvent && isRegistrationEnabled && (
 								<Link
 									href={`/events/${event.slug}/register`}
-									className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6 font-sans"
+									className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
 								>
 									<span>Register Now</span>
 									<ArrowRight className="h-5 w-5 transition-transform duration-300" />

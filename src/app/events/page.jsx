@@ -56,13 +56,13 @@ export default function Page() {
 								<div className="flex flex-col gap-4 sm:flex-row">
 									<Link
 										href={`/events/${latestEvent.slug}/register`}
-										className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none font-sans"
+										className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
 									>
 										Register for Event
 									</Link>
 									<Link
 										href={`/events/${latestEvent.slug}`}
-										className="inline-flex items-center justify-center rounded-3xl border border-zinc-600 px-8 py-3 text-center font-medium text-white transition-colors hover:bg-zinc-800 focus:ring-2 focus:ring-zinc-600 focus:ring-offset-2 focus:ring-offset-black focus:outline-none font-sans"
+										className="inline-flex items-center justify-center rounded-3xl border border-zinc-600 px-8 py-3 text-center font-sans font-medium text-white transition-colors hover:bg-zinc-800 focus:ring-2 focus:ring-zinc-600 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
 									>
 										View Details
 									</Link>
@@ -72,7 +72,7 @@ export default function Page() {
 							{!isRegistrationEnabled && (
 								<Link
 									href={`/events/${latestEvent.slug}`}
-									className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-6 py-3 text-center font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none font-sans"
+									className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-6 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
 								>
 									View Details
 								</Link>
