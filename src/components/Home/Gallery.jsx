@@ -39,7 +39,7 @@ export default function Gallery() {
 								alt={item.title}
 								fill
 								sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-								className="bg-neutral-700 object-cover transition-all duration-200 group-hover:brightness-75"
+								className="bg-zinc-700 object-cover transition-all duration-200 group-hover:brightness-75"
 							/>
 
 							<div className="absolute inset-0 flex items-end bg-linear-to-t from-black to-transparent to-60% p-4">

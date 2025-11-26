@@ -127,7 +127,7 @@ export default function MemberCard({ member, index }) {
 							<h3 className="mb-1 text-lg font-bold text-white">
 								{member.name}
 							</h3>
-							<p className="text-sm text-neutral-300">{member.designation}</p>
+							<p className="text-sm text-zinc-300">{member.designation}</p>
 						</div>
 
 						{hasSocials && (

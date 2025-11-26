@@ -32,7 +32,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 			/>
 			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
 				<Image src="/DevSocLogo.png" alt="DevSoc Logo" height={50} width={50} />
-				<h2 className="font-iceland text-2xl font-bold min-[400px]:text-3xl sm:text-4xl">
+				<h2 className="font-iceland text-2xl font-bold min-[400px]:text-3xl">
 					DEV<span className="text-orange-300">SOC</span>
 				</h2>
 			</div>
@@ -65,7 +65,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 						initial="hidden"
 						whileInView={shouldAnimate ? "visible" : "hidden"}
 						viewport={{ once: true }}
-						className="mt-6 inline-block rounded-3xl bg-neutral-900 px-8 py-2.5 text-lg text-white transition-all duration-200 hover:scale-102 hover:cursor-pointer hover:bg-neutral-800 active:scale-97"
+						className="mt-6 inline-block rounded-3xl bg-zinc-950 px-8 py-2.5 text-lg text-white shadow-lg transition-all duration-200 hover:scale-102 hover:cursor-pointer hover:bg-zinc-900 hover:shadow-xl active:scale-97"
 					>
 						Step into our space
 					</motion.a>

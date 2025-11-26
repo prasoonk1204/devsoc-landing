@@ -105,7 +105,7 @@ export default function Events() {
 						className="flex justify-center"
 					>
 						<Link href="/events">
-							<button className="mx-auto flex items-center justify-center gap-1 rounded-3xl bg-neutral-950 px-6 py-2.5 text-xl text-white transition-all duration-300 hover:cursor-pointer hover:gap-4 hover:bg-neutral-800">
+							<button className="mx-auto flex items-center justify-center gap-1 rounded-3xl bg-zinc-950 px-6 py-2.5 text-xl text-white transition-all duration-300 hover:cursor-pointer hover:gap-4 hover:bg-zinc-800">
 								View More
 								<ArrowRight className="" />{" "}
 							</button>
@@ -174,7 +174,7 @@ function FannedLayout({
 								<motion.div
 									whileHover={{ y: -10, scale: hoverScale }}
 									transition={{ type: "tween", duration: 0.25 }}
-									className={`group relative cursor-pointer rounded-3xl bg-neutral-600 transition-all duration-300 ease-out`}
+									className={`group relative cursor-pointer rounded-3xl bg-zinc-600 transition-all duration-300 ease-out`}
 									style={{
 										filter: isHovered
 											? "drop-shadow(12px 12px 12px rgba(0,0,0,0.5))"
@@ -226,7 +226,7 @@ function AppleCardsCarouselSection({ events }) {
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
 				transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-				className="relative flex h-110 w-75 cursor-pointer items-center justify-center overflow-hidden rounded-3xl bg-neutral-900 shadow-[2px_2px_5px_rgba(0,0,0,0.2),-2px_2px_5px_rgba(0,0,0,0.2),0_4px_5px_rgba(0,0,0,0.2)] md:h-160 md:w-96"
+				className="relative flex h-110 w-75 cursor-pointer items-center justify-center overflow-hidden rounded-3xl bg-zinc-900 shadow-[2px_2px_5px_rgba(0,0,0,0.2),-2px_2px_5px_rgba(0,0,0,0.2),0_4px_5px_rgba(0,0,0,0.2)] md:h-160 md:w-96"
 				whileHover={{ scale: 1.05 }}
 			>
 				<div className="flex flex-col items-center justify-center gap-4 text-white">

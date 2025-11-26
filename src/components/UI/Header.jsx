@@ -76,7 +76,7 @@ export default function Header() {
 	}, [displayIndex]);
 
 	return (
-		<nav className="ease fixed right-0 bottom-0 left-0 z-100 mx-auto mb-4 flex h-fit w-fit items-center justify-center rounded-4xl border border-black/20 bg-neutral-900 px-1 py-2 text-white shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)] backdrop-blur-lg transition-all duration-300 md:top-0 md:mt-4 md:px-1 md:py-0.5">
+		<nav className="ease fixed right-0 bottom-0 left-0 z-100 mx-auto mb-4 flex h-fit w-fit items-center justify-center rounded-4xl border border-zinc-700/90 bg-zinc-950/80 px-1 py-2 text-white shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)] backdrop-blur-lg transition-all duration-300 md:top-0 md:mt-4 md:px-1 md:py-0.5">
 			{displayIndex !== -1 && (
 				<motion.div
 					className="absolute h-[calc(100%-10px)] w-full rounded-full bg-orange-200 md:h-[calc(100%-6px)]"
@@ -102,13 +102,13 @@ export default function Header() {
 							ref={(el) => (navRefs.current[idx] = el)}
 							onMouseEnter={() => setHovered(idx)}
 							onMouseLeave={() => setHovered(null)}
-							className="group relative w-full px-5 py-3 text-center text-white min-[1120px]:px-6 lg:px-8"
+							className="group relative w-full px-5 py-3 text-center text-white sm:px-6 sm:py-3.5 xl:px-8"
 						>
 							<p
 								className={`relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black ${hovered === idx ? "text-black" : ""}`}
 							>
 								{item.icon}
-								<span className="hidden min-[1120px]:block">{item.title}</span>
+								<span className="hidden min-[1024px]:block">{item.title}</span>
 							</p>
 						</a>
 					);
@@ -121,13 +121,13 @@ export default function Header() {
 						ref={(el) => (navRefs.current[idx] = el)}
 						onMouseEnter={() => setHovered(idx)}
 						onMouseLeave={() => setHovered(null)}
-						className="group relative w-full px-5 py-3 text-center text-white min-[1120px]:px-6 lg:px-8"
+						className="group relative w-full px-5 py-3 text-center text-white sm:px-6 sm:py-3.5 xl:px-8"
 					>
 						<p
 							className={`relative flex items-center justify-center gap-2 transition-all duration-500 ease-in-out group-hover:text-black ${hovered === idx || (active && hovered === null) ? "text-black" : ""}`}
 						>
 							{item.icon}
-							<span className="hidden min-[1120px]:block">{item.title}</span>
+							<span className="hidden min-[1024px]:block">{item.title}</span>
 						</p>
 					</Link>
 				);

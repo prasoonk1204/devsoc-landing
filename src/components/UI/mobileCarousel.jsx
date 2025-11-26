@@ -40,7 +40,7 @@ export const Card = ({ card }) => {
 	return (
 		<>
 			<motion.div
-				className="relative h-110 w-75 overflow-hidden rounded-3xl bg-neutral-900 shadow-[2px_2px_5px_rgba(0,0,0,0.2),-2px_2px_5px_rgba(0,0,0,0.2),0_4px_5px_rgba(0,0,0,0.2)] md:h-160 md:w-96"
+				className="relative h-110 w-75 overflow-hidden rounded-3xl bg-zinc-900 shadow-[2px_2px_5px_rgba(0,0,0,0.2),-2px_2px_5px_rgba(0,0,0,0.2),0_4px_5px_rgba(0,0,0,0.2)] md:h-160 md:w-96"
 				whileHover={{ scale: 1.05 }}
 				transition={{ duration: 0.2 }}
 			>

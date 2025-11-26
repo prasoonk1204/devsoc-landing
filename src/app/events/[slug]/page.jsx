@@ -42,21 +42,15 @@ export default function EventDetailPage({ params }) {
 	};
 
 	return (
-		<div className="relative flex min-h-screen w-full flex-col items-center bg-neutral-950 pt-24 pb-16 text-white sm:pt-32 sm:pb-24">
-			{/* Background Elements */}
-			<div className="pointer-events-none absolute inset-0 overflow-hidden">
-				<div className="absolute -top-[20%] -left-[10%] h-[500px] w-[500px] rounded-full bg-purple-900/20 blur-[120px]" />
-				<div className="absolute top-[10%] -right-[10%] h-[400px] w-[400px] rounded-full bg-blue-900/20 blur-[100px]" />
-			</div>
-
-			<div className="relative z-10 w-full max-w-7xl px-4 sm:px-6">
+		<div className="relative flex min-h-screen w-full flex-col items-center px-4 pt-24 pb-16 text-white sm:pt-36 sm:pb-24">
+			<div className="relative w-full max-w-6xl">
 				<BackButton href="/events" label="Back to Events" />
 
 				{/* Main Content Grid */}
-				<div className="mt-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+				<div className="mt-6 grid w-full grid-cols-1 gap-8 md:mt-2 lg:grid-cols-12 lg:gap-12">
 					{/* LEFT SIDE (Content) */}
 					<motion.div
-						className="lg:col-span-7"
+						className="lg:col-span-8"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
@@ -71,7 +65,7 @@ export default function EventDetailPage({ params }) {
 								{event.title}
 							</h1>
 
-							<div className="mb-6 flex flex-wrap items-center gap-6 text-neutral-300">
+							<div className="mb-6 flex flex-wrap items-center gap-6 text-zinc-300">
 								<div className="flex items-center gap-2">
 									<Calendar className="text-accent h-5 w-5" />
 									<span className="text-base font-medium sm:text-lg">
@@ -80,40 +74,38 @@ export default function EventDetailPage({ params }) {
 								</div>
 							</div>
 
-							<p className="mb-8 text-base leading-relaxed text-neutral-200 sm:text-lg md:max-w-2xl">
+							<p className="mb-8 text-base leading-relaxed text-zinc-200 sm:text-lg md:max-w-2xl">
 								{event.description}
 							</p>
 
 							{/* Registration Button - Only show for latest event */}
 							{isLatestEvent && isRegistrationEnabled && (
-								<div className="mb-10">
-									<Link
-										href={`/events/${event.slug}/register`}
-										className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-lg font-semibold text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
-									>
-										Register Now
-										<ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-									</Link>
-								</div>
+								<Link
+									href={`/events/${event.slug}/register`}
+									className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
+								>
+									<span>Register Now</span>
+									<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+								</Link>
 							)}
 						</motion.div>
 
 						{/* Detailed Description Section */}
 						{event.detailedDescription && (
 							<motion.div
-								className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm sm:p-8"
+								className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-white/3 p-4 backdrop-blur-sm sm:p-8"
 								variants={fadeInBlur}
 							>
 								<h3 className="font-iceland text-accent mb-4 text-2xl font-bold sm:text-3xl">
 									About the Event
 								</h3>
-								<div className="font-sans text-sm leading-relaxed whitespace-pre-line text-neutral-300 sm:text-base">
+								<div className="font-sans text-sm leading-relaxed whitespace-pre-line text-zinc-300 sm:text-base">
 									{showFullDescription ? (
 										<>
 											{event.detailedDescription}
 											<button
 												onClick={() => setShowFullDescription(false)}
-												className="text-accent hover:text-accent/80 mt-4 flex items-center gap-1 font-medium transition-colors hover:underline"
+												className="text-accent hover:text-accent/80 mt-4 flex items-center gap-1 font-medium transition-colors hover:cursor-pointer hover:underline"
 											>
 												Show less
 											</button>
@@ -123,7 +115,7 @@ export default function EventDetailPage({ params }) {
 											{getPreviewText(event.detailedDescription)}
 											<button
 												onClick={() => setShowFullDescription(true)}
-												className="text-accent hover:text-accent/80 mt-2 flex items-center gap-1 font-medium transition-colors hover:underline"
+												className="text-accent hover:text-accent/80 mt-2 flex items-center gap-1 font-medium transition-colors hover:cursor-pointer hover:underline"
 											>
 												Read more
 											</button>
@@ -136,21 +128,21 @@ export default function EventDetailPage({ params }) {
 
 					{/* RIGHT SIDE (Image) */}
 					<motion.div
-						className="relative lg:col-span-5"
+						className="relative lg:col-span-4"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
 						viewport={{ once: true }}
 					>
 						<div className="sticky top-32">
-							<div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 shadow-2xl">
-								<div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+							<div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900 shadow-2xl">
+								<div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 								<Image
 									src={event.image}
 									alt={event.title}
 									width={600}
 									height={800}
-									className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105"
+									className="h-auto w-full object-cover"
 									priority
 									sizes="(max-width: 768px) 100vw, 40vw"
 								/>
@@ -184,17 +176,17 @@ export default function EventDetailPage({ params }) {
 									viewport={{ once: true }}
 									className="break-inside-avoid"
 								>
-									<div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-neutral-900 transition-all duration-300 hover:border-white/20 hover:shadow-xl">
+									<div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-zinc-900 transition-all duration-300 hover:border-white/20 hover:shadow-xl">
 										<Image
 											src={photoUrl}
 											alt={`Event snapshot ${index + 1}`}
 											width={500}
 											height={500}
-											className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-110"
+											className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-102"
 											sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
 										/>
 										<div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-										
+
 										{/* Download Button */}
 										<button
 											onClick={async (e) => {
@@ -203,7 +195,7 @@ export default function EventDetailPage({ params }) {
 													const response = await fetch(photoUrl);
 													const blob = await response.blob();
 													const blobUrl = window.URL.createObjectURL(blob);
-													const link = document.createElement('a');
+													const link = document.createElement("a");
 													link.href = blobUrl;
 													link.download = `event-snap-${index + 1}.jpg`;
 													document.body.appendChild(link);
@@ -211,11 +203,11 @@ export default function EventDetailPage({ params }) {
 													document.body.removeChild(link);
 													window.URL.revokeObjectURL(blobUrl);
 												} catch (error) {
-													console.error('Download failed:', error);
-													window.open(photoUrl, '_blank');
+													console.error("Download failed:", error);
+													window.open(photoUrl, "_blank");
 												}
 											}}
-											className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white opacity-100 backdrop-blur-md transition-all duration-300 hover:bg-black/70 hover:scale-110 lg:opacity-0 lg:group-hover:opacity-100"
+											className="absolute right-4 bottom-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white opacity-100 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:cursor-pointer hover:bg-black/70 lg:opacity-0 lg:group-hover:opacity-100"
 											title="Download Image"
 										>
 											<Download className="h-5 w-5" />

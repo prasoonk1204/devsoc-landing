@@ -44,7 +44,7 @@ export default function EventRegistrationPage({ params }) {
 					<h1 className="font-iceland mb-2 text-4xl font-bold text-white sm:text-6xl">
 						{event.title}
 					</h1>
-					<p className="text-lg text-neutral-300 sm:text-xl">
+					<p className="text-lg text-zinc-300 sm:text-xl">
 						{formatEventDate(event.date)}
 					</p>
 				</motion.div>
