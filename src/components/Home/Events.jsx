@@ -177,16 +177,16 @@ function FannedLayout({
 									className={`group relative cursor-pointer rounded-3xl bg-zinc-600 transition-all duration-300 ease-out`}
 									style={{
 										filter: isHovered
-											? "drop-shadow(12px 12px 12px rgba(0,0,0,0.5))"
-											: "drop-shadow(8px 8px 8px rgba(0,0,0,0.5))",
+											? "drop-shadow(12px 12px 12px rgba(0,0,0,0.3))"
+											: "drop-shadow(8px 8px 8px rgba(0,0,0,0.2))",
 									}}
 								>
 									<img
 										src={event.image || "/placeholder.svg"}
 										alt={event.title}
-										className="aspect-3/4 w-full rounded-3xl object-cover transition-transform duration-300 ease-out"
+										className="aspect-3/4 w-full rounded-3xl object-fill transition-transform duration-300 ease-out"
 									/>
-									<div className="absolute inset-0 flex items-end rounded-3xl bg-linear-to-b from-transparent to-black p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+									<div className="absolute inset-0 flex items-end rounded-3xl bg-linear-to-b from-transparent to-black/80 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
 										<div>
 											<h3 className="text-lg font-bold text-white">
 												{event.title}

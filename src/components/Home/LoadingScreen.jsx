@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { LOGO } from "@/constant/assets";
 
 export default function LoadingScreen({ onLoadComplete, isModelLoaded }) {
 	const [shouldHide, setShouldHide] = useState(false);
@@ -25,7 +26,7 @@ export default function LoadingScreen({ onLoadComplete, isModelLoaded }) {
 			<div className="relative">
 				<div className="animate-spin-slow">
 					<Image
-						src="/DevSocLogo.png"
+						src={LOGO}
 						alt="DevSoc Logo"
 						width={150}
 						height={150}

@@ -7,6 +7,7 @@ import { api } from "convex/_generated/api";
 import AstronautScene from "./AstronautScene";
 import { fadeInBlurFast, fadeInFromBottom } from "@/lib/motionVariants";
 import { useMemo, useEffect } from "react";
+import { LOGO, BACKGROUND_IMG, HERO_IMG } from "@/constant/assets";
 
 export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 	const communityLinks = useQuery(api.settings.getCommunityLinks);
@@ -24,14 +25,14 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 	return (
 		<div className="to-accent/30 relative flex h-dvh w-full flex-col items-center justify-end bg-linear-to-t from-slate-300 px-4 pt-4 md:h-[768px]">
 			<Image
-				src="/devsocbg.png"
+				src={BACKGROUND_IMG}
 				alt="DevSoc Background"
 				height={887}
 				width={1439}
 				className="absolute inset-0 z-0 h-full w-full object-cover opacity-25"
 			/>
 			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
-				<Image src="/DevSocLogo.png" alt="DevSoc Logo" height={50} width={50} />
+				<Image src={LOGO} alt="DevSoc Logo" height={50} width={50} />
 				<h2 className="font-iceland text-2xl font-bold min-[400px]:text-3xl">
 					DEV<span className="text-orange-300">SOC</span>
 				</h2>
@@ -81,7 +82,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 			>
 				<div className="relative h-full w-full max-w-[400px]">
 					<Image
-						src="/DevsocHero.png"
+						src={HERO_IMG}
 						alt="DevSoc Astronaut"
 						fill
 						className="object-contain object-bottom"

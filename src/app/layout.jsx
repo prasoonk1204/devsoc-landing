@@ -10,6 +10,7 @@ import Footer from "@/components/UI/Footer";
 import SmoothScroll from "@/components/UI/SmoothScroll";
 import { ConvexProvider } from "@/providers/ConvexProvider";
 import { Analytics } from "@vercel/analytics/next";
+import { LOGO } from "@/constant/assets";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -36,7 +37,7 @@ export const metadata = {
 	title: "DevSoc",
 	description: "Development Society of Asansol Engineering College",
 	icons: {
-		icon: "/DevSocLogo.png",
+		icon: LOGO,
 	},
 };
 
