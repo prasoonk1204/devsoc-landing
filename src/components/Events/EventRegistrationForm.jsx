@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import { registrationSchema } from "@/lib/validations/registration";
-import { useQuery } from "convex/react";
-import { api } from "convex/_generated/api";
+import { api } from "@/lib/api";
 import FormInput from "./Registration/FormInput";
 import FormSelect from "./Registration/FormSelect";
 import FormTextarea from "./Registration/FormTextarea";
@@ -49,19 +48,36 @@ export default function EventRegistrationForm({ event }) {
 	const [errors, setErrors] = useState({});
 	const [submitStatus, setSubmitStatus] = useState(null);
 	const [fileInfo, setFileInfo] = useState(null);
+	const [emailCheck, setEmailCheck] = useState(null);
+	const [paymentSettings, setPaymentSettings] = useState(null);
 
 	// Check if email is already registered for this event
-	const emailCheck = useQuery(
-		api.registrations.checkEmailRegistration,
-		formData.email && formData.email.length >= 5
-			? { email: formData.email.toLowerCase(), eventSlug: event.slug }
-			: "skip",
-	);
+	useEffect(() => {
+		const checkEmail = async () => {
+			if (formData.email && formData.email.length >= 5) {
+				const { data } = await api.registrations["check-email"].get({
+					query: {
+						email: formData.email.toLowerCase(),
+						eventSlug: event.slug,
+					},
+				});
+				setEmailCheck(data);
+			}
+		};
+		const timeoutId = setTimeout(checkEmail, 500); // Debounce
+		return () => clearTimeout(timeoutId);
+	}, [formData.email, event.slug]);
 
 	// Fetch payment settings for this event
-	const paymentSettings = useQuery(api.settings.getPaymentSettings, {
-		eventSlug: event.slug,
-	});
+	useEffect(() => {
+		const fetchSettings = async () => {
+			const { data } = await api.settings["payment-settings"][
+				event.slug
+			].get();
+			setPaymentSettings(data);
+		};
+		fetchSettings();
+	}, [event.slug]);
 
 	useEffect(() => {
 		if (emailCheck?.isRegistered) {
@@ -134,6 +150,15 @@ export default function EventRegistrationForm({ event }) {
 		}
 	};
 
+	const convertToBase64 = (file) => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = (error) => reject(error);
+		});
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -154,50 +179,46 @@ export default function EventRegistrationForm({ event }) {
 
 			setUploadProgress("Submitting registration...");
 
-			const registrationFormData = new FormData();
-			registrationFormData.append("name", validatedData.name);
-			registrationFormData.append("roll", validatedData.roll);
-			registrationFormData.append("phone", validatedData.phone);
-			registrationFormData.append("email", validatedData.email);
-			registrationFormData.append("department", validatedData.department);
-			registrationFormData.append("year", validatedData.year);
-			registrationFormData.append("questions", validatedData.questions);
-			registrationFormData.append("eventSlug", event.slug);
-			registrationFormData.append("eventTitle", event.title);
-			registrationFormData.append("transactionId", validatedData.transactionId);
-			registrationFormData.append(
-				"amount",
-				String(paymentSettings?.amount || 50),
-			);
-			registrationFormData.append("file", validatedData.paymentScreenshot);
+			const imageBuffer = await convertToBase64(validatedData.paymentScreenshot);
 
-			const response = await fetch("/api/register-event", {
-				method: "POST",
-				body: registrationFormData,
+			const { data, error } = await api.registrations[
+				"register-with-image"
+			].post({
+				name: validatedData.name,
+				roll: validatedData.roll,
+				phone: validatedData.phone,
+				email: validatedData.email,
+				department: validatedData.department,
+				year: validatedData.year,
+				questions: validatedData.questions,
+				eventSlug: event.slug,
+				eventTitle: event.title,
+				transactionId: validatedData.transactionId,
+				amount: Number(paymentSettings?.amount || 50),
+				imageBuffer: imageBuffer,
+				fileName: validatedData.paymentScreenshot.name,
 			});
 
-			const result = await response.json();
+			if (error) {
+				const errorMessage = error.value || "Failed to submit registration";
 
-			if (!response.ok) {
-				const errorMessage = result.error || "Failed to submit registration";
-
-				if (errorMessage.includes("already registered")) {
+				if (String(errorMessage).includes("already registered")) {
 					throw new Error(
 						`You have already registered for ${event.title} with this email. Each email can only register once per event.`,
 					);
-				} else if (errorMessage.includes("transaction ID")) {
+				} else if (String(errorMessage).includes("transaction ID")) {
 					throw new Error(
 						"This transaction ID has already been used. Please check your transaction ID or use a different one.",
 					);
 				} else {
-					throw new Error(errorMessage);
+					throw new Error(String(errorMessage));
 				}
 			}
 
 			setUploadProgress(null);
 			setSubmitStatus({
 				type: "success",
-				message: result.message,
+				message: data.message,
 			});
 
 			setFormData({

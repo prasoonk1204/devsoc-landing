@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  roll         String
+  phone        String
+  email        String
+  department   String
+  year         String
+  questions    String
+  eventSlug    String
+  eventTitle   String
+  registeredAt DateTime @default(now())
+  
+  payment      Payment?
+  paymentId    String?  @unique
+                            
+  @@index([email])
+  @@index([eventSlug])
+  @@index([roll])
+}
+
+model Payment {
+  id                         String    @id @default(uuid())
+  transactionId              String
+  paymentScreenshotUrl       String
+  paymentScreenshotStorageId String
+  eventSlug                  String
+  eventTitle                 String
+  amount                     Float
+  status                     String    @default("pending") // "pending", "verified", "rejected"
+  verifiedAt                 DateTime?
+  verifiedBy                 String?
+  createdAt                  DateTime  @default(now())
+  
+  user                       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                     String    @unique
+
+  @@index([userId])
+  @@index([transactionId])
+  @@index([eventSlug])
+  @@index([status])
+}
+
+model Setting {
+  id          String    @id @default(uuid())
+  key         String    @unique
+  value       String
+  description String?
+  updatedAt   DateTime  @updatedAt
+  updatedBy   String?
+
+  @@index([key])
+}

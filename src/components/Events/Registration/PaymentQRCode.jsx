@@ -1,14 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { useQuery } from "convex/react";
-import { api } from "convex/_generated/api";
+import { useState, useEffect } from "react";
+import { api } from "@/lib/api";
 
 export default function PaymentQRCode({ eventSlug }) {
+	const [paymentSettings, setPaymentSettings] = useState(undefined);
+
 	// Fetch payment settings
-	const paymentSettings = useQuery(api.settings.getPaymentSettings, {
-		eventSlug,
-	});
+	useEffect(() => {
+		const fetchSettings = async () => {
+			const { data } = await api.settings["payment-settings"][eventSlug].get();
+			setPaymentSettings(data);
+		};
+		fetchSettings();
+	}, [eventSlug]);
 
 	if (paymentSettings === undefined) {
 		return (
