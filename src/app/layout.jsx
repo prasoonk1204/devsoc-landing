@@ -64,9 +64,7 @@ export const metadata = {
 		card: "summary_large_image",
 		title: "DevSoc",
 		description: "Development Society of Asansol Engineering College",
-		images: [
-			"https://ik.imagekit.io/devsoc/Website/og-banner.png",
-		],
+		images: ["https://ik.imagekit.io/devsoc/Website/og-banner.png"],
 	},
 
 	robots: {
@@ -76,7 +74,6 @@ export const metadata = {
 
 	metadataBase: new URL("https://devsoc-aec.vercel.app/"),
 };
-
 
 export default function RootLayout({ children }) {
 	return (

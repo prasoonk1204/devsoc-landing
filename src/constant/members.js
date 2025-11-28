@@ -1,3 +1,21 @@
+export const teacherCoordinators = [
+	{
+		id: 1,
+		name: "Sambit S. Mondal",
+		designation: "Teacher Coordinator",
+		image: "https://ik.imagekit.io/devsoc/Members/Teachers/sambit_sir.png",
+		socials: {
+			linkedin: "https://www.linkedin.com/in/sambit-s-mondal-ba956a45",
+		},
+	},
+	{
+		id: 2,
+		name: "Khushbu Chandrakar",
+		designation: "Teacher Coordinator",
+		image: "https://ik.imagekit.io/devsoc/Members/Teachers/khushbu_mam.jpeg",
+		socials: {},
+	},
+];
 export const coreCommittee = [
 	{
 		id: 1,
@@ -127,7 +145,8 @@ export const coreCommittee = [
 		id: 13,
 		name: "Gourav Yadav",
 		designation: "Design Lead",
-		image: "https://ik.imagekit.io/devsoc/Members/Core-Committee/IMG_3174%201.png?updatedAt=1763989803957",
+		image:
+			"https://ik.imagekit.io/devsoc/Members/Core-Committee/IMG_3174%201.png?updatedAt=1763989803957",
 		socials: {
 			github: "https://github.com/73LIX",
 		},
@@ -160,7 +179,8 @@ export const techTeam = [
 		id: 3,
 		name: "Elhan Yasir",
 		designation: "Tech Team",
-		image: "https://ik.imagekit.io/devsoc/Members/Tech_Team/r20837r923r2br3c.png?updatedAt=1763988556656",
+		image:
+			"https://ik.imagekit.io/devsoc/Members/Tech_Team/r20837r923r2br3c.png?updatedAt=1763988556656",
 		socials: {
 			linkedin:
 				"https://www.linkedin.com/in/elhan-yasir-164445350?utm_source=share&utm_c",
@@ -180,7 +200,8 @@ export const techTeam = [
 		id: 5,
 		name: "Khushi Singh",
 		designation: "Tech Team",
-		image: "https://ik.imagekit.io/devsoc/Members/Tech_Team/1746396179553.jpeg?updatedAt=1763988574654",
+		image:
+			"https://ik.imagekit.io/devsoc/Members/Tech_Team/1746396179553.jpeg?updatedAt=1763988574654",
 		socials: {
 			linkedin: "https://www.linkedin.com/in/khushi-singh-3k",
 		},
@@ -189,7 +210,8 @@ export const techTeam = [
 		id: 6,
 		name: "Monu Kumar Singh",
 		designation: "Competitive Programming",
-		image: "https://ik.imagekit.io/devsoc/Members/Tech_Team/1746396179553.jpeg?updatedAt=1763988574654",
+		image:
+			"https://ik.imagekit.io/devsoc/Members/Tech_Team/1746396179553.jpeg?updatedAt=1763988574654",
 		socials: {
 			linkedin:
 				"https://www.linkedin.com/in/monu-kumar-singh-3a5a4a397?utm_source=share",
@@ -377,7 +399,8 @@ export const managementTeam = [
 		id: 8,
 		name: "Sanjay Sharma",
 		designation: "Event Management & PR",
-		image: "https://ik.imagekit.io/devsoc/Members/Management_Team/1761717478199.jpeg?updatedAt=1763989970560",
+		image:
+			"https://ik.imagekit.io/devsoc/Members/Management_Team/1761717478199.jpeg?updatedAt=1763989970560",
 		socials: {
 			linkedin: "https://www.linkedin.com/in/expertcoder06",
 		},

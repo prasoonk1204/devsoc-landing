@@ -7,6 +7,7 @@ import {
 	techTeam,
 	designTeam,
 	managementTeam,
+	teacherCoordinators,
 } from "@/constant/members";
 import {
 	fadeInBlur,
@@ -134,6 +135,23 @@ export default function AboutPage() {
 					<h2 className="text-4xl font-bold text-orange-300 md:text-5xl">
 						Meet The Team
 					</h2>
+				</motion.div>
+
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-16"
+				>
+					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+						Teacher Coordinators
+					</h3>
+					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+						{teacherCoordinators.map((member, index) => (
+							<MemberCard key={member.id} member={member} index={index} />
+						))}
+					</div>
 				</motion.div>
 
 				<motion.div
