@@ -40,7 +40,7 @@ export default function Header() {
 		},
 		{
 			title: "Quiz",
-			href: "https://rapid-quiz-relay.vercel.app/",
+			href: "https://quizora-devsoc.vercel.app/",
 			icon: <Brain size={20} />,
 			external: true,
 		},
