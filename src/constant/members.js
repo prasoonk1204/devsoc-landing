@@ -211,7 +211,7 @@ export const techTeam = [
 		name: "Monu Kumar Singh",
 		designation: "Competitive Programming",
 		image:
-			"https://ik.imagekit.io/devsoc/Members/Tech_Team/1746396179553.jpeg?updatedAt=1763988574654",
+			"https://ik.imagekit.io/devsoc/Members/Tech_Team/1762792335315.png?updatedAt=1763990699539",
 		socials: {
 			linkedin:
 				"https://www.linkedin.com/in/monu-kumar-singh-3a5a4a397?utm_source=share",
