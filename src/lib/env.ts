@@ -17,9 +17,18 @@ const clientSchema = z.object({
 		.default("no"),
 	NEXT_PUBLIC_API_URL: z
 		.string()
-		.url()
 		.optional()
-		.default("http://localhost:3001"),
+		.transform((val) => {
+			// Allow empty string or undefined
+			if (!val || val === "") return undefined;
+			// Validate URL format if provided
+			try {
+				new URL(val);
+				return val;
+			} catch {
+				throw new Error(`Invalid URL format: ${val}`);
+			}
+		}),
 });
 
 const serverSchema = clientSchema.extend({

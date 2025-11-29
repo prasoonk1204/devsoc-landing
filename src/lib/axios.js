@@ -3,16 +3,24 @@ import { env } from "./env";
 
 // Determine API URL based on environment
 const getApiUrl = () => {
-	// In production, use the same origin if API_URL is not set
-	if (typeof window !== "undefined" && !env.NEXT_PUBLIC_API_URL) {
-		return `${window.location.origin}/api/v1`;
+	// Use provided API URL or fallback to same origin
+	const apiUrl = env.NEXT_PUBLIC_API_URL;
+	
+	// If no API URL is set, use same origin in browser
+	if (!apiUrl || apiUrl === "") {
+		if (typeof window !== "undefined") {
+			return `${window.location.origin}/api/v1`;
+		}
+		// During SSR/build, use a placeholder (will be replaced at runtime)
+		return "/api/v1";
 	}
-	return `${env.NEXT_PUBLIC_API_URL}/api/v1`;
+	
+	return `${apiUrl}/api/v1`;
 };
 
 const api = axios.create({
 	baseURL: getApiUrl(),
-	timeout: 30000, // 30 second timeout
+	timeout: 30000,
 	headers: {
 		"Content-Type": "application/json",
 	},
