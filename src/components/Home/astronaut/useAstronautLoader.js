@@ -53,14 +53,12 @@ export function useAstronautLoader(onModelLoaded) {
 	useEffect(() => {
 		if (skipCanvas || showFallback || modelLoaded) return;
 
-		// Generous timeout to handle slow network speeds
-		// This ensures the loading screen stays up until model loads or timeout
-		const timeout = 12000; // 12 seconds for slow connections
+		// Reduced timeout for faster fallback on slow connections
+		const timeout = 5000; // 5 seconds - reasonable for most connections
 
 		if (webglSupported && !modelLoadTimeout) {
 			loadTimeoutRef.current = setTimeout(() => {
 				if (!modelLoaded) {
-					// console.warn("Model load timeout - showing fallback image");
 					setModelLoadTimeout(true);
 					setShowFallback(true);
 					onModelLoaded?.();
@@ -68,15 +66,14 @@ export function useAstronautLoader(onModelLoaded) {
 			}, timeout);
 		}
 
-		// Safety timeout as last resort (15 seconds)
+		// Safety timeout as last resort (7 seconds)
 		safetyTimeoutRef.current = setTimeout(() => {
 			if (!modelLoaded && !showFallback) {
-				// console.warn("Safety timeout reached - showing fallback image");
 				setModelLoadTimeout(true);
 				setShowFallback(true);
 				onModelLoaded?.();
 			}
-		}, 15000);
+		}, 7000);
 
 		return () => {
 			if (loadTimeoutRef.current) {

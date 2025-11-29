@@ -85,6 +85,16 @@ export default function RootLayout({ children }) {
 					as="fetch"
 					crossOrigin="anonymous"
 				/>
+				<link
+					rel="preload"
+					href="https://ik.imagekit.io/devsoc/Website/DevSocLogo.png"
+					as="image"
+				/>
+				<link
+					rel="preload"
+					href="https://ik.imagekit.io/devsoc/Website/devsocbg.png"
+					as="image"
+				/>
 			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-18 antialiased md:pb-0`}

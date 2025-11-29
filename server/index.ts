@@ -1,3 +1,4 @@
+import "./lib/setup";
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { v1Routes } from "./routes/v1";
@@ -79,7 +80,10 @@ const app = new Elysia()
 		set.status = 500;
 		return { success: false, error: "Internal server error" };
 	})
-	.listen(PORT);
+	.listen({
+		port: PORT,
+		reusePort: true,
+	});
 
 if (env.NODE_ENV === "development") {
 	logger.info(`Server started`, {

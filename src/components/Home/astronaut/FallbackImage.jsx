@@ -12,6 +12,8 @@ export function FallbackImage() {
 					className="object-contain object-bottom"
 					priority
 					loading="eager"
+					quality={90}
+					sizes="(max-width: 768px) 100vw, 500px"
 				/>
 			</div>
 		</div>

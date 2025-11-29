@@ -41,6 +41,8 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 				alt="DevSoc Background"
 				height={887}
 				width={1439}
+				priority
+				quality={85}
 				className="absolute inset-0 z-0 h-full w-full object-cover opacity-25"
 			/>
 			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
@@ -99,6 +101,8 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 						fill
 						className="object-contain object-bottom"
 						priority
+						quality={90}
+						sizes="(max-width: 768px) 400px, 0px"
 					/>
 				</div>
 			</motion.div>

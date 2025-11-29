@@ -59,13 +59,16 @@ body {
 }
 
 .animate-spin-slow {
-	animation: spin-slow 3s linear infinite;
+	animation: spin-slow 2.5s linear infinite;
+	will-change: transform;
 }
 
 .animate-pulse-ring {
-	animation: pulse-ring 2s ease-in-out infinite;
+	animation: pulse-ring 1.8s ease-in-out infinite;
+	will-change: transform, opacity;
 }
 
 .animate-pulse-ring-delayed {
-	animation: pulse-ring-delayed 2s ease-in-out 0.5s infinite;
+	animation: pulse-ring-delayed 1.8s ease-in-out 0.4s infinite;
+	will-change: transform, opacity;
 }

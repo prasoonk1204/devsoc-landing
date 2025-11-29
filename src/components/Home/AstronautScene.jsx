@@ -1,21 +1,29 @@
+"use client";
+
 import { useRef, useEffect } from "react";
-import { useGLTF } from "@react-three/drei";
 import { useInView } from "react-intersection-observer";
 import { FallbackImage } from "./astronaut/FallbackImage";
 import { AstronautCanvas } from "./astronaut/AstronautCanvas";
 import { useAstronautLoader } from "./astronaut/useAstronautLoader";
 
-// Preload the model immediately when this module loads
+// Preload on module load for faster initial render
 if (typeof window !== "undefined") {
-	useGLTF.preload("/astronaut.glb");
+	const link = document.createElement("link");
+	link.rel = "preload";
+	link.href = "/astronaut.glb";
+	link.as = "fetch";
+	link.crossOrigin = "anonymous";
+	document.head.appendChild(link);
 }
 
 export default function AstronautScene({ onModelLoaded }) {
 	const mouse = useRef({ x: 0, y: 0 });
+
 	const { ref: containerRef, inView: isAstronautVisible } = useInView({
 		threshold: 0.1,
 		triggerOnce: false,
 		initialInView: true,
+		rootMargin: "100px", // Start loading slightly before visible
 	});
 
 	const { showFallback, skipCanvas, handleCanvasError, handleModelLoaded } =
@@ -27,13 +35,30 @@ export default function AstronautScene({ onModelLoaded }) {
 			y: typeof window !== "undefined" ? window.innerHeight / 2 : 0,
 		};
 
+		// Throttle mouse move for better performance
+		let rafId = null;
+		let lastUpdate = 0;
+		const throttleMs = 32; // ~30fps for mouse tracking (sufficient for smooth feel)
+
 		const handleMouseMove = (event) => {
-			mouse.current = { x: event.clientX, y: event.clientY };
+			const now = Date.now();
+			if (now - lastUpdate < throttleMs) return;
+
+			if (rafId) return;
+
+			rafId = requestAnimationFrame(() => {
+				mouse.current = { x: event.clientX, y: event.clientY };
+				lastUpdate = now;
+				rafId = null;
+			});
 		};
 
 		if (typeof window !== "undefined") {
-			window.addEventListener("mousemove", handleMouseMove);
-			return () => window.removeEventListener("mousemove", handleMouseMove);
+			window.addEventListener("mousemove", handleMouseMove, { passive: true });
+			return () => {
+				window.removeEventListener("mousemove", handleMouseMove);
+				if (rafId) cancelAnimationFrame(rafId);
+			};
 		}
 	}, []);
 

@@ -1,8 +1,4 @@
-import { config } from "dotenv";
-import { resolve } from "path";
-
-// Load .env from parent directory
-config({ path: resolve(process.cwd(), "../.env") });
+// Env loaded in setup.ts
 
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../convex/_generated/api";
