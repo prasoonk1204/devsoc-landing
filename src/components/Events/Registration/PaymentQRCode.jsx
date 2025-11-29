@@ -1,14 +1,26 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useQuery } from "convex/react";
-import { api } from "convex/_generated/api";
+import api from "@/lib/axios";
 
 export default function PaymentQRCode({ eventSlug }) {
-	// Fetch payment settings
-	const paymentSettings = useQuery(api.settings.getPaymentSettings, {
-		eventSlug,
-	});
+	const [paymentSettings, setPaymentSettings] = useState(undefined);
+
+	useEffect(() => {
+		const fetchSettings = async () => {
+			try {
+				const res = await api.get("/settings/payment", {
+					params: { eventSlug },
+				});
+				setPaymentSettings(res.data.data);
+			} catch (error) {
+				// console.error("Failed to fetch payment settings:", error);
+				setPaymentSettings(null);
+			}
+		};
+		fetchSettings();
+	}, [eventSlug]);
 
 	if (paymentSettings === undefined) {
 		return (
@@ -35,13 +47,19 @@ export default function PaymentQRCode({ eventSlug }) {
 				Scan to pay / Rs. {paymentSettings.amount} / person
 			</p>
 			<div className="mx-auto mb-4 w-fit rounded-lg bg-white p-3 sm:p-4">
-				<Image
-					src={paymentSettings.qrCodeUrl}
-					alt="Payment QR Code"
-					width={180}
-					height={180}
-					className="mx-auto h-32 w-32 object-contain sm:h-44 sm:w-44"
-				/>
+				{paymentSettings.qrCodeUrl ? (
+					<Image
+						src={paymentSettings.qrCodeUrl}
+						alt="Payment QR Code"
+						width={180}
+						height={180}
+						className="mx-auto h-32 w-32 object-contain sm:h-44 sm:w-44"
+					/>
+				) : (
+					<div className="flex h-32 w-32 items-center justify-center bg-zinc-100 text-xs text-zinc-500 sm:h-44 sm:w-44">
+						QR Code Unavailable
+					</div>
+				)}
 			</div>
 			<p className="text-xs text-zinc-400 sm:text-sm">
 				UPI ID: {paymentSettings.upiId}

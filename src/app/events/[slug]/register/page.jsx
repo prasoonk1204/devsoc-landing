@@ -9,6 +9,8 @@ import BackButton from "@/components/UI/BackButton";
 import EventRegistrationForm from "@/components/Events/EventRegistrationForm";
 import { formatEventDate } from "@/lib/utils/eventUtils";
 
+import { env } from "@/lib/env";
+
 export default function EventRegistrationPage({ params }) {
 	const { slug } = use(params);
 	const event = eventsData.find((e) => e.slug === slug);
@@ -19,8 +21,8 @@ export default function EventRegistrationPage({ params }) {
 
 	// Check if registration is enabled and this is the latest event
 	const isRegistrationEnabled =
-		process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
-		process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
+		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
+		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
 	const latestEvent = eventsData[eventsData.length - 1];
 	const isLatestEvent = event.slug === latestEvent.slug;
 

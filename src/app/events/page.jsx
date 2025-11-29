@@ -12,6 +12,7 @@ import {
 	getPreviousEvents,
 	formatEventDate,
 } from "@/lib/utils/eventUtils";
+import { env } from "@/lib/env";
 
 export default function Page() {
 	// Get sorted events (latest first)
@@ -20,8 +21,8 @@ export default function Page() {
 
 	// Check if registration is enabled
 	const isRegistrationEnabled =
-		process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
-		process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
+		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
+		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
 
 	return (
 		<PageContainer>

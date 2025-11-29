@@ -8,7 +8,7 @@ import "./globals.css";
 import Header from "@/components/UI/Header";
 import Footer from "@/components/UI/Footer";
 import SmoothScroll from "@/components/UI/SmoothScroll";
-import { ConvexProvider } from "@/providers/ConvexProvider";
+
 import { Analytics } from "@vercel/analytics/next";
 import { LOGO } from "@/constant/assets";
 
@@ -90,13 +90,11 @@ export default function RootLayout({ children }) {
 				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-18 antialiased md:pb-0`}
 				suppressHydrationWarning
 			>
-				<ConvexProvider>
-					<SmoothScroll />
-					<Header />
-					{children}
-					<Footer />
-					<Analytics />
-				</ConvexProvider>
+				<SmoothScroll />
+				<Header />
+				{children}
+				<Footer />
+				<Analytics />
 			</body>
 		</html>
 	);

@@ -55,3 +55,4 @@ bun.lock
 
 .vscode
 Todo.txt
+*.md

@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import { registrationSchema } from "@/lib/validations/registration";
-import { useQuery } from "convex/react";
-import { api } from "convex/_generated/api";
+import api from "@/lib/axios";
 import FormInput from "./Registration/FormInput";
 import FormSelect from "./Registration/FormSelect";
 import FormTextarea from "./Registration/FormTextarea";
@@ -49,19 +48,44 @@ export default function EventRegistrationForm({ event }) {
 	const [errors, setErrors] = useState({});
 	const [submitStatus, setSubmitStatus] = useState(null);
 	const [fileInfo, setFileInfo] = useState(null);
+	const [emailCheck, setEmailCheck] = useState(null);
+	const [paymentSettings, setPaymentSettings] = useState(null);
 
-	// Check if email is already registered for this event
-	const emailCheck = useQuery(
-		api.registrations.checkEmailRegistration,
-		formData.email && formData.email.length >= 5
-			? { email: formData.email.toLowerCase(), eventSlug: event.slug }
-			: "skip",
-	);
+	// Check if email is already registered
+	useEffect(() => {
+		const checkEmail = async () => {
+			if (formData.email && formData.email.length >= 5) {
+				try {
+					const res = await api.get("/registrations/check", {
+						params: {
+							email: formData.email.toLowerCase(),
+							eventSlug: event.slug,
+						},
+					});
+					setEmailCheck(res.data.data);
+				} catch (error) {
+					// console.error("Failed to check email:", error);
+				}
+			}
+		};
 
-	// Fetch payment settings for this event
-	const paymentSettings = useQuery(api.settings.getPaymentSettings, {
-		eventSlug: event.slug,
-	});
+		const timeoutId = setTimeout(checkEmail, 500);
+		return () => clearTimeout(timeoutId);
+	}, [formData.email, event.slug]);
+
+	useEffect(() => {
+		const fetchSettings = async () => {
+			try {
+				const res = await api.get("/settings/payment", {
+					params: { eventSlug: event.slug },
+				});
+				setPaymentSettings(res.data.data);
+			} catch (error) {
+				// console.error("Failed to fetch payment settings:", error);
+			}
+		};
+		fetchSettings();
+	}, [event.slug]);
 
 	useEffect(() => {
 		if (emailCheck?.isRegistered) {
@@ -169,17 +193,23 @@ export default function EventRegistrationForm({ event }) {
 				"amount",
 				String(paymentSettings?.amount || 50),
 			);
-			registrationFormData.append("file", validatedData.paymentScreenshot);
+			registrationFormData.append("image", validatedData.paymentScreenshot);
 
-			const response = await fetch("/api/register-event", {
-				method: "POST",
-				body: registrationFormData,
-			});
+			const response = await api.post(
+				"/registrations/register",
+				registrationFormData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				},
+			);
 
-			const result = await response.json();
+			const result = response.data;
 
-			if (!response.ok) {
-				const errorMessage = result.error || "Failed to submit registration";
+			if (!result.success) {
+				const errorMessage =
+					result.error || result.message || "Failed to submit registration";
 
 				if (errorMessage.includes("already registered")) {
 					throw new Error(

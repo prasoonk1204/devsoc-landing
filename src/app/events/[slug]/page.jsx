@@ -9,6 +9,7 @@ import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import BackButton from "@/components/UI/BackButton";
 import { formatEventDate, getLatestEvent } from "@/lib/utils/eventUtils";
+import { env } from "@/lib/env";
 import { ArrowRight, Calendar, Download } from "lucide-react";
 
 export default function EventDetailPage({ params }) {
@@ -26,8 +27,8 @@ export default function EventDetailPage({ params }) {
 
 	// Check if registration is enabled
 	const isRegistrationEnabled =
-		process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
-		process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
+		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
+		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
 
 	const getPreviewText = (text) => {
 		if (!text) return "";
@@ -203,7 +204,7 @@ export default function EventDetailPage({ params }) {
 													document.body.removeChild(link);
 													window.URL.revokeObjectURL(blobUrl);
 												} catch (error) {
-													console.error("Download failed:", error);
+													// console.error("Download failed:", error);
 													window.open(photoUrl, "_blank");
 												}
 											}}

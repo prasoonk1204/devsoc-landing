@@ -2,15 +2,27 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
-import { useQuery } from "convex/react";
-import { api } from "convex/_generated/api";
+import { useMemo, useEffect, useState } from "react";
+import { LOGO, BACKGROUND_IMG, HERO_IMG } from "@/constant/assets";
 import AstronautScene from "./AstronautScene";
 import { fadeInBlurFast, fadeInFromBottom } from "@/lib/motionVariants";
-import { useMemo, useEffect } from "react";
-import { LOGO, BACKGROUND_IMG, HERO_IMG } from "@/constant/assets";
+import api from "@/lib/axios";
 
 export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
-	const communityLinks = useQuery(api.settings.getCommunityLinks);
+	const [communityLinks, setCommunityLinks] = useState(undefined);
+
+	useEffect(() => {
+		const fetchLinks = async () => {
+			try {
+				const res = await api.get("/settings/community-links");
+				setCommunityLinks(res.data.data);
+			} catch (error) {
+				// console.error("Failed to fetch community links:", error);
+				setCommunityLinks(null);
+			}
+		};
+		fetchLinks();
+	}, []);
 
 	const communityLink = useMemo(() => {
 		return communityLinks?.whatsapp || communityLinks?.discord || null;
