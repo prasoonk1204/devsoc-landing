@@ -7,6 +7,7 @@ import {
 	RateLimitPresets,
 	getClientIdentifier,
 } from "../../lib/rateLimiter";
+import { logger } from "../../lib/logger";
 
 export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 	.post(
@@ -29,6 +30,10 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 			).toISOString();
 
 			if (!rateLimit.allowed) {
+				logger.warn("Rate limit exceeded for registration", {
+					clientId,
+					retryAfter: rateLimit.retryAfter,
+				});
 				set.status = 429;
 				set.headers["Retry-After"] = rateLimit.retryAfter?.toString() || "300";
 				return {
@@ -60,6 +65,10 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 			try {
 				// Validate image file
 				if (!image || image.size === 0) {
+					logger.warn("Registration failed: Missing payment screenshot", {
+						email,
+						eventSlug,
+					});
 					set.status = 400;
 					return {
 						success: false,
@@ -70,6 +79,11 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 				// Validate image size (max 5MB)
 				const maxSize = 5 * 1024 * 1024;
 				if (image.size > maxSize) {
+					logger.warn("Registration failed: Image too large", {
+						email,
+						eventSlug,
+						size: image.size,
+					});
 					set.status = 400;
 					return {
 						success: false,
@@ -85,6 +99,11 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 					"image/webp",
 				];
 				if (!allowedTypes.includes(image.type)) {
+					logger.warn("Registration failed: Invalid image type", {
+						email,
+						eventSlug,
+						type: image.type,
+					});
 					set.status = 400;
 					return {
 						success: false,
@@ -93,6 +112,12 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 				}
 
 				// 1. Create pending registration
+				logger.info("Creating registration", {
+					email: email.trim().toLowerCase(),
+					eventSlug,
+					transactionId: transactionId.trim(),
+				});
+
 				registrationResult = await convex.mutation(
 					api.registrations.createPendingRegistration,
 					{
@@ -111,6 +136,11 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 				);
 
 				// 2. Upload to ImageKit
+				logger.debug("Uploading payment screenshot to ImageKit", {
+					eventSlug,
+					fileName: image.name,
+				});
+
 				const arrayBuffer = await image.arrayBuffer();
 				const buffer = Buffer.from(arrayBuffer);
 				const sanitizedFileName = image.name.replace(/[^a-zA-Z0-9.-]/g, "-");
@@ -129,11 +159,21 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 					url: response.url,
 				};
 
+				logger.debug("Payment screenshot uploaded successfully", {
+					fileId: uploadData.fileId,
+				});
+
 				// 3. Update registration with payment info
 				await convex.mutation(api.registrations.updateRegistrationWithPayment, {
 					paymentId: registrationResult.paymentId,
 					paymentScreenshotUrl: uploadData.url,
 					paymentScreenshotStorageId: uploadData.fileId,
+				});
+
+				logger.info("Registration completed successfully", {
+					email: email.trim().toLowerCase(),
+					eventSlug,
+					paymentId: registrationResult.paymentId,
 				});
 
 				return {
@@ -142,14 +182,17 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 						"Registration successful! Your payment is pending verification.",
 				};
 			} catch (error: any) {
-				// console.error("Registration error:", error);
+				logger.error("Registration error", error);
 
 				// Cleanup on failure
 				if (uploadData?.fileId) {
 					try {
 						await imagekit.deleteFile(uploadData.fileId);
+						logger.debug("Cleaned up ImageKit file", {
+							fileId: uploadData.fileId,
+						});
 					} catch (cleanupError) {
-						// console.error("Failed to cleanup ImageKit file:", cleanupError);
+						logger.error("Failed to cleanup ImageKit file", cleanupError);
 					}
 				}
 
@@ -159,8 +202,12 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 							userId: registrationResult.userId,
 							paymentId: registrationResult.paymentId,
 						});
+						logger.debug("Cleaned up registration", {
+							userId: registrationResult.userId,
+							paymentId: registrationResult.paymentId,
+						});
 					} catch (cleanupError) {
-						// console.error("Failed to cleanup registration:", cleanupError);
+						logger.error("Failed to cleanup registration", cleanupError);
 					}
 				}
 

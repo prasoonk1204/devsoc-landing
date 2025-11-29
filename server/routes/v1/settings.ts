@@ -6,6 +6,7 @@ import {
 	getClientIdentifier,
 } from "../../lib/rateLimiter";
 import { env } from "../../lib/env";
+import { logger } from "../../lib/logger";
 
 // Verify admin secret for protected routes
 const verifyAdmin = (request: Request) => {
@@ -33,6 +34,9 @@ export const settingsRoutes = new Elysia({ prefix: "/settings" })
 	.get("/", async ({ request, set }) => {
 		try {
 			if (!verifyAdmin(request)) {
+				logger.warn("Unauthorized admin access attempt", {
+					endpoint: "/settings",
+				});
 				set.status = 401;
 				return {
 					success: false,
@@ -63,6 +67,7 @@ export const settingsRoutes = new Elysia({ prefix: "/settings" })
 			const settings = await convex.query(api.settings.getAllSettings);
 			return { success: true, data: settings };
 		} catch (error: any) {
+			logger.error("Failed to fetch settings", error);
 			set.status = 500;
 			return {
 				success: false,
@@ -95,6 +100,7 @@ export const settingsRoutes = new Elysia({ prefix: "/settings" })
 			const links = await convex.query(api.settings.getCommunityLinks);
 			return { success: true, data: links };
 		} catch (error: any) {
+			logger.error("Failed to fetch community links", error);
 			set.status = 500;
 			return {
 				success: false,
@@ -129,6 +135,7 @@ export const settingsRoutes = new Elysia({ prefix: "/settings" })
 			});
 			return { success: true, data: settings };
 		} catch (error: any) {
+			logger.error("Failed to fetch payment settings", error);
 			set.status = 500;
 			return {
 				success: false,
@@ -141,6 +148,9 @@ export const settingsRoutes = new Elysia({ prefix: "/settings" })
 		async ({ body, request, set }) => {
 			try {
 				if (!verifyAdmin(request)) {
+					logger.warn("Unauthorized admin access attempt", {
+						endpoint: "POST /settings",
+					});
 					set.status = 401;
 					return {
 						success: false,
@@ -169,6 +179,8 @@ export const settingsRoutes = new Elysia({ prefix: "/settings" })
 				}
 
 				const { key, value, description, updatedBy } = body;
+				logger.info("Updating setting", { key, updatedBy });
+
 				const result = await convex.mutation(api.settings.updateSetting, {
 					key,
 					value,
@@ -176,8 +188,10 @@ export const settingsRoutes = new Elysia({ prefix: "/settings" })
 					updatedBy,
 				});
 
+				logger.info("Setting updated successfully", { key });
 				return result;
 			} catch (error: any) {
+				logger.error("Failed to update setting", error);
 				set.status = 500;
 				return {
 					success: false,

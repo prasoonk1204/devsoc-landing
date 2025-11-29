@@ -7,6 +7,7 @@ import {
 	getClientIdentifier,
 } from "../../lib/rateLimiter";
 import { env } from "../../lib/env";
+import { logger } from "../../lib/logger";
 
 // Verify admin secret middleware
 const verifyAdmin = (request: Request) => {
@@ -34,6 +35,9 @@ export const adminRoutes = new Elysia({ prefix: "/admin" })
 	.get("/payments/pending", async ({ request, set }) => {
 		try {
 			if (!verifyAdmin(request)) {
+				logger.warn("Unauthorized admin access attempt", {
+					endpoint: "/payments/pending",
+				});
 				set.status = 401;
 				return {
 					success: false,
@@ -62,8 +66,10 @@ export const adminRoutes = new Elysia({ prefix: "/admin" })
 			}
 
 			const payments = await convex.query(api.registrations.getPendingPayments);
+			logger.info("Fetched pending payments", { count: payments.length });
 			return { success: true, data: payments };
 		} catch (error: any) {
+			logger.error("Failed to fetch pending payments", error);
 			set.status = 500;
 			return {
 				success: false,
@@ -76,6 +82,9 @@ export const adminRoutes = new Elysia({ prefix: "/admin" })
 		async ({ body, request, set }) => {
 			try {
 				if (!verifyAdmin(request)) {
+					logger.warn("Unauthorized admin access attempt", {
+						endpoint: "/payments/verify",
+					});
 					set.status = 401;
 					return {
 						success: false,
@@ -104,6 +113,8 @@ export const adminRoutes = new Elysia({ prefix: "/admin" })
 				}
 
 				const { paymentId, status, verifiedBy } = body;
+				logger.info("Verifying payment", { paymentId, status, verifiedBy });
+
 				const result = await convex.mutation(
 					api.registrations.updatePaymentStatus,
 					{
@@ -113,8 +124,10 @@ export const adminRoutes = new Elysia({ prefix: "/admin" })
 					},
 				);
 
+				logger.info("Payment verified successfully", { paymentId, status });
 				return result;
 			} catch (error: any) {
+				logger.error("Failed to verify payment", error);
 				set.status = 500;
 				return {
 					success: false,

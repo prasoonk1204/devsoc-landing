@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { v1Routes } from "./routes/v1";
 import { env } from "./lib/env";
+import { logger } from "./lib/logger";
 
 const PORT = env.PORT || 3001;
 const ALLOWED_ORIGINS = env.ALLOWED_ORIGINS?.split(",") || [
@@ -9,8 +10,10 @@ const ALLOWED_ORIGINS = env.ALLOWED_ORIGINS?.split(",") || [
 	"http://localhost:3001",
 ];
 
-// console.log("Allowed Origins:", ALLOWED_ORIGINS);
-// console.log("Convex URL:", env.NEXT_PUBLIC_CONVEX_URL || env.CONVEX_URL);
+logger.debug("Allowed Origins:", { origins: ALLOWED_ORIGINS });
+logger.debug("Convex URL:", {
+	url: env.NEXT_PUBLIC_CONVEX_URL || env.CONVEX_URL,
+});
 
 const app = new Elysia()
 	.use(
@@ -57,7 +60,7 @@ const app = new Elysia()
 	}))
 	.get("/health", () => ({ status: "healthy", timestamp: Date.now() }))
 	.onError(({ code, error, set }) => {
-		// console.error(`[${code}]`, error);
+		logger.error(`Error [${code}]`, error);
 
 		if (code === "VALIDATION") {
 			set.status = 400;
@@ -78,8 +81,13 @@ const app = new Elysia()
 	})
 	.listen(PORT);
 
-if (env.NODE_ENV !== "production") {
-	console.log(
-		`Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
-	);
+if (env.NODE_ENV === "development") {
+	logger.info(`Server started`, {
+		host: app.server?.hostname,
+		port: app.server?.port,
+		environment: env.NODE_ENV,
+	});
+} else {
+	// In production, only log that server started (no detailed info to end users)
+	logger.info("Server started successfully");
 }
