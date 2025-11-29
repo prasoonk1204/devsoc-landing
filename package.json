@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "next dev --turbo",
 		"dev:server": "cd server && bun --watch index.ts",
-		"build": "bun run build:frontend & cd server && bun run build",
+		"build": "npm run build:frontend & cd server && npm run build",
 		"build:frontend": "next build",
 		"build:server": "cd server && bun run build",
 		"start": "next start",
