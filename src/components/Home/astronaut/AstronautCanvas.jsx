@@ -5,25 +5,18 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import { CanvasErrorBoundary, LoadingPlaceholder } from "./ErrorBoundary";
 import { AstronautModel } from "./AstronautModel";
+import { Environment } from "@react-three/drei";
 
 function CanvasContent({ mouse, isAstronautVisible, onModelLoaded }) {
 	return (
 		<>
-			{/* Clean ambient light */}
-			<ambientLight intensity={1.1} />
+			{/* City environment for realistic reflections and lighting */}
+			<Environment preset="city" />
 
-			{/* Main light from front-top */}
+			{/* Single main directional light from front-right for better modeling */}
 			<directionalLight
-				position={[0, 5, 7]}
+				position={[1, 2, 5]}
 				intensity={2.0}
-				color="#ffffff"
-				castShadow={false}
-			/>
-
-			{/* Fill light from side */}
-			<directionalLight
-				position={[-5, 3, 3]}
-				intensity={1.0}
 				color="#ffffff"
 				castShadow={false}
 			/>

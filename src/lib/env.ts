@@ -15,7 +15,11 @@ const clientSchema = z.object({
 	NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION: z
 		.enum(["yes", "no", "true", "false"])
 		.default("no"),
-	NEXT_PUBLIC_API_URL: z.string().url().default("http://localhost:3001"),
+	NEXT_PUBLIC_API_URL: z
+		.string()
+		.url()
+		.optional()
+		.default("http://localhost:3001"),
 });
 
 const serverSchema = clientSchema.extend({

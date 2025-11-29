@@ -54,7 +54,7 @@ pnpm-lock.yaml
 bun.lock
 
 .vscode
-Todo.txt
+*.txt
 *.md
 # Prettier cache
 .prettier-cache
