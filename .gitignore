@@ -56,3 +56,5 @@ bun.lock
 .vscode
 Todo.txt
 *.md
+# Prettier cache
+.prettier-cache

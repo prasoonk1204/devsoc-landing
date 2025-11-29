@@ -1,5 +1,5 @@
 import ImageKit from "imagekit";
-import { env } from "../../src/lib/env";
+import { env } from "./env";
 
 const publicKey = env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
 const privateKey = env.IMAGEKIT_PRIVATE_KEY;

@@ -6,7 +6,7 @@ import {
 	RateLimitPresets,
 	getClientIdentifier,
 } from "../../lib/rateLimiter";
-import { env } from "../../../src/lib/env";
+import { env } from "../../lib/env";
 
 // Verify admin secret middleware
 const verifyAdmin = (request: Request) => {

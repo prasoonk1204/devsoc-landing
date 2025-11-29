@@ -5,8 +5,8 @@ import { resolve } from "path";
 config({ path: resolve(process.cwd(), "../.env") });
 
 import { ConvexHttpClient } from "convex/browser";
-import { env } from "../../src/lib/env";
 import { api } from "../../convex/_generated/api";
+import { env } from "./env";
 
 const convexUrl = env.NEXT_PUBLIC_CONVEX_URL || env.CONVEX_URL;
 

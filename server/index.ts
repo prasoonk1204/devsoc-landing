@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { v1Routes } from "./routes/v1";
-import { env } from "../src/lib/env";
+import { env } from "./lib/env";
 
 const PORT = env.PORT || 3001;
 const ALLOWED_ORIGINS = env.ALLOWED_ORIGINS?.split(",") || [
@@ -23,10 +23,7 @@ const app = new Elysia()
 				if (ALLOWED_ORIGINS.includes(origin)) return true;
 
 				// Allow localhost in development
-				if (
-					env.NODE_ENV !== "production" &&
-					origin.includes("localhost")
-				) {
+				if (env.NODE_ENV !== "production" && origin.includes("localhost")) {
 					return true;
 				}
 
