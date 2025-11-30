@@ -24,6 +24,11 @@ const nextConfig = {
 		NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION:
 			process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION,
 	},
+	experimental: {
+		serverActions: {
+			bodySizeLimit: "10mb",
+		},
+	},
 	async rewrites() {
 		// In development, proxy to local Elysia server
 		if (process.env.NODE_ENV === "development") {

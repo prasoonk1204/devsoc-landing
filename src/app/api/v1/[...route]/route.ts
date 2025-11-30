@@ -52,25 +52,17 @@ async function handler(req: NextRequest) {
 		// Get the full URL
 		const url = new URL(req.url);
 
-		// Get request body for POST/PUT/PATCH
-		let body: any = undefined;
-		if (["POST", "PUT", "PATCH"].includes(req.method)) {
-			const contentType = req.headers.get("content-type") || "";
-			if (contentType.includes("application/json")) {
-				body = JSON.stringify(await req.json());
-			} else if (contentType.includes("multipart/form-data")) {
-				// For file uploads, pass the raw request
-				body = await req.formData();
-			} else {
-				body = await req.text();
-			}
-		}
+		// Clone the request to pass to Elysia
+		// This preserves the original request including body
+		const clonedRequest = req.clone();
 
-		// Create standard Request object for Elysia
+		// Create a new Request with the correct URL
 		const request = new Request(url.toString(), {
-			method: req.method,
-			headers: req.headers,
-			body: body,
+			method: clonedRequest.method,
+			headers: clonedRequest.headers,
+			body: clonedRequest.body,
+			// @ts-ignore - duplex is needed for streaming
+			duplex: "half",
 		});
 
 		// Handle request with Elysia
@@ -81,11 +73,11 @@ async function handler(req: NextRequest) {
 		const responseBody = await response.text();
 
 		// Try to parse as JSON
-		let jsonBody;
+		let jsonBody: any;
 		try {
 			jsonBody = JSON.parse(responseBody);
 		} catch {
-			jsonBody = responseBody;
+			jsonBody = { data: responseBody };
 		}
 
 		// Create Next.js response with headers
@@ -94,7 +86,7 @@ async function handler(req: NextRequest) {
 		});
 
 		// Copy headers from Elysia response
-		response.headers.forEach((value, key) => {
+		response.headers.forEach((value: string, key: string) => {
 			nextResponse.headers.set(key, value);
 		});
 
