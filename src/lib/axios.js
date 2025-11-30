@@ -5,17 +5,36 @@ import { env } from "./env";
 const getApiUrl = () => {
 	// Use provided API URL or fallback to same origin
 	const apiUrl = env.NEXT_PUBLIC_API_URL;
-	
-	// If no API URL is set, use same origin in browser
-	if (!apiUrl || apiUrl === "") {
+
+	// If no API URL is set, use same origin (works for single deployment)
+	if (!apiUrl || apiUrl === "" || apiUrl === undefined) {
+		// In browser, use current origin
 		if (typeof window !== "undefined") {
 			return `${window.location.origin}/api/v1`;
 		}
-		// During SSR/build, use a placeholder (will be replaced at runtime)
+		// During SSR/build, use relative path (Next.js will handle rewrite)
 		return "/api/v1";
 	}
-	
-	return `${apiUrl}/api/v1`;
+
+	// If API URL is provided, check if it's same as current origin
+	if (typeof window !== "undefined") {
+		const baseUrl = apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl;
+		try {
+			const apiOrigin = new URL(baseUrl).origin;
+			const currentOrigin = window.location.origin;
+
+			// If same origin, use relative path to avoid CORS preflight
+			if (apiOrigin === currentOrigin) {
+				return "/api/v1";
+			}
+		} catch (e) {
+			// Invalid URL, fall through to use as-is
+		}
+	}
+
+	// If API URL is provided and different origin, use it
+	const baseUrl = apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl;
+	return `${baseUrl}/api/v1`;
 };
 
 const api = axios.create({

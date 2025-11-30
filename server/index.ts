@@ -6,14 +6,27 @@ import { env } from "./lib/env";
 import { logger } from "./lib/logger";
 
 const PORT = env.PORT || 3001;
-const ALLOWED_ORIGINS = env.ALLOWED_ORIGINS?.split(",") || [
-	"http://localhost:3000",
-	"http://localhost:3001",
-];
+const ALLOWED_ORIGINS = env.ALLOWED_ORIGINS?.split(",").map((o) =>
+	o.trim(),
+) || ["http://localhost:3000", "http://localhost:3001"];
 
-logger.debug("Allowed Origins:", { origins: ALLOWED_ORIGINS });
-logger.debug("Convex URL:", {
-	url: env.NEXT_PUBLIC_CONVEX_URL || env.CONVEX_URL,
+// In production, also allow the same origin (for single deployment)
+if (env.NODE_ENV === "production") {
+	// Add common production patterns
+	const productionOrigins = ALLOWED_ORIGINS.filter(
+		(o) => o.startsWith("https://") || o.startsWith("http://"),
+	);
+
+	if (productionOrigins.length === 0) {
+		logger.warn("No production origins configured in ALLOWED_ORIGINS");
+	}
+}
+
+logger.debug("Server Configuration:", {
+	port: PORT,
+	environment: env.NODE_ENV,
+	origins: ALLOWED_ORIGINS,
+	convexUrl: env.NEXT_PUBLIC_CONVEX_URL || env.CONVEX_URL,
 });
 
 const app = new Elysia()
@@ -49,7 +62,7 @@ const app = new Elysia()
 				"X-RateLimit-Reset",
 				"Retry-After",
 			],
-			maxAge: 86400, // 24 hours
+			maxAge: 86400, 
 		}),
 	)
 	.use(v1Routes)

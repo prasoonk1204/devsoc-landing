@@ -18,9 +18,10 @@ const clientSchema = z.object({
 	NEXT_PUBLIC_API_URL: z
 		.string()
 		.optional()
+		.default("")
 		.transform((val) => {
-			// Allow empty string or undefined
-			if (!val || val === "") return undefined;
+			// Allow empty string or undefined (for same-origin deployment)
+			if (!val || val === "" || val === "undefined") return undefined;
 			// Validate URL format if provided
 			try {
 				new URL(val);
