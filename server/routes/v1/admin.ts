@@ -112,7 +112,7 @@ export const adminRoutes = new Elysia({ prefix: "/admin" })
 					};
 				}
 
-				const { paymentId, status, verifiedBy } = body;
+				const { paymentId, status, verifiedBy } = body as any;
 				logger.info("Verifying payment", { paymentId, status, verifiedBy });
 
 				const result = await convex.mutation(

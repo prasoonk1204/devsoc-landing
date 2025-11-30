@@ -55,7 +55,7 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 				transactionId,
 				amount,
 				image,
-			} = body;
+			} = body as any;
 
 			let registrationResult:
 				| { userId: Id<"users">; paymentId: Id<"payments"> }

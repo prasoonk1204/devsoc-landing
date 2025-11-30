@@ -1,8 +1,5 @@
 // Vercel Serverless Function wrapper for Elysia backend
 import "../../server/lib/setup"; // Load environment variables
-import { Elysia } from "elysia";
-import { cors } from "@elysiajs/cors";
-import { v1Routes } from "../../server/routes/v1";
 
 // Disable body parsing for file uploads
 export const config = {
@@ -14,8 +11,13 @@ export const config = {
 // Create Elysia app instance (singleton)
 let app: any = null;
 
-function getApp() {
+async function getApp() {
 	if (!app) {
+		// Dynamic import to avoid type conflicts during build
+		const { Elysia } = await import("elysia");
+		const { cors } = await import("@elysiajs/cors");
+		const { v1Routes } = await import("../../server/routes/v1");
+
 		app = new Elysia()
 			.use(
 				cors({
@@ -38,7 +40,7 @@ function getApp() {
 					],
 				}),
 			)
-			.use(v1Routes)
+			.use(v1Routes as any)
 			.get("/", () => ({
 				status: "ok",
 				message: "Elysia Server is Running on Vercel",
@@ -82,7 +84,7 @@ export default async function handler(req: any, res: any) {
 		});
 
 		// Handle request with Elysia
-		const elysiaApp = getApp();
+		const elysiaApp = await getApp();
 		const response = await elysiaApp.handle(request);
 
 		// Set status code

@@ -5,7 +5,6 @@
 	"scripts": {
 		"dev": "next dev --turbo",
 		"dev:server": "cd server && bun --watch index.ts",
-		"postinstall": "cd server && npm install",
 		"build": "next build",
 		"build:frontend": "next build",
 		"build:server": "cd server && npm run build",
@@ -13,7 +12,7 @@
 		"start": "npm run start:server & next start -p ${PORT:-3000}",
 		"start:server": "cd server && PORT=${BACKEND_PORT:-3001} bun index.ts",
 		"start:production": "npm run start",
-		"typecheck": "tsc --noEmit && cd server && npm run typecheck",
+		"typecheck": "tsc --noEmit",
 		"format": "prettier --write . --cache",
 		"format:check": "prettier --check . --cache",
 		"convex:dev": "convex dev",

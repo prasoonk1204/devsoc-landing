@@ -178,7 +178,7 @@ export const settingsRoutes = new Elysia({ prefix: "/settings" })
 					};
 				}
 
-				const { key, value, description, updatedBy } = body;
+				const { key, value, description, updatedBy } = body as any;
 				logger.info("Updating setting", { key, updatedBy });
 
 				const result = await convex.mutation(api.settings.updateSetting, {
