@@ -1,0 +1,11 @@
+# Don't deploy these to Vercel
+server/.env
+.env.local
+.env.*.local
+
+# Development files
+*.log
+.DS_Store
+
+# Server standalone files (not needed for serverless)
+server/index.ts

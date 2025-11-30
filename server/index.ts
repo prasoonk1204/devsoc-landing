@@ -62,7 +62,7 @@ const app = new Elysia()
 				"X-RateLimit-Reset",
 				"Retry-After",
 			],
-			maxAge: 86400, 
+			maxAge: 86400,
 		}),
 	)
 	.use(v1Routes)

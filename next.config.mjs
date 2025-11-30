@@ -25,8 +25,7 @@ const nextConfig = {
 			process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION,
 	},
 	async rewrites() {
-		// Only rewrite in development when backend runs separately
-		// In production, backend runs on same server (via start script)
+		// In development, proxy to local Elysia server
 		if (process.env.NODE_ENV === "development") {
 			return [
 				{
@@ -36,14 +35,9 @@ const nextConfig = {
 			];
 		}
 
-		// In production with single deployment, proxy to backend port
-		const backendPort = process.env.BACKEND_PORT || "3001";
-		return [
-			{
-				source: "/api/v1/:path*",
-				destination: `http://localhost:${backendPort}/api/v1/:path*`,
-			},
-		];
+		// In production on Vercel, API routes are handled by serverless functions
+		// No rewrites needed - Vercel routes /api/* automatically
+		return [];
 	},
 };
 
