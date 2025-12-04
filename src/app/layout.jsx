@@ -11,6 +11,7 @@ import SmoothScroll from "@/components/UI/SmoothScroll";
 
 import { Analytics } from "@vercel/analytics/next";
 import { LOGO } from "@/constant/assets";
+import MaintenancePage from "@/components/Maintenance/MaintenancePage";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -76,6 +77,9 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+	const isMaintenanceMode =
+		process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
@@ -100,10 +104,16 @@ export default function RootLayout({ children }) {
 				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-18 antialiased md:pb-0`}
 				suppressHydrationWarning
 			>
-				<SmoothScroll />
-				<Header />
-				{children}
-				<Footer />
+				{isMaintenanceMode ? (
+					<MaintenancePage />
+				) : (
+					<>
+						<SmoothScroll />
+						<Header />
+						{children}
+						<Footer />
+					</>
+				)}
 				<Analytics />
 			</body>
 		</html>
