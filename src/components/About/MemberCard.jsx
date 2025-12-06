@@ -110,7 +110,10 @@ export default function MemberCard({ member, index }) {
 						alt={member.name}
 						height={500}
 						width={500}
-						loading={index < 8 ? "eager" : "lazy"}
+						quality={80}
+						priority={index < 8}
+						placeholder="blur"
+						blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzI3MjcyNyIvPjwvc3ZnPg=="
 					/>
 					<div className="absolute right-0 bottom-0 left-0 rounded-b-3xl bg-linear-to-b from-black/40 via-black/60 to-black/80 p-4 text-zinc-300 shadow-[inset_0_-4px_4px_rgba(255,255,255,0.15)] backdrop-blur-md">
 						<div className="text-lg font-semibold text-white">

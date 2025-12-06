@@ -62,7 +62,7 @@ export default function ImageZoomModal({
 
 						<div className="flex flex-col items-center gap-4">
 							<motion.div
-								className="relative h-[85vh]"
+								className="relative h-[85vh] w-auto max-w-[90vw]"
 								onClick={(e) => e.stopPropagation()}
 								initial={{ scale: 0.9 }}
 								animate={{ scale: 1 }}
@@ -74,7 +74,11 @@ export default function ImageZoomModal({
 									alt={`${title} image ${currentIndex + 1}`}
 									width={1920}
 									height={1080}
-									className="h-full w-full rounded-3xl"
+									quality={90}
+									priority
+									placeholder="blur"
+									blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbGw9IiMyNzI3MjciLz48L3N2Zz4="
+									className="h-full w-auto rounded-3xl object-contain"
 								/>
 							</motion.div>
 
@@ -127,7 +131,7 @@ export default function ImageZoomModal({
 						transition={{ delay: 0.1 }}
 					>
 						<motion.div
-							className="relative w-[90vw]"
+							className="relative h-[70vh] w-[90vw]"
 							onClick={(e) => e.stopPropagation()}
 							initial={{ scale: 0.9 }}
 							animate={{ scale: 1 }}
@@ -137,9 +141,12 @@ export default function ImageZoomModal({
 							<Image
 								src={images[currentIndex]}
 								alt={`${title} image ${currentIndex + 1}`}
-								width={1920}
-								height={1080}
-								className="h-full w-full rounded-2xl"
+								fill
+								quality={90}
+								priority
+								placeholder="blur"
+								blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBmaWxsPSIjMjcyNzI3Ii8+PC9zdmc+"
+								className="rounded-2xl object-contain"
 							/>
 						</motion.div>
 

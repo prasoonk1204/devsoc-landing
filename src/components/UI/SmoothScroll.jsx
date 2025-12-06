@@ -13,6 +13,22 @@ export default function SmoothScroll() {
 			duration: 1.2,
 			easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 			smoothWheel: true,
+			// Prevent Lenis from capturing scroll on specific elements
+			prevent: (node) => {
+				// Check if the node or any parent has data-lenis-prevent or scrollbar-thin class
+				let element = node;
+				while (element && element !== document.body) {
+					if (
+						(element.hasAttribute &&
+							element.hasAttribute("data-lenis-prevent")) ||
+						(element.classList && element.classList.contains("scrollbar-thin"))
+					) {
+						return true;
+					}
+					element = element.parentElement;
+				}
+				return false;
+			},
 		});
 
 		lenisRef.current = lenis;

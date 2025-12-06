@@ -282,100 +282,103 @@ export const eventsData = [
 		date: "2025-11-30",
 		description:
 			"Over² combines OverDrive, a hands-on Full - stack web development bootcamp, with OverClocked, a fast-paced hackathon that turns creativity into real builds. It’s a complete learning-to-launch experience where students upskill, experiment, and rise above their limits.",
-		detailedDescription: `Over² is Development Society's most awaited annual tech experience — a two-level program designed to take students from absolute basics to industry-ready skills, combining Web Development, Gen-AI, and hands-on project building. It includes OverDrive, our structured Full-Stack Bootcamp, and OverClocked, the upcoming Hackathon (Level 2) that unlocks advanced learning and rewards.
+		detailedDescription: `Over² is Development Society's most awaited annual tech experience — a **two-level program** designed to take students from absolute basics to industry-ready skills, combining **Web Development**, **Gen-AI**, and hands-on project building. It includes **OverDrive**, our structured Full-Stack Bootcamp, and **OverClocked**, the upcoming Hackathon (Level 2) that unlocks advanced learning and rewards.
 
-1. What is Over²?
+## 1. What is Over²?
 
-Over² is a 2-level progressive learning and building journey, designed for beginners, intermediates, and even advanced learners.
+Over² is a **2-level progressive learning and building journey**, designed for beginners, intermediates, and even advanced learners.
 
-Level 1 → OverDrive (Bootcamp)
-Level 2 → OverClocked (Hackathon)
+- **Level 1** → OverDrive (Bootcamp)
+- **Level 2** → OverClocked (Hackathon)
 
-Blends software development + Gen AI + hands-on projects
-Structured to help students learn → build → compete → earn credits
-Taught by DevSoc's own experienced developers ("our own geeks")
-Focused on quality learning
-Seats kept limited to ensure personal assistance
+**Key Features:**
+- Blends software development + Gen AI + hands-on projects
+- Structured to help students **learn → build → compete → earn credits**
+- Taught by DevSoc's own experienced developers ("our own geeks")
+- Focused on quality learning
+- Seats kept limited to ensure personal assistance
 
-2. OverDrive — The Full-Stack + Gen AI Bootcamp (Level 1)
+## 2. OverDrive — The Full-Stack + Gen AI Bootcamp (Level 1)
 
-Overview
-OverDrive is a 6-day structured bootcamp starting 1st December 2025, focusing on Full-Stack Web Development integrated with Gen AI tools.
+### Overview
+OverDrive is a **6-day structured bootcamp** starting 1st December 2025, focusing on Full-Stack Web Development integrated with Gen AI tools.
 
-What You Learn:
-Full-Stack Web Development (Front-end + Backend)
-Core topics explained from absolute basics to advanced
-Gen AI integration in web development workflows
-One complete industry-style project built from scratch → ready to be added to your CV or resume / portfolio
+### What You Learn:
+- **Full-Stack Web Development** (Front-end + Backend)
+- Core topics explained from absolute basics to advanced
+- Gen AI integration in web development workflows
+- One complete industry-style project built from scratch → ready to be added to your **CV or resume / portfolio**
 
-Why It's Different:
-Students do not need any prior coding knowledge → beginner-friendly teaching flow
-Concepts taught in a way that makes beginners feel at ease
-Unlike "random free playlists," this is structured learning with real mentors
-Hands-on, guided building sessions
-Active participation encouraged throughout
+### Why It's Different:
+- Students do **not need any prior coding knowledge** → beginner-friendly teaching flow
+- Concepts taught in a way that makes beginners feel at ease
+- Unlike "random free playlists," this is **structured learning with real mentors**
+- Hands-on, guided building sessions
+- Active participation encouraged throughout
 
-Perks of OverDrive:
-10 MAR points (at College Level)
-E-certificate
-An end-to-end portfolio project
-Access to special Q&A sessions for doubts
+### Perks of OverDrive:
+- ✅ **10 MAR points** (at College Level)
+- ✅ E-certificate
+- ✅ An end-to-end portfolio project
+- ✅ Access to special Q&A sessions for doubts
 
-3. OverClocked — The Hackathon (Level 2)
+## 3. OverClocked — The Hackathon (Level 2)
 
-(To be revealed officially during the event)
+> *To be revealed officially during the event*
 
-Overview
-OverClocked is the exclusive Hackathon unlocked after Level 1. It brings together coding, creativity, problem-solving, and team dynamics.
+### Overview
+OverClocked is the **exclusive Hackathon** unlocked after Level 1. It brings together coding, creativity, problem-solving, and team dynamics.
 
-Why It Matters:
-Pushes students beyond tutorials into real-world challenges
-Designed to test full-stack skills + Gen AI applications
-Encourages competitive innovation
-Limited access — only for OverDrive participants
+### Why It Matters:
+- Pushes students beyond tutorials into **real-world challenges**
+- Designed to test full-stack skills + Gen AI applications
+- Encourages competitive innovation
+- **Limited access** — only for OverDrive participants
 
-Rewards:
-25 MAR points at once (at College Level)
-Certificates & potential prizes
-Live problem-solving experience
-A chance to get recognized by DevSoc
+### Rewards:
+- 🏆 **25 MAR points** at once (at College Level)
+- 🏆 Certificates & potential prizes
+- 🏆 Live problem-solving experience
+- 🏆 A chance to get recognized by DevSoc
 
-4. Additional Activities Under Over²
+## 4. Additional Activities Under Over²
 
-TrailBlaze — The Treasure Hunt Event
+### TrailBlaze — The Treasure Hunt Event
 A campus-wide solo treasure hunt with:
-Riddles
-Flyer hunts
-Mind games (warm/cold teasers)
-Shoutouts to quick solvers
-Social media tasks
-Exciting goodies for participants
+- 🧩 Riddles
+- 🧩 Flyer hunts
+- 🧩 Mind games (warm/cold teasers)
+- 🧩 Shoutouts to quick solvers
+- 🧩 Social media tasks
+- 🧩 Exciting goodies for participants
 
-Builds community engagement & boosts excitement before OverDrive begins.
+*Builds community engagement & boosts excitement before OverDrive begins.*
 
-5. Why Students Join Over²
+## 5. Why Students Join Over²
 
-We create a space where loud minds collide and innovate.
+**We create a space where loud minds collide and innovate.**
 
-Learn directly from Dev Soc seniors with real technical experience
-Build one complete Full-Stack + Gen AI project
-Gain practical coding confidence
-Earn 10 + 25 MAR points (at College Level)
-Unlock a hackathon opportunity
-Receive swags and goodies
-Be part of DevSoc's largest annual tech event
+- Learn directly from Dev Soc seniors with real technical experience
+- Build one complete **Full-Stack + Gen AI project**
+- Gain practical coding confidence
+- Earn **10 + 25 MAR points** (at College Level)
+- Unlock a hackathon opportunity
+- Receive swags and goodies
+- Be part of DevSoc's largest annual tech event
 
-6. Community Vibe & Culture of Over²
+## 6. Community Vibe & Culture of Over²
 
 Over² promotes:
-Healthy competition
-Learning without fear
-Beginner-friendly sessions
-Mentorship from seniors
-A culture of quality > quantity
-Hype, enthusiasm, and tech energy across campus
+- • Healthy competition
+- • Learning without fear
+- • Beginner-friendly sessions
+- • Mentorship from seniors
+- • A culture of **quality > quantity**
+- • Hype, enthusiasm, and tech energy across campus
 
-A signature line used often: "Kuch log commentary likhte rehte, kuch log scoreboard badalte rehte."`,
+---
+
+*A signature line used often:* **"Kuch log commentary likhte rehte, kuch log scoreboard badalte rehte."**`,
 		gallery: [
 			"https://ik.imagekit.io/devsoc/events/2025_Over_square/120+registrations.jpg?updatedAt=1763925616250",
 		],

@@ -38,15 +38,13 @@ export const fadeInBlurFast = {
 export const fadeInBlurScale = {
 	hidden: {
 		opacity: 0,
-		y: 50,
-		scale: 0.95,
-		filter: "blur(10px)",
+		y: 30,
+		scale: 0.97,
 	},
 	visible: {
 		opacity: 1,
 		y: 0,
 		scale: 1,
-		filter: "blur(0px)",
 		transition: {
 			duration: 0.4,
 			ease: [0.25, 0.46, 0.45, 0.94],

@@ -1,8 +1,8 @@
 import {
-	Geist,
 	Geist_Mono,
 	Bricolage_Grotesque,
 	Iceland,
+	Inter,
 } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/UI/Header";
@@ -12,9 +12,10 @@ import SmoothScroll from "@/components/UI/SmoothScroll";
 import { Analytics } from "@vercel/analytics/next";
 import { LOGO } from "@/constant/assets";
 import MaintenancePage from "@/components/Maintenance/MaintenancePage";
+import { env } from "@/lib/env";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
+const inter = Inter({
+	variable: "--font-inter",
 	subsets: ["latin"],
 });
 
@@ -78,6 +79,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 	const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
+	const eventOnlyMode = env.NEXT_PUBLIC_EVENT_ONLY_MODE;
 
 	return (
 		<html lang="en" suppressHydrationWarning>
@@ -89,22 +91,36 @@ export default function RootLayout({ children }) {
 					crossOrigin="anonymous"
 				/>
 				<link
+					rel="preconnect"
+					href="https://ik.imagekit.io"
+					crossOrigin="anonymous"
+				/>
+				<link rel="dns-prefetch" href="https://ik.imagekit.io" />
+				<link
 					rel="preload"
-					href="https://ik.imagekit.io/devsoc/Website/DevSocLogo.png"
+					href="https://ik.imagekit.io/devsoc/Website/DevSocLogo.png?tr=w-200,q-80,f-auto,pr-true"
 					as="image"
+					type="image/webp"
 				/>
 				<link
 					rel="preload"
-					href="https://ik.imagekit.io/devsoc/Website/devsocbg.png"
+					href="https://ik.imagekit.io/devsoc/Website/devsocbg.png?tr=w-1920,q-80,f-auto,pr-true"
 					as="image"
+					type="image/webp"
 				/>
 			</head>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-18 antialiased md:pb-0`}
+				className={`${inter.variable} ${geistMono.variable} ${bricolageGrotesque.className} ${iceland.variable} pb-18 antialiased md:pb-0`}
 				suppressHydrationWarning
 			>
 				{isMaintenanceMode ? (
 					<MaintenancePage />
+				) : eventOnlyMode ? (
+					<>
+						<SmoothScroll />
+						{children}
+						<Footer />
+					</>
 				) : (
 					<>
 						<SmoothScroll />

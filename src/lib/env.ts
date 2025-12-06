@@ -15,6 +15,9 @@ const clientSchema = z.object({
 	NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION: z
 		.enum(["yes", "no", "true", "false"])
 		.default("no"),
+	NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS: z.string().default(""),
+	NEXT_PUBLIC_DISABLE_EVENT_SNAPS: z.string().default(""),
+	NEXT_PUBLIC_EVENT_ONLY_MODE: z.string().optional().default(""),
 	NEXT_PUBLIC_API_URL: z
 		.string()
 		.optional()
@@ -60,6 +63,11 @@ function validateEnv() {
 			process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT,
 		NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION:
 			process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION,
+		NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS:
+			process.env.NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS,
+		NEXT_PUBLIC_DISABLE_EVENT_SNAPS:
+			process.env.NEXT_PUBLIC_DISABLE_EVENT_SNAPS,
+		NEXT_PUBLIC_EVENT_ONLY_MODE: process.env.NEXT_PUBLIC_EVENT_ONLY_MODE,
 	};
 
 	try {

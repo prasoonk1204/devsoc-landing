@@ -5,17 +5,28 @@ import { eventsData } from "@/constant/events";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import BackButton from "@/components/UI/BackButton";
 import { formatEventDate, getLatestEvent } from "@/lib/utils/eventUtils";
 import { env } from "@/lib/env";
-import { ArrowRight, Calendar, Download } from "lucide-react";
+import {
+	ArrowRight,
+	Calendar,
+	Download,
+	Info,
+	Target,
+	Clock,
+} from "lucide-react";
+import { challengesData } from "@/constant/problemStatements";
+import { operationalTimeline } from "@/constant/timeline";
+import AboutTab from "@/components/Events/EventTabs/AboutTab";
+import TracksTab from "@/components/Events/EventTabs/TracksTab";
+import TimelineTab from "@/components/Events/EventTabs/TimelineTab";
 
 export default function EventDetailPage({ params }) {
 	const { slug } = use(params);
 	const event = eventsData.find((e) => e.slug === slug);
-	const [showFullDescription, setShowFullDescription] = useState(false);
 
 	if (!event) {
 		notFound();
@@ -30,28 +41,54 @@ export default function EventDetailPage({ params }) {
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
 
-	const getPreviewText = (text) => {
-		if (!text) return "";
-		const lines = text.split("\n").filter((line) => line.trim());
-		let preview = "";
-		let charCount = 0;
-		for (let i = 0; i < lines.length && charCount < 800; i++) {
-			preview += lines[i] + "\n";
-			charCount += lines[i].length;
-		}
-		return preview.trim();
+	// Check environment configurations
+	const problemStatementEvents = (
+		env.NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS || ""
+	)
+		.split(",")
+		.map((s) => s.trim());
+	const showProblemStatement = problemStatementEvents.includes(event.slug);
+
+	const disableSnapsEvents = (env.NEXT_PUBLIC_DISABLE_EVENT_SNAPS || "")
+		.split(",")
+		.map((s) => s.trim());
+	const showEventSnaps = !disableSnapsEvents.includes(event.slug);
+
+	// Check if tabs have data
+	const hasAboutData = !!event.detailedDescription;
+	const hasTracksData = showProblemStatement && challengesData.length > 0;
+	const hasTimelineData =
+		showProblemStatement && operationalTimeline.length > 0;
+
+	// Determine default tab - prioritize tracks if available, then about
+	const getDefaultTab = () => {
+		if (hasTracksData) return "tracks";
+		if (hasAboutData) return "about";
+		if (hasTimelineData) return "timeline";
+		return "about";
 	};
+
+	const [activeTab, setActiveTab] = useState(getDefaultTab());
+
+	// Check if we should show the tabbed section at all
+	const showTabbedSection = hasAboutData || hasTracksData || hasTimelineData;
+
+	// Check if event-only mode is enabled
+	const eventOnlyMode = env.NEXT_PUBLIC_EVENT_ONLY_MODE;
+	const isEventOnlyMode = eventOnlyMode && eventOnlyMode.trim() !== "";
 
 	return (
 		<div className="relative flex min-h-screen w-full flex-col items-center px-4 pt-24 pb-16 text-white sm:pt-36 sm:pb-24">
 			<div className="relative w-full max-w-6xl">
-				<BackButton href="/events" label="Back to Events" />
+				{!isEventOnlyMode && (
+					<BackButton href="/events" label="Back to Events" />
+				)}
 
 				{/* Main Content Grid */}
-				<div className="mt-6 grid w-full grid-cols-1 gap-8 md:mt-2 lg:grid-cols-12 lg:gap-12">
+				<div className="mt-6 grid w-full grid-cols-1 gap-8 md:mt-2 md:grid-cols-12 md:gap-12">
 					{/* LEFT SIDE (Content) */}
 					<motion.div
-						className="lg:col-span-8"
+						className="md:col-span-8"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
@@ -62,7 +99,7 @@ export default function EventDetailPage({ params }) {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.5 }}
 						>
-							<h1 className="font-iceland mb-4 text-4xl font-bold tracking-wide text-white sm:text-6xl md:text-7xl">
+							<h1 className="font-iceland mb-4 text-4xl font-bold tracking-wide text-white sm:text-5xl sm:leading-14 lg:text-7xl">
 								{event.title}
 							</h1>
 
@@ -75,7 +112,7 @@ export default function EventDetailPage({ params }) {
 								</div>
 							</div>
 
-							<p className="mb-8 text-base leading-relaxed text-zinc-200 sm:text-lg md:max-w-2xl">
+							<p className="mb-8 font-sans text-base leading-relaxed text-zinc-200 sm:text-lg md:max-w-2xl">
 								{event.description}
 							</p>
 
@@ -90,46 +127,11 @@ export default function EventDetailPage({ params }) {
 								</Link>
 							)}
 						</motion.div>
-
-						{/* Detailed Description Section */}
-						{event.detailedDescription && (
-							<motion.div
-								className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-white/3 p-4 backdrop-blur-sm sm:p-8"
-								variants={fadeInBlur}
-							>
-								<h3 className="font-iceland text-accent mb-4 text-2xl font-bold sm:text-3xl">
-									About the Event
-								</h3>
-								<div className="font-sans text-sm leading-relaxed whitespace-pre-line text-zinc-300 sm:text-base">
-									{showFullDescription ? (
-										<>
-											{event.detailedDescription}
-											<button
-												onClick={() => setShowFullDescription(false)}
-												className="text-accent hover:text-accent/80 mt-4 flex items-center gap-1 font-medium transition-colors hover:cursor-pointer hover:underline"
-											>
-												Show less
-											</button>
-										</>
-									) : (
-										<>
-											{getPreviewText(event.detailedDescription)}
-											<button
-												onClick={() => setShowFullDescription(true)}
-												className="text-accent hover:text-accent/80 mt-2 flex items-center gap-1 font-medium transition-colors hover:cursor-pointer hover:underline"
-											>
-												Read more
-											</button>
-										</>
-									)}
-								</div>
-							</motion.div>
-						)}
 					</motion.div>
 
 					{/* RIGHT SIDE (Image) */}
 					<motion.div
-						className="relative lg:col-span-4"
+						className="relative md:col-span-4"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
@@ -152,8 +154,105 @@ export default function EventDetailPage({ params }) {
 					</motion.div>
 				</div>
 
+				{/* Tabbed Section - Only show if there's data */}
+				{showTabbedSection && (
+					<motion.div
+						className="mt-12 w-full overflow-visible rounded-3xl border border-white/10 bg-zinc-950/30 backdrop-blur-sm"
+						variants={fadeInBlur}
+						initial="hidden"
+						whileInView="visible"
+						viewport={{ once: true }}
+					>
+						{/* Tab Navigation */}
+						<div className="scrollbar-hide sticky top-0 z-40 flex flex-nowrap justify-center gap-1 overflow-x-auto rounded-t-3xl border-b border-white/10 bg-zinc-950/90 p-2 backdrop-blur-md sm:justify-start md:relative md:top-auto">
+							{hasTracksData && (
+								<button
+									onClick={() => setActiveTab("tracks")}
+									className={`relative flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 font-sans text-sm font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+										activeTab === "tracks"
+											? "bg-accent text-black shadow-lg"
+											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
+									}`}
+								>
+									<Target className="h-4 w-4 sm:h-5 sm:w-5" />
+									<span>Tracks</span>
+								</button>
+							)}
+
+							{hasTimelineData && (
+								<button
+									onClick={() => setActiveTab("timeline")}
+									className={`relative flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 font-sans text-sm font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+										activeTab === "timeline"
+											? "bg-accent text-black shadow-lg"
+											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
+									}`}
+								>
+									<Clock className="h-4 w-4 sm:h-5 sm:w-5" />
+									<span>Timeline</span>
+								</button>
+							)}
+
+							{hasAboutData && (
+								<button
+									onClick={() => setActiveTab("about")}
+									className={`relative flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 font-sans text-sm font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+										activeTab === "about"
+											? "bg-accent text-black shadow-lg"
+											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
+									}`}
+								>
+									<Info className="h-4 w-4 sm:h-5 sm:w-5" />
+									<span>About</span>
+								</button>
+							)}
+						</div>
+
+						{/* Tab Content */}
+						<div className="">
+							<AnimatePresence mode="wait">
+								{activeTab === "about" && hasAboutData && (
+									<motion.div
+										key="about"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: -10 }}
+										transition={{ duration: 0.3 }}
+									>
+										<AboutTab event={event} />
+									</motion.div>
+								)}
+
+								{activeTab === "tracks" && hasTracksData && (
+									<motion.div
+										key="tracks"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: -10 }}
+										transition={{ duration: 0.3 }}
+									>
+										<TracksTab challenges={challengesData} />
+									</motion.div>
+								)}
+
+								{activeTab === "timeline" && hasTimelineData && (
+									<motion.div
+										key="timeline"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: -10 }}
+										transition={{ duration: 0.3 }}
+									>
+										<TimelineTab timeline={operationalTimeline} />
+									</motion.div>
+								)}
+							</AnimatePresence>
+						</div>
+					</motion.div>
+				)}
+
 				{/* Event Gallery Section */}
-				{event.gallery && event.gallery.length > 0 && (
+				{showEventSnaps && event.gallery && event.gallery.length > 0 && (
 					<motion.div
 						className="mt-24 w-full"
 						variants={fadeInBlur}
