@@ -21,15 +21,15 @@ export default function MaintenancePage() {
 					We&apos;ll Be Back Soon!
 				</h1>
 
-				<p className="mb-8 text-lg text-zinc-300 md:text-xl font-sans">
-					Our site is currently under maintenance. We&apos;re
-					working hard to improve your experience.
+				<p className="mb-8 font-sans text-lg text-zinc-300 md:text-xl">
+					Our site is currently under maintenance. We&apos;re working hard to
+					improve your experience.
 				</p>
 
 				<div className="mb-8 flex items-center justify-center gap-2">
-					<div className="h-2 w-2 animate-bounce rounded-full bg-accent [animation-delay:-0.3s]"></div>
-					<div className="h-2 w-2 animate-bounce rounded-full bg-accent [animation-delay:-0.15s]"></div>
-					<div className="h-2 w-2 animate-bounce rounded-full bg-accent"></div>
+					<div className="bg-accent h-2 w-2 animate-bounce rounded-full [animation-delay:-0.3s]"></div>
+					<div className="bg-accent h-2 w-2 animate-bounce rounded-full [animation-delay:-0.15s]"></div>
+					<div className="bg-accent h-2 w-2 animate-bounce rounded-full"></div>
 				</div>
 
 				<p className="text-sm text-zinc-400">

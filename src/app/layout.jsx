@@ -77,8 +77,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-	const isMaintenanceMode =
-		process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
+	const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
 
 	return (
 		<html lang="en" suppressHydrationWarning>

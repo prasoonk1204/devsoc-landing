@@ -12,7 +12,7 @@ const getApiUrl = () => {
 		if (typeof window !== "undefined") {
 			return `${window.location.origin}/api/v1`;
 		}
-		// During SSR/build, use relative path (Next.js will handle rewrite)
+		// During SSR/build, use relative path (Next.js API route handles it)
 		return "/api/v1";
 	}
 
@@ -23,8 +23,15 @@ const getApiUrl = () => {
 			const apiOrigin = new URL(baseUrl).origin;
 			const currentOrigin = window.location.origin;
 
-			// If same origin, use relative path to avoid CORS preflight
+			// If same origin (including localhost:3000 in dev), use relative path
 			if (apiOrigin === currentOrigin) {
+				return "/api/v1";
+			}
+
+			if (
+				apiOrigin.includes("localhost:3001") &&
+				currentOrigin.includes("localhost:3000")
+			) {
 				return "/api/v1";
 			}
 		} catch (e) {
@@ -63,7 +70,7 @@ api.interceptors.response.use(
 	(response) => response,
 	(error) => {
 		if (process.env.NODE_ENV === "development") {
-			console.error("API Error:", error.response?.status, error.message);
+			// console.error("API Error:", error.response?.status, error.message);
 		}
 		return Promise.reject(error);
 	},

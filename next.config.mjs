@@ -13,6 +13,15 @@ const nextConfig = {
 				pathname: "/**",
 			},
 		],
+		// Add custom quality levels used in the app
+		deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+		imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+		formats: ["image/webp"],
+		// Configure quality levels
+		minimumCacheTTL: 60,
+		dangerouslyAllowSVG: true,
+		contentDispositionType: "attachment",
+		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 	},
 	env: {
 		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
@@ -28,21 +37,6 @@ const nextConfig = {
 		serverActions: {
 			bodySizeLimit: "10mb",
 		},
-	},
-	async rewrites() {
-		// In development, proxy to local Elysia server
-		if (process.env.NODE_ENV === "development") {
-			return [
-				{
-					source: "/api/v1/:path*",
-					destination: "http://localhost:3001/api/v1/:path*",
-				},
-			];
-		}
-
-		// In production on Vercel, API routes are handled by serverless functions
-		// No rewrites needed - Vercel routes /api/* automatically
-		return [];
 	},
 };
 
