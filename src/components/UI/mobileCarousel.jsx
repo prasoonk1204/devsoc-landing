@@ -2,6 +2,7 @@
 import React, { useRef, useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 
 export const Carousel = ({ items }) => {
@@ -26,6 +27,11 @@ export const Carousel = ({ items }) => {
 							}}
 							key={"card" + index}
 							className="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
+							style={{
+								willChange: "transform, opacity",
+								backfaceVisibility: "hidden",
+								WebkitBackfaceVisibility: "hidden",
+							}}
 						>
 							{item}
 						</motion.div>
@@ -42,14 +48,24 @@ export const Card = ({ card }) => {
 			<motion.div
 				className="relative h-110 w-75 overflow-hidden rounded-3xl bg-zinc-900 shadow-[2px_2px_5px_rgba(0,0,0,0.2),-2px_2px_5px_rgba(0,0,0,0.2),0_4px_5px_rgba(0,0,0,0.2)] md:h-160 md:w-96"
 				whileHover={{ scale: 1.05 }}
-				transition={{ duration: 0.2 }}
+				transition={{ duration: 0.3, ease: "easeOut" }}
+				style={{
+					willChange: "transform",
+					backfaceVisibility: "hidden",
+					WebkitBackfaceVisibility: "hidden",
+					transform: "translateZ(0)",
+					WebkitTransform: "translateZ(0)",
+				}}
 			>
 				<Link href={card.href || "#"}>
 					<div className="relative h-full w-full">
-						<BlurImage
+						<Image
 							src={card.src}
 							alt={card.title}
 							fill
+							quality={80}
+							placeholder="blur"
+							blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzI3MjcyNyIvPjwvc3ZnPg=="
 							className="absolute inset-0 object-cover"
 						/>
 						<div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-black/80" />
@@ -59,16 +75,16 @@ export const Card = ({ card }) => {
 								initial={{ opacity: 0, y: 10 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
-								transition={{ delay: 0.3 }}
+								transition={{ delay: 0.3, ease: "easeOut" }}
 							>
 								{card.category}
 							</motion.p>
 							<motion.p
-								className="text-xl font-semibold text-white md:text-3xl"
+								className="text-xl leading-tight font-semibold text-white md:text-3xl"
 								initial={{ opacity: 0, y: 10 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
-								transition={{ delay: 0.4 }}
+								transition={{ delay: 0.4, ease: "easeOut" }}
 							>
 								{card.title}
 							</motion.p>
@@ -91,31 +107,21 @@ export const BlurImage = ({
 }) => {
 	const [isLoading, setLoading] = useState(true);
 
-	const style = fill
-		? {
-				position: "absolute",
-				height: "100%",
-				width: "100%",
-				left: 0,
-				top: 0,
-				objectFit: "cover",
-			}
-		: {};
-
 	return (
-		<img
+		<Image
 			className={cn(
 				"transition duration-300",
 				isLoading ? "blur-sm" : "blur-0",
 				className,
 			)}
-			style={style}
 			onLoad={() => setLoading(false)}
 			src={src}
 			width={!fill ? width : undefined}
 			height={!fill ? height : undefined}
-			loading="lazy"
-			decoding="async"
+			fill={fill}
+			quality={80}
+			placeholder="blur"
+			blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzI3MjcyNyIvPjwvc3ZnPg=="
 			alt={alt || "Background of a beautiful view"}
 			{...rest}
 		/>

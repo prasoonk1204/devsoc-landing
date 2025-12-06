@@ -41,6 +41,10 @@ export default function NewsletterMobileCarousel({
 								alt={`${title} image ${index + 1}`}
 								width={600}
 								height={800}
+								quality={85}
+								priority={index < 2}
+								placeholder="blur"
+								blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iIzI3MjcyNyIvPjwvc3ZnPg=="
 								className="h-full w-full object-cover"
 							/>
 							<div className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white">

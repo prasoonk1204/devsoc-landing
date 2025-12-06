@@ -38,7 +38,11 @@ export default function Gallery() {
 								src={item.image}
 								alt={item.title}
 								fill
-								sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+								sizes="(max-width: 768px) 50vw, 25vw"
+								quality={80}
+								priority={index < 4}
+								placeholder="blur"
+								blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzI3MjcyNyIvPjwvc3ZnPg=="
 								className="bg-zinc-700 object-cover transition-all duration-200 group-hover:brightness-75"
 							/>
 

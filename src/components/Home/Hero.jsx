@@ -39,11 +39,14 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 			<Image
 				src={BACKGROUND_IMG}
 				alt="DevSoc Background"
-				height={887}
-				width={1439}
+				fill
 				priority
 				quality={85}
-				className="absolute inset-0 z-0 h-full w-full object-cover opacity-25"
+				sizes="100vw"
+				className="absolute inset-0 z-0 object-cover object-center opacity-25 md:object-cover"
+				style={{
+					objectPosition: "center center",
+				}}
 			/>
 			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
 				<Image src={LOGO} alt="DevSoc Logo" height={50} width={50} />

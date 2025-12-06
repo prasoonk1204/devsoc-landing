@@ -30,8 +30,11 @@ export default function NewsletterDesktopGrid({ images, title, onImageClick }) {
 						alt={`${title} image ${index + 1}`}
 						width={1200}
 						height={1600}
-						className="h-auto w-full rounded-3xl object-cover"
+						quality={85}
 						priority={index < 2}
+						placeholder="blur"
+						blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSIxNjAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjE2MDAiIGZpbGw9IiMyNzI3MjciLz48L3N2Zz4="
+						className="h-auto w-full rounded-3xl object-cover"
 					/>
 					<motion.div
 						className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white opacity-0 transition-opacity group-hover:opacity-100"

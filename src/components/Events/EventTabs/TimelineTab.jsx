@@ -4,15 +4,15 @@ import { Clock } from "lucide-react";
 
 export default function TimelineTab({ timeline }) {
 	return (
-		<div className="relative bg-zinc-950/50 overflow-hidden">
-			<div className="text-center p-6 ">
+		<div className="relative overflow-hidden bg-zinc-950/50">
+			<div className="p-6 text-center">
 				<h3 className="font-iceland text-2xl font-bold tracking-[0.2em] text-white uppercase">
 					Operational Timeline
 				</h3>
 			</div>
 
-			<div className="relative p-4 md:p-6 bg-zinc-900/50">
-				<div className="absolute top-0 bottom-0 left-[30px] md:left-[40px] w-px bg-white/10" />
+			<div className="relative bg-zinc-900/50 p-4 md:p-6">
+				<div className="absolute top-0 bottom-0 left-[30px] w-px bg-white/10 md:left-[40px]" />
 
 				<div className="relative space-y-8 pt-2 pb-8">
 					{timeline.map((item, index) => (

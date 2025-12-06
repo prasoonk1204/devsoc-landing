@@ -20,14 +20,14 @@ export default function AboutTab({ event }) {
 	if (!event.detailedDescription) return null;
 
 	return (
-		<div className="relative rounded-2xl border border-white/5 bg-zinc-950/50 overflow-hidden">
-			<div className="text-center p-6">
+		<div className="relative overflow-hidden rounded-2xl border border-white/5 bg-zinc-950/50">
+			<div className="p-6 text-center">
 				<h3 className="font-iceland text-2xl font-bold tracking-[0.2em] text-white uppercase">
 					About the Event
 				</h3>
 			</div>
 
-			<div className="relative p-6 bg-zinc-900/50">
+			<div className="relative bg-zinc-900/50 p-6">
 				<div className="font-sans text-sm leading-relaxed whitespace-pre-line text-zinc-300 sm:text-base">
 					{showFullDescription ? (
 						<>

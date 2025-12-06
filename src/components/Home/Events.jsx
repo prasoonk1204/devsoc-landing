@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { eventsData } from "@/constant/events";
 import { Carousel, Card } from "@/components/UI/mobileCarousel";
+import Image from "next/image";
 import { fadeInBlur, fadeInBlurFast } from "@/lib/motionVariants";
 import { formatEventDate, sortEventsByDate } from "@/lib/utils/eventUtils";
 
@@ -150,7 +151,11 @@ function FannedLayout({
 								translate: "-50% -50%",
 								zIndex,
 								scale: globalScale,
-								filer: "blur(0px)",
+								willChange: "transform",
+								backfaceVisibility: "hidden",
+								WebkitBackfaceVisibility: "hidden",
+								transform: "translateZ(0)",
+								WebkitTransform: "translateZ(0)",
 							}}
 							whileInView={{
 								x: xOffset,
@@ -164,7 +169,6 @@ function FannedLayout({
 										duration: 0.5,
 									},
 								},
-								filter: "blur(0px)",
 							}}
 							viewport={{ once: true }}
 							onMouseEnter={() => setHoveredIndex(index)}
@@ -173,22 +177,34 @@ function FannedLayout({
 							<Link href={`/events/${event.slug}`} scroll>
 								<motion.div
 									whileHover={{ y: -10, scale: hoverScale }}
-									transition={{ type: "tween", duration: 0.25 }}
-									className={`group relative cursor-pointer rounded-3xl bg-zinc-600 transition-all duration-300 ease-out`}
+									transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
+									className="group relative cursor-pointer overflow-hidden rounded-3xl bg-zinc-600 transition-all duration-300 ease-out"
 									style={{
 										filter: isHovered
 											? "drop-shadow(12px 12px 12px rgba(0,0,0,0.3))"
 											: "drop-shadow(8px 8px 8px rgba(0,0,0,0.2))",
+										WebkitFilter: isHovered
+											? "drop-shadow(12px 12px 12px rgba(0,0,0,0.3))"
+											: "drop-shadow(8px 8px 8px rgba(0,0,0,0.2))",
+										willChange: "transform, filter",
+										backfaceVisibility: "hidden",
+										WebkitBackfaceVisibility: "hidden",
 									}}
 								>
-									<img
+									<Image
 										src={event.image || "/placeholder.svg"}
 										alt={event.title}
-										className="aspect-3/4 w-full rounded-3xl object-fill transition-transform duration-300 ease-out"
+										width={600}
+										height={800}
+										quality={80}
+										priority={index < 3}
+										placeholder="blur"
+										blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjgwMCIgZmlsbD0iIzI3MjcyNyIvPjwvc3ZnPg=="
+										className="aspect-3/4 w-full rounded-3xl object-cover transition-transform duration-300 ease-out"
 									/>
 									<div className="absolute inset-0 flex items-end rounded-3xl bg-linear-to-b from-transparent to-black/80 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
 										<div>
-											<h3 className="text-lg font-bold text-white">
+											<h3 className="text-lg leading-tight font-bold text-white">
 												{event.title}
 											</h3>
 											<p className="text-sm text-gray-200">
@@ -228,6 +244,13 @@ function AppleCardsCarouselSection({ events }) {
 				transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
 				className="relative flex h-110 w-75 cursor-pointer items-center justify-center overflow-hidden rounded-3xl bg-zinc-900 shadow-[2px_2px_5px_rgba(0,0,0,0.2),-2px_2px_5px_rgba(0,0,0,0.2),0_4px_5px_rgba(0,0,0,0.2)] md:h-160 md:w-96"
 				whileHover={{ scale: 1.05 }}
+				style={{
+					willChange: "transform",
+					backfaceVisibility: "hidden",
+					WebkitBackfaceVisibility: "hidden",
+					transform: "translateZ(0)",
+					WebkitTransform: "translateZ(0)",
+				}}
 			>
 				<div className="flex flex-col items-center justify-center gap-4 text-white">
 					<ArrowRight className="h-12 w-12" />

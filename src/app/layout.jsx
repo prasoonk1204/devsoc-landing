@@ -89,14 +89,22 @@ export default function RootLayout({ children }) {
 					crossOrigin="anonymous"
 				/>
 				<link
+					rel="preconnect"
+					href="https://ik.imagekit.io"
+					crossOrigin="anonymous"
+				/>
+				<link rel="dns-prefetch" href="https://ik.imagekit.io" />
+				<link
 					rel="preload"
-					href="https://ik.imagekit.io/devsoc/Website/DevSocLogo.png"
+					href="https://ik.imagekit.io/devsoc/Website/DevSocLogo.png?tr=w-200,q-80,f-auto,pr-true"
 					as="image"
+					type="image/webp"
 				/>
 				<link
 					rel="preload"
-					href="https://ik.imagekit.io/devsoc/Website/devsocbg.png"
+					href="https://ik.imagekit.io/devsoc/Website/devsocbg.png?tr=w-1920,q-80,f-auto,pr-true"
 					as="image"
+					type="image/webp"
 				/>
 			</head>
 			<body
