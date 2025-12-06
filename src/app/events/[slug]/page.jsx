@@ -11,6 +11,8 @@ import BackButton from "@/components/UI/BackButton";
 import { formatEventDate, getLatestEvent } from "@/lib/utils/eventUtils";
 import { env } from "@/lib/env";
 import { ArrowRight, Calendar, Download } from "lucide-react";
+import ProblemStatement from "@/components/Events/ProblemStatement";
+import { challengesData } from "@/constant/problemStatements";
 
 export default function EventDetailPage({ params }) {
 	const { slug } = use(params);
@@ -41,6 +43,19 @@ export default function EventDetailPage({ params }) {
 		}
 		return preview.trim();
 	};
+
+	// Check environment configurations
+	const problemStatementEvents = (
+		env.NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS || ""
+	)
+		.split(",")
+		.map((s) => s.trim());
+	const showProblemStatement = problemStatementEvents.includes(event.slug);
+
+	const disableSnapsEvents = (env.NEXT_PUBLIC_DISABLE_EVENT_SNAPS || "")
+		.split(",")
+		.map((s) => s.trim());
+	const showEventSnaps = !disableSnapsEvents.includes(event.slug);
 
 	return (
 		<div className="relative flex min-h-screen w-full flex-col items-center px-4 pt-24 pb-16 text-white sm:pt-36 sm:pb-24">
@@ -152,8 +167,13 @@ export default function EventDetailPage({ params }) {
 					</motion.div>
 				</div>
 
+				{/* Problem Statement Section */}
+				{showProblemStatement && (
+					<ProblemStatement challenges={challengesData} />
+				)}
+
 				{/* Event Gallery Section */}
-				{event.gallery && event.gallery.length > 0 && (
+				{showEventSnaps && event.gallery && event.gallery.length > 0 && (
 					<motion.div
 						className="mt-24 w-full"
 						variants={fadeInBlur}

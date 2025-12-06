@@ -18,6 +18,31 @@
 	--font-iceland: var(--font-iceland);
 }
 
+@layer utilities {
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	.no-scrollbar {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+
+	/* Custom scrollbar - completely hidden */
+	.custom-scrollbar {
+		scroll-behavior: smooth;
+		overscroll-behavior: contain;
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+	}
+
+	/* Webkit browsers (Chrome, Safari, Edge) - hide scrollbar */
+	.custom-scrollbar::-webkit-scrollbar {
+		display: none;
+		width: 0;
+		height: 0;
+	}
+}
+
 body {
 	background: var(--background);
 	color: var(--foreground);
