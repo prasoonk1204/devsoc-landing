@@ -73,16 +73,22 @@ export default function EventDetailPage({ params }) {
 	// Check if we should show the tabbed section at all
 	const showTabbedSection = hasAboutData || hasTracksData || hasTimelineData;
 
+	// Check if event-only mode is enabled
+	const eventOnlyMode = env.NEXT_PUBLIC_EVENT_ONLY_MODE;
+	const isEventOnlyMode = eventOnlyMode && eventOnlyMode.trim() !== "";
+
 	return (
 		<div className="relative flex min-h-screen w-full flex-col items-center px-4 pt-24 pb-16 text-white sm:pt-36 sm:pb-24">
 			<div className="relative w-full max-w-6xl">
-				<BackButton href="/events" label="Back to Events" />
+				{!isEventOnlyMode && (
+					<BackButton href="/events" label="Back to Events" />
+				)}
 
 				{/* Main Content Grid */}
-				<div className="mt-6 grid w-full grid-cols-1 gap-8 md:mt-2 lg:grid-cols-12 lg:gap-12">
+				<div className="mt-6 grid w-full grid-cols-1 gap-8 md:mt-2 md:grid-cols-12 md:gap-12">
 					{/* LEFT SIDE (Content) */}
 					<motion.div
-						className="lg:col-span-8"
+						className="md:col-span-8"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
@@ -93,7 +99,7 @@ export default function EventDetailPage({ params }) {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.5 }}
 						>
-							<h1 className="font-iceland mb-4 text-4xl font-bold tracking-wide text-white sm:text-6xl md:text-7xl">
+							<h1 className="font-iceland mb-4 text-4xl font-bold tracking-wide text-white sm:text-5xl sm:leading-14 lg:text-7xl">
 								{event.title}
 							</h1>
 
@@ -106,7 +112,7 @@ export default function EventDetailPage({ params }) {
 								</div>
 							</div>
 
-							<p className="mb-8 text-base leading-relaxed text-zinc-200 sm:text-lg md:max-w-2xl">
+							<p className="mb-8 font-sans text-base leading-relaxed text-zinc-200 sm:text-lg md:max-w-2xl">
 								{event.description}
 							</p>
 
@@ -125,7 +131,7 @@ export default function EventDetailPage({ params }) {
 
 					{/* RIGHT SIDE (Image) */}
 					<motion.div
-						className="relative lg:col-span-4"
+						className="relative md:col-span-4"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
@@ -151,14 +157,14 @@ export default function EventDetailPage({ params }) {
 				{/* Tabbed Section - Only show if there's data */}
 				{showTabbedSection && (
 					<motion.div
-						className="mt-12 w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950/30 backdrop-blur-sm"
+						className="mt-12 w-full overflow-visible rounded-3xl border border-white/10 bg-zinc-950/30 backdrop-blur-sm"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"
 						viewport={{ once: true }}
 					>
 						{/* Tab Navigation */}
-						<div className="scrollbar-hide flex flex-nowrap gap-1 overflow-x-auto border-b border-white/10 bg-zinc-950/50 p-2">
+						<div className="scrollbar-hide sticky top-0 z-40 flex flex-nowrap justify-center gap-1 overflow-x-auto rounded-t-3xl border-b border-white/10 bg-zinc-950/90 p-2 backdrop-blur-md sm:justify-start md:relative md:top-auto">
 							{hasTracksData && (
 								<button
 									onClick={() => setActiveTab("tracks")}

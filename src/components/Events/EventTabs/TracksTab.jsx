@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
 	Brain,
@@ -30,6 +30,7 @@ const getTrackIcon = (trackId) => {
 export default function TracksTab({ challenges }) {
 	const [selectedTrack, setSelectedTrack] = useState(null);
 	const [openAccordionId, setOpenAccordionId] = useState(null);
+	const accordionRefs = useRef({});
 
 	// Group challenges by track
 	const groupedChallenges = challenges.reduce((groups, challenge) => {
@@ -51,6 +52,28 @@ export default function TracksTab({ challenges }) {
 		setSelectedTrack(tracks[0]);
 	}
 
+	// Scroll to accordion when it opens
+	useEffect(() => {
+		if (openAccordionId && accordionRefs.current[openAccordionId]) {
+			// Wait for the accordion animation to complete
+			const timer = setTimeout(() => {
+				const element = accordionRefs.current[openAccordionId];
+				if (element) {
+					// Calculate position with offset for sticky tabs
+					const elementPosition = element.getBoundingClientRect().top;
+					const offsetPosition = elementPosition + window.pageYOffset - 60; // 80px offset for sticky tabs
+
+					window.scrollTo({
+						top: offsetPosition,
+						behavior: "smooth",
+					});
+				}
+			}, 300);
+
+			return () => clearTimeout(timer);
+		}
+	}, [openAccordionId]);
+
 	const toggleAccordion = (trackId) => {
 		// If clicking the same track, close it. Otherwise, open the new one
 		setOpenAccordionId(openAccordionId === trackId ? null : trackId);
@@ -60,10 +83,10 @@ export default function TracksTab({ challenges }) {
 		<>
 			{/* Mobile Accordion View */}
 			<div className="block md:hidden">
-				<div className="bg-zinc-950/50">
+				<div className="rounded-b-3xl bg-zinc-950/50">
 					{/* Header */}
 					<div className="border-b border-white/10 p-6 text-center backdrop-blur-sm">
-						<h3 className="font-iceland text-2xl font-bold tracking-widest text-white uppercase">
+						<h3 className="font-iceland text-2xl leading-6 font-bold tracking-widest text-white uppercase">
 							The <span className="text-accent">Byte</span> Battlefield
 						</h3>
 						<p className="mt-2 font-mono text-xs tracking-[0.2em] text-zinc-500 uppercase">
@@ -78,7 +101,11 @@ export default function TracksTab({ challenges }) {
 							const isOpen = openAccordionId === track.id;
 
 							return (
-								<div key={idx} className="border-white/5">
+								<div
+									key={idx}
+									className="border-white/5"
+									ref={(el) => (accordionRefs.current[track.id] = el)}
+								>
 									{/* Accordion Header */}
 									<button
 										onClick={() => toggleAccordion(track.id)}
@@ -88,7 +115,7 @@ export default function TracksTab({ challenges }) {
 											<Icon className="h-5 w-5 text-zinc-400 transition-colors duration-300 group-hover:text-white" />
 										</div>
 										<div className="min-w-0 flex-1">
-											<span className="block text-sm font-bold text-zinc-300 transition-colors duration-300 group-hover:text-white">
+											<span className="block font-bold text-zinc-300 transition-colors duration-300 group-hover:text-white">
 												{track.trackName.replace(/Track \d+: /, "")}
 											</span>
 										</div>
@@ -110,7 +137,7 @@ export default function TracksTab({ challenges }) {
 												transition={{ duration: 0.3, ease: "easeInOut" }}
 												className="overflow-hidden"
 											>
-												<div className="bg-selected space-y-4 p-4 md:p-6">
+												<div className="bg-selected space-y-2 p-2 md:p-6">
 													{track.challenges.map((challenge, idx) => (
 														<div
 															key={idx}
@@ -124,29 +151,29 @@ export default function TracksTab({ challenges }) {
 																	#{challenge.challengeNumber}
 																</span>
 															</div>
-															<div className="space-y-4 text-sm">
+															<div className="space-y-4 text-[15px]">
 																<div>
-																	<strong className="mb-2 block text-xs font-bold tracking-wider text-zinc-500 uppercase">
+																	<strong className="mb-2 block font-bold tracking-wider text-zinc-500 uppercase">
 																		Problem
 																	</strong>
-																	<p className="leading-relaxed text-zinc-300">
+																	<p className="font-sans leading-relaxed text-zinc-300">
 																		{challenge.problemStatement}
 																	</p>
 																</div>
 																<div>
-																	<strong className="mb-2 block text-xs font-bold tracking-wider text-zinc-500 uppercase">
+																	<strong className="mb-2 block font-bold tracking-wider text-zinc-500 uppercase">
 																		Deliverable
 																	</strong>
-																	<p className="leading-relaxed text-zinc-300">
+																	<p className="font-sans leading-relaxed text-zinc-300">
 																		{challenge.keyDeliverable}
 																	</p>
 																</div>
 																<div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-4">
-																	<strong className="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-red-400 uppercase">
+																	<strong className="mb-2 flex items-center gap-2 text-sm font-bold tracking-wider text-red-400 uppercase">
 																		<AlertTriangle className="h-3.5 w-3.5" />
 																		Constraint
 																	</strong>
-																	<p className="text-xs leading-relaxed text-zinc-300/90">
+																	<p className="font-sans text-sm leading-relaxed text-zinc-300/90">
 																		{challenge.constraint}
 																	</p>
 																</div>
@@ -165,7 +192,7 @@ export default function TracksTab({ challenges }) {
 			</div>
 
 			{/* Desktop Split View */}
-			<div className="hidden h-[700px] flex-col overflow-hidden bg-zinc-950/50 md:flex">
+			<div className="hidden h-[700px] flex-col overflow-hidden rounded-b-3xl bg-zinc-950/50 md:flex">
 				{/* Header */}
 				<div className="border-b border-white/10 p-6 text-center backdrop-blur-sm">
 					<h3 className="font-iceland text-3xl font-bold tracking-widest text-white uppercase">
@@ -179,56 +206,54 @@ export default function TracksTab({ challenges }) {
 				{/* Content area */}
 				<div className="flex flex-1 overflow-hidden">
 					{/* LEFT: Track Names List - 1 column */}
-					<div className="relative flex w-full flex-col bg-zinc-900/10 md:w-4/12 lg:w-1/3">
-						<ScrollableSection className="flex-1" contentClassName="">
-							<div className="space-y-1 pb-8">
-								{tracks.map((track, idx) => {
-									const Icon = getTrackIcon(track.id);
-									const isSelected = selectedTrack?.id === track.id;
+					<div className="relative flex w-full flex-col overflow-y-auto bg-zinc-900/10 md:w-4/12 lg:w-1/3">
+						<div className="space-y-1 pb-8">
+							{tracks.map((track, idx) => {
+								const Icon = getTrackIcon(track.id);
+								const isSelected = selectedTrack?.id === track.id;
 
-									return (
-										<button
-											key={idx}
-											onClick={() => setSelectedTrack(track)}
-											className={`group relative flex w-full items-center gap-4 px-6 py-5 text-left transition-all duration-300 ${
+								return (
+									<button
+										key={idx}
+										onClick={() => setSelectedTrack(track)}
+										className={`group relative flex w-full items-center gap-4 px-6 py-5 text-left transition-all duration-300 ${
+											isSelected
+												? "bg-selected z-10 -mr-px border-y border-l border-white/10 border-r-transparent shadow-[-10px_0_20px_rgba(0,0,0,0.2)]"
+												: "border-y border-transparent hover:bg-white/3"
+										}`}
+									>
+										{isSelected && (
+											<div className="bg-accent absolute inset-y-0 left-0 w-1 shadow-[0_0_10px_rgba(255,190,122,0.5)]" />
+										)}
+
+										<div
+											className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-all duration-300 ${
 												isSelected
-													? "bg-selected z-10 -mr-px border-y border-l border-white/10 border-r-transparent shadow-[-10px_0_20px_rgba(0,0,0,0.2)]"
-													: "border-y border-transparent hover:bg-white/3"
+													? "bg-accent text-black shadow-[0_0_10px_rgba(255,190,122,0.4)]"
+													: "bg-white/5 text-zinc-500 group-hover:bg-white/10 group-hover:text-white"
 											}`}
 										>
-											{isSelected && (
-												<div className="bg-accent absolute inset-y-0 left-0 w-1 shadow-[0_0_10px_rgba(255,190,122,0.5)]" />
-											)}
-
-											<div
-												className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-all duration-300 ${
+											<Icon className="h-5 w-5" />
+										</div>
+										<div className="min-w-0 flex-1">
+											<span
+												className={`block font-bold transition-colors duration-300 ${
 													isSelected
-														? "bg-accent text-black shadow-[0_0_10px_rgba(255,190,122,0.4)]"
-														: "bg-white/5 text-zinc-500 group-hover:bg-white/10 group-hover:text-white"
+														? "text-white"
+														: "text-zinc-400 group-hover:text-white"
 												}`}
 											>
-												<Icon className="h-5 w-5" />
-											</div>
-											<div className="min-w-0 flex-1">
-												<span
-													className={`block text-sm font-bold transition-colors duration-300 ${
-														isSelected
-															? "text-white"
-															: "text-zinc-400 group-hover:text-white"
-													}`}
-												>
-													{track.trackName.replace(/Track \d+: /, "")}
-												</span>
-											</div>
+												{track.trackName.replace(/Track \d+: /, "")}
+											</span>
+										</div>
 
-											{!isSelected && (
-												<ChevronRight className="h-4 w-4 text-zinc-600 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
-											)}
-										</button>
-									);
-								})}
-							</div>
-						</ScrollableSection>
+										{!isSelected && (
+											<ChevronRight className="h-4 w-4 text-zinc-600 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
+										)}
+									</button>
+								);
+							})}
+						</div>
 					</div>
 
 					{/* RIGHT: Track Details - 2 columns */}
@@ -264,20 +289,20 @@ export default function TracksTab({ challenges }) {
 															#{challenge.challengeNumber}
 														</span>
 													</div>
-													<div className="space-y-6 text-sm">
+													<div className="space-y-6 text-[15px] tracking-wide">
 														<div>
-															<strong className="mb-2 block text-xs font-bold tracking-wider text-zinc-500 uppercase">
+															<strong className="mb-2 block font-bold tracking-wider text-zinc-500 uppercase">
 																Problem
 															</strong>
-															<p className="leading-relaxed text-zinc-300">
+															<p className="font-sans leading-relaxed text-zinc-300">
 																{challenge.problemStatement}
 															</p>
 														</div>
 														<div>
-															<strong className="mb-2 block text-xs font-bold tracking-wider text-zinc-500 uppercase">
+															<strong className="mb-2 block font-bold tracking-wider text-zinc-500 uppercase">
 																Deliverable
 															</strong>
-															<p className="leading-relaxed text-zinc-300">
+															<p className="font-sans leading-relaxed text-zinc-300">
 																{challenge.keyDeliverable}
 															</p>
 														</div>
@@ -286,7 +311,7 @@ export default function TracksTab({ challenges }) {
 																<AlertTriangle className="h-3.5 w-3.5" />
 																Constraint
 															</strong>
-															<p className="text-xs leading-relaxed text-zinc-300/90">
+															<p className="font-sans text-sm leading-relaxed text-zinc-300/90">
 																{challenge.constraint}
 															</p>
 														</div>

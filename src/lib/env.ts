@@ -17,6 +17,7 @@ const clientSchema = z.object({
 		.default("no"),
 	NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS: z.string().default(""),
 	NEXT_PUBLIC_DISABLE_EVENT_SNAPS: z.string().default(""),
+	NEXT_PUBLIC_EVENT_ONLY_MODE: z.string().optional().default(""),
 	NEXT_PUBLIC_API_URL: z
 		.string()
 		.optional()
@@ -66,6 +67,7 @@ function validateEnv() {
 			process.env.NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS,
 		NEXT_PUBLIC_DISABLE_EVENT_SNAPS:
 			process.env.NEXT_PUBLIC_DISABLE_EVENT_SNAPS,
+		NEXT_PUBLIC_EVENT_ONLY_MODE: process.env.NEXT_PUBLIC_EVENT_ONLY_MODE,
 	};
 
 	try {
