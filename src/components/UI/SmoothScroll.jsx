@@ -19,8 +19,9 @@ export default function SmoothScroll() {
 				let element = node;
 				while (element && element !== document.body) {
 					if (
-						(element.hasAttribute && element.hasAttribute('data-lenis-prevent')) ||
-						(element.classList && element.classList.contains('scrollbar-thin'))
+						(element.hasAttribute &&
+							element.hasAttribute("data-lenis-prevent")) ||
+						(element.classList && element.classList.contains("scrollbar-thin"))
 					) {
 						return true;
 					}

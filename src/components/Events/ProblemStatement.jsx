@@ -184,16 +184,16 @@ export default function ProblemStatement({ challenges }) {
 											</button>
 										</div>
 										{/* Scrollable content area with hidden scrollbar (shows on hover) */}
-										<div 
+										<div
 											ref={detailsScrollRef}
 											className="custom-scrollbar group/scroll relative flex-1 overflow-y-scroll p-4"
-											style={{ overscrollBehavior: 'contain' }}
+											style={{ overscrollBehavior: "contain" }}
 											data-lenis-prevent
 										>
 											{/* Scroll hint indicator */}
 											<div className="pointer-events-none absolute top-0 right-0 z-10 h-12 w-full bg-gradient-to-b from-zinc-900/80 to-transparent opacity-0 transition-opacity duration-300 group-hover/scroll:opacity-100" />
-											<div className="pointer-events-none absolute bottom-0 right-0 z-10 h-12 w-full bg-gradient-to-t from-zinc-900/80 to-transparent opacity-0 transition-opacity duration-300 group-hover/scroll:opacity-100" />
-											
+											<div className="pointer-events-none absolute right-0 bottom-0 z-10 h-12 w-full bg-gradient-to-t from-zinc-900/80 to-transparent opacity-0 transition-opacity duration-300 group-hover/scroll:opacity-100" />
+
 											<h4 className="font-iceland mb-6 text-2xl leading-tight font-bold text-white">
 												{selectedTrack.trackName}
 											</h4>
@@ -313,9 +313,9 @@ export default function ProblemStatement({ challenges }) {
 							</div>
 
 							{/* Scrollable track list */}
-							<div 
+							<div
 								className="custom-scrollbar flex-1 overflow-y-scroll px-1 pb-2"
-								style={{ overscrollBehavior: 'contain' }}
+								style={{ overscrollBehavior: "contain" }}
 								data-lenis-prevent
 							>
 								<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:flex lg:flex-col">
@@ -329,8 +329,8 @@ export default function ProblemStatement({ challenges }) {
 												onClick={() => handleTrackSelect(track)}
 												className={`group relative flex items-center gap-4 overflow-hidden rounded-xl border p-4 text-left transition-all duration-300 ${
 													isSelected
-														? "border-accent bg-accent/10 shadow-[0_0_20px_rgba(255,190,122,0.15)] scale-[1.02]"
-														: "border-white/5 bg-zinc-900/40 hover:border-white/20 hover:bg-zinc-800/60 hover:scale-[1.01] active:scale-[0.99]"
+														? "border-accent bg-accent/10 scale-[1.02] shadow-[0_0_20px_rgba(255,190,122,0.15)]"
+														: "border-white/5 bg-zinc-900/40 hover:scale-[1.01] hover:border-white/20 hover:bg-zinc-800/60 active:scale-[0.99]"
 												}`}
 											>
 												<div
@@ -393,9 +393,9 @@ export default function ProblemStatement({ challenges }) {
 								</h3>
 							</div>
 
-							<div 
+							<div
 								className="custom-scrollbar relative flex-1 overflow-y-scroll px-2 pb-2"
-								style={{ overscrollBehavior: 'contain' }}
+								style={{ overscrollBehavior: "contain" }}
 								data-lenis-prevent
 							>
 								{/* Timeline Line - positioned relative to the content */}
@@ -403,19 +403,22 @@ export default function ProblemStatement({ challenges }) {
 
 								<div className="relative space-y-6 pt-2 pb-4">
 									{operationalTimeline.map((item, index) => (
-										<div key={index} className="group relative flex gap-4 pl-12 transition-all duration-200 hover:translate-x-1">
+										<div
+											key={index}
+											className="group relative flex gap-4 pl-12 transition-all duration-200 hover:translate-x-1"
+										>
 											{/* Indicator - now positioned relative to parent */}
 											<div className="absolute top-0 left-0 z-10">
-												<div className="group-hover:border-accent/40 group-hover:scale-110 flex h-10 w-10 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 shadow-md transition-all duration-300">
+												<div className="group-hover:border-accent/40 flex h-10 w-10 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950 shadow-md transition-all duration-300 group-hover:scale-110">
 													<Clock className="group-hover:text-accent h-4 w-4 text-zinc-600 transition-colors duration-300" />
 												</div>
 											</div>
 
-											<div className="flex-1 min-w-0">
+											<div className="min-w-0 flex-1">
 												<span className="text-accent/90 group-hover:text-accent mb-1 block font-mono text-base font-bold transition-colors duration-200">
 													{item.time}
 												</span>
-												<h4 className="font-iceland text-lg font-bold tracking-wide text-white uppercase transition-colors duration-200 group-hover:text-accent/90">
+												<h4 className="font-iceland group-hover:text-accent/90 text-lg font-bold tracking-wide text-white uppercase transition-colors duration-200">
 													{item.title}
 												</h4>
 												<p className="mt-1 text-sm leading-relaxed text-zinc-400 transition-colors duration-200 group-hover:text-zinc-300">
