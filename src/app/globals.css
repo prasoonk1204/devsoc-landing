@@ -6,6 +6,7 @@
 	--background: #000000;
 	--foreground: #171717;
 	--color-accent: #ffbe7a;
+	--color-selected: #151517;
 }
 
 @theme inline {
@@ -14,6 +15,7 @@
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-geist-mono);
 	--color-accent: var(--color-accent);
+	--color-selected: var(--color-selected);
 	--font-bg: var(--font-bg);
 	--font-iceland: var(--font-iceland);
 }
@@ -23,6 +25,14 @@
 		display: none;
 	}
 	.no-scrollbar {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
+	}
+	.scrollbar-hide {
 		-ms-overflow-style: none; /* IE and Edge */
 		scrollbar-width: none; /* Firefox */
 	}
@@ -40,6 +50,31 @@
 		display: none;
 		width: 0;
 		height: 0;
+	}
+
+	/* Thin visible scrollbar */
+	.thin-scrollbar {
+		scroll-behavior: smooth;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar {
+		width: 4px;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar-thumb {
+		background-color: rgba(255, 255, 255, 0.1);
+		border-radius: 20px;
+	}
+
+	.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+		background-color: rgba(255, 190, 122, 0.5);
 	}
 }
 

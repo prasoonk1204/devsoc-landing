@@ -5,19 +5,21 @@ import { eventsData } from "@/constant/events";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import BackButton from "@/components/UI/BackButton";
 import { formatEventDate, getLatestEvent } from "@/lib/utils/eventUtils";
 import { env } from "@/lib/env";
-import { ArrowRight, Calendar, Download } from "lucide-react";
-import ProblemStatement from "@/components/Events/ProblemStatement";
+import { ArrowRight, Calendar, Download, Info, Target, Clock } from "lucide-react";
 import { challengesData } from "@/constant/problemStatements";
+import { operationalTimeline } from "@/constant/timeline";
+import AboutTab from "@/components/Events/EventTabs/AboutTab";
+import TracksTab from "@/components/Events/EventTabs/TracksTab";
+import TimelineTab from "@/components/Events/EventTabs/TimelineTab";
 
 export default function EventDetailPage({ params }) {
 	const { slug } = use(params);
 	const event = eventsData.find((e) => e.slug === slug);
-	const [showFullDescription, setShowFullDescription] = useState(false);
 
 	if (!event) {
 		notFound();
@@ -32,18 +34,6 @@ export default function EventDetailPage({ params }) {
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
 
-	const getPreviewText = (text) => {
-		if (!text) return "";
-		const lines = text.split("\n").filter((line) => line.trim());
-		let preview = "";
-		let charCount = 0;
-		for (let i = 0; i < lines.length && charCount < 800; i++) {
-			preview += lines[i] + "\n";
-			charCount += lines[i].length;
-		}
-		return preview.trim();
-	};
-
 	// Check environment configurations
 	const problemStatementEvents = (
 		env.NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS || ""
@@ -56,6 +46,24 @@ export default function EventDetailPage({ params }) {
 		.split(",")
 		.map((s) => s.trim());
 	const showEventSnaps = !disableSnapsEvents.includes(event.slug);
+
+	// Check if tabs have data
+	const hasAboutData = !!event.detailedDescription;
+	const hasTracksData = showProblemStatement && challengesData.length > 0;
+	const hasTimelineData = showProblemStatement && operationalTimeline.length > 0;
+
+	// Determine default tab - prioritize tracks if available, then about
+	const getDefaultTab = () => {
+		if (hasTracksData) return "tracks";
+		if (hasAboutData) return "about";
+		if (hasTimelineData) return "timeline";
+		return "about";
+	};
+
+	const [activeTab, setActiveTab] = useState(getDefaultTab());
+
+	// Check if we should show the tabbed section at all
+	const showTabbedSection = hasAboutData || hasTracksData || hasTimelineData;
 
 	return (
 		<div className="relative flex min-h-screen w-full flex-col items-center px-4 pt-24 pb-16 text-white sm:pt-36 sm:pb-24">
@@ -106,40 +114,6 @@ export default function EventDetailPage({ params }) {
 							)}
 						</motion.div>
 
-						{/* Detailed Description Section */}
-						{event.detailedDescription && (
-							<motion.div
-								className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-white/3 p-4 backdrop-blur-sm sm:p-8"
-								variants={fadeInBlur}
-							>
-								<h3 className="font-iceland text-accent mb-4 text-2xl font-bold sm:text-3xl">
-									About the Event
-								</h3>
-								<div className="font-sans text-sm leading-relaxed whitespace-pre-line text-zinc-300 sm:text-base">
-									{showFullDescription ? (
-										<>
-											{event.detailedDescription}
-											<button
-												onClick={() => setShowFullDescription(false)}
-												className="text-accent hover:text-accent/80 mt-4 flex items-center gap-1 font-medium transition-colors hover:cursor-pointer hover:underline"
-											>
-												Show less
-											</button>
-										</>
-									) : (
-										<>
-											{getPreviewText(event.detailedDescription)}
-											<button
-												onClick={() => setShowFullDescription(true)}
-												className="text-accent hover:text-accent/80 mt-2 flex items-center gap-1 font-medium transition-colors hover:cursor-pointer hover:underline"
-											>
-												Read more
-											</button>
-										</>
-									)}
-								</div>
-							</motion.div>
-						)}
 					</motion.div>
 
 					{/* RIGHT SIDE (Image) */}
@@ -167,9 +141,101 @@ export default function EventDetailPage({ params }) {
 					</motion.div>
 				</div>
 
-				{/* Problem Statement Section */}
-				{showProblemStatement && (
-					<ProblemStatement challenges={challengesData} />
+				{/* Tabbed Section - Only show if there's data */}
+				{showTabbedSection && (
+					<motion.div
+						className="mt-12 w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950/30 backdrop-blur-sm"
+						variants={fadeInBlur}
+						initial="hidden"
+						whileInView="visible"
+						viewport={{ once: true }}
+					>
+						{/* Tab Navigation */}
+						<div className="flex flex-nowrap gap-1 overflow-x-auto border-b border-white/10 bg-zinc-950/50 p-2 scrollbar-hide">
+							{hasTracksData && (
+								<button
+									onClick={() => setActiveTab("tracks")}
+									className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-2 font-sans text-sm font-semibold transition-all duration-300 cursor-pointer sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+										activeTab === "tracks"
+											? "bg-accent text-black shadow-lg"
+											: "text-zinc-400 hover:bg-accent/20 hover:text-white"
+									}`}
+								>
+									<Target className="h-4 w-4 sm:h-5 sm:w-5" />
+									<span>Tracks</span>
+								</button>
+							)}
+
+							{hasTimelineData && (
+								<button
+									onClick={() => setActiveTab("timeline")}
+									className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-2 font-sans text-sm font-semibold transition-all duration-300 cursor-pointer sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+										activeTab === "timeline"
+											? "bg-accent text-black shadow-lg"
+											: "text-zinc-400 hover:bg-accent/20 hover:text-white"
+									}`}
+								>
+									<Clock className="h-4 w-4 sm:h-5 sm:w-5" />
+									<span>Timeline</span>
+								</button>
+							)}
+
+							{hasAboutData && (
+								<button
+									onClick={() => setActiveTab("about")}
+									className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-2 font-sans text-sm font-semibold transition-all duration-300 cursor-pointer sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+										activeTab === "about"
+											? "bg-accent text-black shadow-lg"
+											: "text-zinc-400 hover:bg-accent/20 hover:text-white"
+									}`}
+								>
+									<Info className="h-4 w-4 sm:h-5 sm:w-5" />
+									<span>About</span>
+								</button>
+							)}
+						</div>
+
+						{/* Tab Content */}
+						<div className="">
+							<AnimatePresence mode="wait">
+								{activeTab === "about" && hasAboutData && (
+									<motion.div
+										key="about"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: -10 }}
+										transition={{ duration: 0.3 }}
+									>
+										<AboutTab event={event} />
+									</motion.div>
+								)}
+
+								{activeTab === "tracks" && hasTracksData && (
+									<motion.div
+										key="tracks"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: -10 }}
+										transition={{ duration: 0.3 }}
+									>
+										<TracksTab challenges={challengesData} />
+									</motion.div>
+								)}
+
+								{activeTab === "timeline" && hasTimelineData && (
+									<motion.div
+										key="timeline"
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										exit={{ opacity: 0, y: -10 }}
+										transition={{ duration: 0.3 }}
+									>
+										<TimelineTab timeline={operationalTimeline} />
+									</motion.div>
+								)}
+							</AnimatePresence>
+						</div>
+					</motion.div>
 				)}
 
 				{/* Event Gallery Section */}
