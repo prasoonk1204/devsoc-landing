@@ -21,14 +21,8 @@ export default function FeedbackModal({ isOpen, onClose, eventName }) {
 		setSubmitStatus(null);
 
 		try {
-			const apiUrl = process.env.NEXT_PUBLIC_FEEDBACK_API_URL;
-			const apiKey = process.env.NEXT_PUBLIC_FEEDBACK_API_KEY;
-
-			if (!apiUrl || !apiKey) {
-				throw new Error("Feedback API configuration is missing");
-			}
-
-			const response = await fetch(`${apiUrl}?apiKey=${apiKey}`, {
+			// Call our internal API route (server-side)
+			const response = await fetch("/api/feedback", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -96,7 +90,7 @@ export default function FeedbackModal({ isOpen, onClose, eventName }) {
 
 							{/* Header */}
 							<div className="flex flex-col items-center border-b border-white/10 bg-zinc-900/50 px-4 pt-6 pb-4 sm:px-6 sm:pt-7 sm:pb-5">
-								<div className="from-accent to-accent/70 mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br sm:mb-3.5 sm:h-14 sm:w-14">
+								<div className="from-accent to-accent/70 mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br sm:mb-3.5 sm:h-14 sm:w-14">
 									<span className="font-iceland text-xl font-bold text-black sm:text-2xl">
 										DS
 									</span>

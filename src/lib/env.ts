@@ -20,8 +20,6 @@ const clientSchema = z.object({
 	NEXT_PUBLIC_DISABLE_EVENT_SNAPS: z.string().default(""),
 	NEXT_PUBLIC_EVENT_ONLY_MODE: z.string().optional().default(""),
 	NEXT_PUBLIC_FEEDBACK_ENABLED_EVENTS: z.string().default(""),
-	NEXT_PUBLIC_FEEDBACK_API_URL: z.string().optional().default(""),
-	NEXT_PUBLIC_FEEDBACK_API_KEY: z.string().optional().default(""),
 	NEXT_PUBLIC_API_URL: z
 		.string()
 		.optional()
@@ -48,6 +46,8 @@ const serverSchema = clientSchema.extend({
 	CONVEX_URL: z.string().url(),
 	ADMIN_SECRET: z.string().min(1, "Admin secret is required"),
 	IMAGEKIT_PRIVATE_KEY: z.string().min(1, "ImageKit private key is required"),
+	FEEDBACK_API_URL: z.string().optional().default(""),
+	FEEDBACK_API_KEY: z.string().optional().default(""),
 });
 
 function validateEnv() {
@@ -76,8 +76,8 @@ function validateEnv() {
 		NEXT_PUBLIC_EVENT_ONLY_MODE: process.env.NEXT_PUBLIC_EVENT_ONLY_MODE,
 		NEXT_PUBLIC_FEEDBACK_ENABLED_EVENTS:
 			process.env.NEXT_PUBLIC_FEEDBACK_ENABLED_EVENTS,
-		NEXT_PUBLIC_FEEDBACK_API_URL: process.env.NEXT_PUBLIC_FEEDBACK_API_URL,
-		NEXT_PUBLIC_FEEDBACK_API_KEY: process.env.NEXT_PUBLIC_FEEDBACK_API_KEY,
+		FEEDBACK_API_URL: process.env.FEEDBACK_API_URL,
+		FEEDBACK_API_KEY: process.env.FEEDBACK_API_KEY,
 	};
 
 	try {
