@@ -90,7 +90,7 @@ export default function EventDetailPage({ params }) {
 	const isEventOnlyMode = eventOnlyMode && eventOnlyMode.trim() !== "";
 
 	return (
-		<div className="relative flex min-h-screen w-full flex-col items-center px-4 pt-24 pb-16 text-white sm:pt-36 sm:pb-24">
+		<div className={`relative flex min-h-screen w-full flex-col items-center px-4 pb-16 text-white sm:pb-24 ${isEventOnlyMode ? 'pt-10 sm:pt-20' : 'pt-24 sm:pt-36'}`}>
 			<div className="relative w-full max-w-6xl">
 				{!isEventOnlyMode && <BackButton href="/events" label="All Events" />}
 
@@ -126,8 +126,8 @@ export default function EventDetailPage({ params }) {
 								{event.description}
 							</p>
 
-							{/* Registration Button - Only show for latest event */}
-							{isLatestEvent && isRegistrationEnabled && (
+							{/* Registration Button - Only show for latest event and not in event-only mode */}
+							{isLatestEvent && isRegistrationEnabled && (useExternalRegistration || !isEventOnlyMode) && (
 								<>
 									{useExternalRegistration ? (
 										<a
@@ -192,13 +192,13 @@ export default function EventDetailPage({ params }) {
 							{hasTracksData && (
 								<button
 									onClick={() => setActiveTab("tracks")}
-									className={`relative flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 font-sans text-sm font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+									className={`relative flex cursor-pointer items-center gap-0.5 rounded-xl px-4 py-3 font-sans font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:text-base ${
 										activeTab === "tracks"
 											? "bg-accent text-black shadow-lg"
 											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
 									}`}
 								>
-									<Target className="h-4 w-4 sm:h-5 sm:w-5" />
+									<Target className="h-4 w-4 sm:h-5 sm:w-5 hidden sm:block" />
 									<span>Tracks</span>
 								</button>
 							)}
@@ -206,13 +206,13 @@ export default function EventDetailPage({ params }) {
 							{hasTimelineData && (
 								<button
 									onClick={() => setActiveTab("timeline")}
-									className={`relative flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 font-sans text-sm font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+									className={`relative flex cursor-pointer items-center gap-0.5 rounded-xl px-4 py-3 font-sans font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:text-base ${
 										activeTab === "timeline"
 											? "bg-accent text-black shadow-lg"
 											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
 									}`}
 								>
-									<Clock className="h-4 w-4 sm:h-5 sm:w-5" />
+									<Clock className="h-4 w-4 sm:h-5 sm:w-5 hidden sm:block" />
 									<span>Timeline</span>
 								</button>
 							)}
@@ -220,13 +220,13 @@ export default function EventDetailPage({ params }) {
 							{hasAboutData && (
 								<button
 									onClick={() => setActiveTab("about")}
-									className={`relative flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 font-sans text-sm font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:py-3 sm:text-base ${
+									className={`relative flex cursor-pointer items-center gap-0.5 rounded-xl px-4 py-3 font-sans font-semibold whitespace-nowrap transition-all duration-300 sm:gap-2 sm:px-6 sm:text-base ${
 										activeTab === "about"
 											? "bg-accent text-black shadow-lg"
 											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
 									}`}
 								>
-									<Info className="h-4 w-4 sm:h-5 sm:w-5" />
+									<Info className="h-4 w-4 sm:h-5 sm:w-5 hidden sm:block" />
 									<span>About</span>
 								</button>
 							)}

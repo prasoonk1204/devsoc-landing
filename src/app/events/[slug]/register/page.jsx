@@ -19,6 +19,15 @@ export default function EventRegistrationPage({ params }) {
 		notFound();
 	}
 
+	// Check if event-only mode is enabled
+	const eventOnlyMode = env.NEXT_PUBLIC_EVENT_ONLY_MODE?.trim();
+	const isEventOnlyMode = eventOnlyMode && eventOnlyMode !== "";
+
+	// If event-only mode is enabled, block registration page
+	if (isEventOnlyMode) {
+		notFound();
+	}
+
 	// Check if registration is enabled and this is the latest event
 	const isRegistrationEnabled =
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||

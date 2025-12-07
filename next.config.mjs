@@ -38,29 +38,6 @@ const nextConfig = {
 		NEXT_PUBLIC_EVENT_ONLY_MODE: process.env.NEXT_PUBLIC_EVENT_ONLY_MODE,
 	},
 	async redirects() {
-		const eventOnlyMode = process.env.NEXT_PUBLIC_EVENT_ONLY_MODE;
-
-		// If event-only mode is enabled, redirect all routes to the event page
-		if (eventOnlyMode && eventOnlyMode.trim() !== "") {
-			return [
-				{
-					source: "/",
-					destination: `/events/${eventOnlyMode}`,
-					permanent: false,
-				},
-				{
-					source: "/events",
-					destination: `/events/${eventOnlyMode}`,
-					permanent: false,
-				},
-				{
-					source: "/:path((?!events|_next|api|favicon.ico).*)",
-					destination: `/events/${eventOnlyMode}`,
-					permanent: false,
-				},
-			];
-		}
-
 		return [];
 	},
 	experimental: {
