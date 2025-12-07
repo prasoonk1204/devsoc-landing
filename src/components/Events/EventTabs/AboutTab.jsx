@@ -10,7 +10,8 @@ export default function AboutTab({ event }) {
 
 	const getPreviewText = (text) => {
 		if (!text) return "";
-		const lines = text.split("\n").filter((line) => line.trim());
+		// Keep empty lines for proper markdown paragraph spacing
+		const lines = text.split("\n");
 		let preview = "";
 		let charCount = 0;
 		for (let i = 0; i < lines.length && charCount < 800; i++) {
@@ -31,30 +32,50 @@ export default function AboutTab({ event }) {
 			</div>
 
 			<div className="relative bg-zinc-900/50 p-4 font-sans sm:p-10">
-				<div className="prose prose-invert prose-sm sm:prose-base lg:prose-lg max-w-none">
+				<div className="prose prose-invert max-w-none">
 					<style jsx global>{`
 						.prose h2 {
 							color: #fff;
 							font-weight: 700;
-							font-size: 1.75rem;
-							margin-top: 2.5rem;
+							font-size: 1.5rem;
+							margin-top: 2rem;
 							margin-bottom: 1rem;
 							padding-bottom: 0.5rem;
 							border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 							letter-spacing: 0.025em;
 						}
+						@media (min-width: 640px) {
+							.prose h2 {
+								font-size: 1.75rem;
+								margin-top: 2.5rem;
+							}
+						}
 						.prose h3 {
 							color: #e4e4e7;
 							font-weight: 600;
-							font-size: 1.35rem;
-							margin-top: 1.75rem;
+							font-size: 1.125rem;
+							margin-top: 1.5rem;
 							margin-bottom: 0.75rem;
 							letter-spacing: 0.015em;
 						}
+						@media (min-width: 640px) {
+							.prose h3 {
+								font-size: 1.35rem;
+								margin-top: 1.75rem;
+							}
+						}
 						.prose p {
 							color: #d4d4d8;
-							line-height: 1.8;
-							margin-bottom: 1.25rem;
+							line-height: 1.7;
+							margin-bottom: 1rem;
+							font-size: 0.95rem;
+						}
+						@media (min-width: 640px) {
+							.prose p {
+								font-size: 1rem;
+								line-height: 1.8;
+								margin-bottom: 1.25rem;
+							}
 						}
 						.prose strong {
 							color: #fff;
@@ -127,7 +148,7 @@ export default function AboutTab({ event }) {
 							<div className="mt-8 flex justify-center border-t border-white/10 pt-6">
 								<button
 									onClick={() => setShowFullDescription(false)}
-									className="group bg-accent/10 border-accent/30 hover:border-accent/60 text-accent hover:shadow-accent/20 flex items-center gap-2 rounded-3xl border px-4 py-2 font-medium transition-all duration-300 hover:shadow-lg"
+									className="group bg-accent/10 border-accent/30 hover:border-accent/60 text-accent hover:shadow-accent/20 flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-2 font-medium transition-all duration-300 hover:shadow-lg"
 								>
 									<span>Show Less</span>
 									<ChevronUp className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
@@ -139,17 +160,15 @@ export default function AboutTab({ event }) {
 							<ReactMarkdown remarkPlugins={[remarkGfm]}>
 								{getPreviewText(event.detailedDescription)}
 							</ReactMarkdown>
-							<div className="relative mt-6">
-								<div className="pointer-events-none absolute inset-x-0 -top-20 h-20 bg-linear-to-t from-zinc-900/50 to-transparent" />
-								<div className="flex justify-center pt-4">
-									<button
-										onClick={() => setShowFullDescription(true)}
-										className="group bg-accent/10 border-accent/30 hover:border-accent/60 text-accent hover:shadow-accent/20 flex items-center gap-2 rounded-3xl border px-4 py-2 font-medium transition-all duration-300 hover:shadow-lg"
-									>
-										<span>Read More</span>
-										<ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-									</button>
-								</div>
+
+							<div className="mt-6 flex justify-center pt-4">
+								<button
+									onClick={() => setShowFullDescription(true)}
+									className="group bg-accent/10 border-accent/30 hover:border-accent/60 text-accent hover:shadow-accent/20 flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-2 font-medium transition-all duration-300 hover:shadow-lg"
+								>
+									<span>Read More</span>
+									<ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+								</button>
 							</div>
 						</>
 					)}

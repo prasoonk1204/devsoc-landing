@@ -237,6 +237,7 @@ const Footer = () => {
 										<MorphingText
 											texts={devLinks.map((dev) => dev.name)}
 											links={devLinks.map((dev) => dev.link)}
+											customTimings={[2, 2, 0.8, 0.3, 0.8]} // P, P, P, S, A
 											className="text-lg font-bold text-white sm:text-base md:text-lg"
 										/>
 									)}

@@ -24,9 +24,9 @@ export default function Header() {
 			icon: <Home size={20} />,
 		},
 		{
-			title: "About",
-			href: "/about",
-			icon: <UserSquare2 size={20} />,
+			title: "Events",
+			href: "/events",
+			icon: <CalendarDays size={20} />,
 		},
 		{
 			title: "Newsletter",
@@ -34,9 +34,9 @@ export default function Header() {
 			icon: <Newspaper size={20} />,
 		},
 		{
-			title: "Events",
-			href: "/events",
-			icon: <CalendarDays size={20} />,
+			title: "About",
+			href: "/about",
+			icon: <UserSquare2 size={20} />,
 		},
 		{
 			title: "Quiz",
@@ -79,7 +79,7 @@ export default function Header() {
 		<nav className="ease fixed right-0 bottom-0 left-0 z-100 mx-auto mb-4 flex h-fit w-fit items-center justify-center rounded-4xl border border-zinc-700/90 bg-zinc-950/80 px-1 py-2 text-white shadow-[0_1px_1px_rgba(0,0,0,0.05),0_4px_6px_rgba(34,42,53,0.04),0_24px_68px_rgba(47,48,55,0.05),0_2px_3px_rgba(0,0,0,0.04)] backdrop-blur-lg transition-all duration-300 md:top-0 md:mt-4 md:px-1 md:py-0.5">
 			{displayIndex !== -1 && (
 				<motion.div
-					className="absolute h-[calc(100%-10px)] w-full rounded-full bg-orange-200 md:h-[calc(100%-6px)]"
+					className="bg-accent absolute h-[calc(100%-10px)] w-full rounded-full md:h-[calc(100%-6px)]"
 					animate={{
 						left: indicatorStyle.left,
 						width: indicatorStyle.width,

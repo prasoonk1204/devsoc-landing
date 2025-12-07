@@ -24,6 +24,14 @@ export default function Page() {
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
 
+	// Check if external registration URL is provided
+	const externalRegistrationUrl =
+		env.NEXT_PUBLIC_EXTERNAL_REGISTRATION_URL?.trim() || "";
+	const useExternalRegistration =
+		externalRegistrationUrl.length > 0 &&
+		(externalRegistrationUrl.startsWith("http://") ||
+			externalRegistrationUrl.startsWith("https://"));
+
 	return (
 		<PageContainer>
 			{latestEvent && (
@@ -55,12 +63,25 @@ export default function Page() {
 
 							{isRegistrationEnabled && (
 								<div className="flex flex-col gap-4 sm:flex-row">
-									<Link
-										href={`/events/${latestEvent.slug}/register`}
-										className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
-									>
-										Register for Event
-									</Link>
+									{useExternalRegistration ? (
+										<a
+											href={externalRegistrationUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+										>
+											<span>Register Now</span>
+											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+										</a>
+									) : (
+										<Link
+											href={`/events/${latestEvent.slug}/register`}
+											className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+										>
+											<span>Register Now</span>
+											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+										</Link>
+									)}
 									<Link
 										href={`/events/${latestEvent.slug}`}
 										className="inline-flex items-center justify-center rounded-3xl border border-zinc-600 px-8 py-3 text-center font-sans font-medium text-white transition-colors hover:bg-zinc-800 focus:ring-2 focus:ring-zinc-600 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"

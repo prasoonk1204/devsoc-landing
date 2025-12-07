@@ -168,9 +168,8 @@ export default function TracksTab({ challenges }) {
 																		{challenge.keyDeliverable}
 																	</p>
 																</div>
-																<div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-4">
-																	<strong className="mb-2 flex items-center gap-2 text-sm font-bold tracking-wider text-red-400 uppercase">
-																		<AlertTriangle className="h-3.5 w-3.5" />
+																<div className="mt-4 rounded-xl border border-blue-500/20 bg-blue-500/5 p-4">
+																	<strong className="mb-2 flex items-center gap-2 text-sm font-bold tracking-wider text-blue-400 uppercase">
 																		Constraint
 																	</strong>
 																	<p className="font-sans text-sm leading-relaxed text-zinc-300/90">
@@ -216,7 +215,7 @@ export default function TracksTab({ challenges }) {
 									<button
 										key={idx}
 										onClick={() => setSelectedTrack(track)}
-										className={`group relative flex w-full items-center gap-4 px-6 py-5 text-left transition-all duration-300 ${
+										className={`group relative flex w-full cursor-pointer items-center gap-4 px-6 py-5 text-left transition-all duration-300 ${
 											isSelected
 												? "bg-selected z-10 -mr-px border-y border-l border-white/10 border-r-transparent shadow-[-10px_0_20px_rgba(0,0,0,0.2)]"
 												: "border-y border-transparent hover:bg-white/3"
@@ -306,9 +305,8 @@ export default function TracksTab({ challenges }) {
 																{challenge.keyDeliverable}
 															</p>
 														</div>
-														<div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-4">
-															<strong className="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-red-400 uppercase">
-																<AlertTriangle className="h-3.5 w-3.5" />
+														<div className="mt-4 rounded-xl border border-blue-500/20 bg-blue-500/5 p-4">
+															<strong className="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-blue-400 uppercase">
 																Constraint
 															</strong>
 															<p className="font-sans text-sm leading-relaxed text-zinc-300/90">

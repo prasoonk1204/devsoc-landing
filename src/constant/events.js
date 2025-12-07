@@ -275,14 +275,14 @@ export const eventsData = [
 		],
 	},
 	{
-		title: "Over² — DevSoc’s Flagship Tech Experience",
-		slug: "over-square-2025",
+		title: "OverDrive (Over²)",
+		slug: "overdrive-2025",
 		image:
 			"https://ik.imagekit.io/devsoc/events/2025_Over_square/cover.jpeg?updatedAt=1763920478246",
 		date: "2025-11-30",
 		description:
 			"Over² combines OverDrive, a hands-on Full - stack web development bootcamp, with OverClocked, a fast-paced hackathon that turns creativity into real builds. It’s a complete learning-to-launch experience where students upskill, experiment, and rise above their limits.",
-		detailedDescription: `Over² is Development Society's most awaited annual tech experience — a **two-level program** designed to take students from absolute basics to industry-ready skills, combining **Web Development**, **Gen-AI**, and hands-on project building. It includes **OverDrive**, our structured Full-Stack Bootcamp, and **OverClocked**, the upcoming Hackathon (Level 2) that unlocks advanced learning and rewards.
+		detailedDescription: `Over² is Development Society's most awaited annual tech experience - a **two-level program** designed to take students from absolute basics to industry-ready skills, combining **Web Development**, **Gen-AI**, and hands-on project building. It includes **OverDrive**, our structured Full-Stack Bootcamp, and **OverClocked**, the upcoming Hackathon (Level 2) that unlocks advanced learning and rewards.
 
 ## 1. What is Over²?
 
@@ -298,7 +298,7 @@ Over² is a **2-level progressive learning and building journey**, designed for 
 - Focused on quality learning
 - Seats kept limited to ensure personal assistance
 
-## 2. OverDrive — The Full-Stack + Gen AI Bootcamp (Level 1)
+## 2. OverDrive - The Full-Stack + Gen AI Bootcamp (Level 1)
 
 ### Overview
 OverDrive is a **6-day structured bootcamp** starting 1st December 2025, focusing on Full-Stack Web Development integrated with Gen AI tools.
@@ -322,9 +322,7 @@ OverDrive is a **6-day structured bootcamp** starting 1st December 2025, focusin
 - ✅ An end-to-end portfolio project
 - ✅ Access to special Q&A sessions for doubts
 
-## 3. OverClocked — The Hackathon (Level 2)
-
-> *To be revealed officially during the event*
+## 3. OverClocked - The Hackathon (Level 2)
 
 ### Overview
 OverClocked is the **exclusive Hackathon** unlocked after Level 1. It brings together coding, creativity, problem-solving, and team dynamics.
@@ -333,7 +331,7 @@ OverClocked is the **exclusive Hackathon** unlocked after Level 1. It brings tog
 - Pushes students beyond tutorials into **real-world challenges**
 - Designed to test full-stack skills + Gen AI applications
 - Encourages competitive innovation
-- **Limited access** — only for OverDrive participants
+- **Limited access** - only for OverDrive participants
 
 ### Rewards:
 - 🏆 **25 MAR points** at once (at College Level)
@@ -343,7 +341,7 @@ OverClocked is the **exclusive Hackathon** unlocked after Level 1. It brings tog
 
 ## 4. Additional Activities Under Over²
 
-### TrailBlaze — The Treasure Hunt Event
+### TrailBlaze - The Treasure Hunt Event
 A campus-wide solo treasure hunt with:
 - 🧩 Riddles
 - 🧩 Flyer hunts
@@ -382,5 +380,148 @@ Over² promotes:
 		gallery: [
 			"https://ik.imagekit.io/devsoc/events/2025_Over_square/120+registrations.jpg?updatedAt=1763925616250",
 		],
+	},
+	{
+		title: "OverClocked (Over²)",
+		slug: "overclocked-2025",
+		image:
+			"https://ik.imagekit.io/devsoc/events/2025_Over_square/overclocked.png",
+		date: "TBD",
+		description:
+			"OverClocked is a 24-hour offline hackathon where you turn ideas into working prototypes under real pressure. Coming right after OverDrive, it offers six tracks, open themes, and a hall full of teams building through the night. You plan, build, debug, and finish with a demo to the judges. Bring your team and your energy, ideas in the morning can become prototypes by midnight.",
+		detailedDescription: `
+### **OverClocked - Where Level 1 Ends and the Real Game Begins**
+
+**OverDrive** taught you how to build.  
+**OverClocked** asks if you can build when it counts.
+
+This is the **24-hour arena** ⏱️ where ideas stop being ideas and start becoming  **screens, buttons, flows, logic, and working demos.**
+
+Here, time moves fast ⚡, caffeine runs low ☕, files break 💥, features save you, and teams discover what they’re truly capable of.
+
+Some students keep watching others code. Some pick a track, form a team, take a breath, and build through the night 🌙.
+
+*OverClocked is for the second kind.*
+
+## 🔍 **What OverClocked Really Is**
+
+OverClocked is a full-scale, **24-hour hackathon** 💻 - the official **Level 2 of Over²**.
+
+Everyone participating is already an **OverDrive graduate**, so you enter an arena where every team is ready to sprint.
+
+### **Hackathon Tracks :**
+- ➤ **EdTech and Campus Life** 📚
+- ➤ **Entertainment and Media** 📻
+- ➤ **Health and Wellness** 🏥
+- ➤ **Green and Sustainable Living** 🌱  
+- ➤ **Social Impact and Community** 💙  
+- ➤ **Open Innovation (Build Anything)** 💡
+
+Regardless of the track, your mission is simple:  **Turn a sharp idea into a functional product before the clock runs out ⏳.**
+
+
+## 🧭 **How OverClocked Works**
+
+### ⭐ **Round 1: PPT Pitch Round**
+
+This is your **gateway to the hackathon floor** 🚪.
+
+Your team must submit:
+- ➤ A clear explanation of your idea  
+- ➤ The track you’re competing in  
+- ➤ Planned features  
+- ➤ What you aim to build in 24 hours  
+- ➤ Why your idea fits the chosen track  
+
+**Judging Criteria**
+- ➤ Creativity  
+- ➤ Feasibility  
+- ➤ Clarity  
+- ➤ Alignment with track  
+
+Strong pitches move to **Round 2 - the overnight build 🔥**.
+
+---
+
+### 🔥 **Round 2: The 24-Hour Offline Hackathon**
+
+*This is the **core of OverClocked**.*
+
+You arrive with a laptop 💻, charger 🔌, teammates 🤝, snacks 🍫, and determination.
+
+During the 24 hours, you will:
+- ➤ Code  
+- ➤ Break things  
+- ➤ Fix them  
+- ➤ Test flows  
+- ➤ Adjust features  
+- ➤ Build UI screens  
+- ➤ Integrate logic  
+- ➤ Deploy  
+- ➤ Demo your work  
+
+*Mentors will be available to help when stuck* 🧑‍🏫.
+
+### **Judges Evaluate**
+- ➤ Clarity  
+- ➤ Logic  
+- ➤ Creativity  
+- ➤ Output quality  
+- ➤ Smooth user flow  
+
+Your demo must show **real, working screens** - not mockups or promises.
+
+*By the end of 24 hours, if your project runs, you’ve built something meaningful 🏆.*
+
+## 👥 **Team Rules**
+
+- ➤ Team size: **2–4 members**  
+- ➤ All members must be from the same college   
+- ➤ Different years/departments allowed  
+- ➤ No member can join multiple teams  
+- ➤ All members must be registered  
+- ➤ Teams with unregistered members will be disqualified   
+- ➤ No team changes after Round 1  
+
+## 🛠️ **Build Rules**
+
+- ➤ Your project must match your selected track  
+- ➤ Copying or reusing GitHub projects is not allowed   
+- ➤ A functional demo is mandatory  
+- ➤ Libraries, APIs, and tools may be used  
+- ➤ Maintain backups  
+- ➤ Do not disturb other teams  
+- ➤ Keep your workspace safe and tidy   
+- ➤ Follow campus safety guidelines  
+- ➤ Respect organisers and volunteers  
+
+## 📜 **Hackathon Conduct**
+
+- ➤ Participants must stay inside the venue except for short breaks  
+- ➤ At least one member must stay at the team table at all times  
+- ➤ Final submission must include **code + build + demo**  
+- ➤ Demo time limits will be strict   
+- ➤ Judges’ decisions are final  
+- ➤ Misconduct may lead to removal   
+
+## 🌟 **Why OverClocked Matters**
+
+This is where:
+- ➤ Students stop doubting themselves  
+- ➤ Teams experience real collaboration 🤝  
+- ➤ Creativity strikes at late-night hours  
+- ➤ Ideas evolve into polished builds ✨  
+- ➤ Confidence grows because you built something real  
+
+This is where **beginners become builders**, and **builders become problem-solvers**.
+
+Some students keep watching. Some step onto the field and change the scoreboard 🏟️.
+
+***OverClocked is made for the ones who change the scoreboard.***
+
+
+`,
+
+		gallery: [],
 	},
 ];
