@@ -13,6 +13,7 @@ import {
 	formatEventDate,
 } from "@/lib/utils/eventUtils";
 import { env } from "@/lib/env";
+import { ArrowRight } from "lucide-react";
 
 export default function Page() {
 	// Get sorted events (latest first)
@@ -71,7 +72,7 @@ export default function Page() {
 											className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
 										>
 											<span>Register Now</span>
-											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+											<ArrowRight className="ml-1 h-5 w-5 transition-transform duration-300" />
 										</a>
 									) : (
 										<Link
@@ -79,7 +80,7 @@ export default function Page() {
 											className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
 										>
 											<span>Register Now</span>
-											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+											<ArrowRight className="ml-1 h-5 w-5 transition-transform duration-300" />
 										</Link>
 									)}
 									<Link
