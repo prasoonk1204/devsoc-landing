@@ -23,6 +23,8 @@ import { operationalTimeline } from "@/constant/timeline";
 import AboutTab from "@/components/Events/EventTabs/AboutTab";
 import TracksTab from "@/components/Events/EventTabs/TracksTab";
 import TimelineTab from "@/components/Events/EventTabs/TimelineTab";
+import FeedbackModal from "@/components/UI/FeedbackModal";
+import { MessageSquare } from "lucide-react";
 
 export default function EventDetailPage({ params }) {
 	const { slug } = use(params);
@@ -81,6 +83,7 @@ export default function EventDetailPage({ params }) {
 	};
 
 	const [activeTab, setActiveTab] = useState(getDefaultTab());
+	const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
 	// Check if we should show the tabbed section at all
 	const showTabbedSection = hasAboutData || hasTracksData || hasTimelineData;
@@ -89,8 +92,16 @@ export default function EventDetailPage({ params }) {
 	const eventOnlyMode = env.NEXT_PUBLIC_EVENT_ONLY_MODE;
 	const isEventOnlyMode = eventOnlyMode && eventOnlyMode.trim() !== "";
 
+	// Check if feedback is enabled for this event
+	const feedbackEnabledEvents = (env.NEXT_PUBLIC_FEEDBACK_ENABLED_EVENTS || "")
+		.split(",")
+		.map((s) => s.trim());
+	const isFeedbackEnabled = feedbackEnabledEvents.includes(event.slug);
+
 	return (
-		<div className={`relative flex min-h-screen w-full flex-col items-center px-4 pb-16 text-white sm:pb-24 ${isEventOnlyMode ? 'pt-10 sm:pt-20' : 'pt-24 sm:pt-36'}`}>
+		<div
+			className={`relative flex min-h-screen w-full flex-col items-center px-4 pb-16 text-white sm:pb-24 ${isEventOnlyMode ? "pt-10 sm:pt-20" : "pt-24 sm:pt-36"}`}
+		>
 			<div className="relative w-full max-w-6xl">
 				{!isEventOnlyMode && <BackButton href="/events" label="All Events" />}
 
@@ -126,30 +137,46 @@ export default function EventDetailPage({ params }) {
 								{event.description}
 							</p>
 
-							{/* Registration Button - Only show for latest event and not in event-only mode */}
-							{isLatestEvent && isRegistrationEnabled && (useExternalRegistration || !isEventOnlyMode) && (
-								<>
-									{useExternalRegistration ? (
-										<a
-											href={externalRegistrationUrl}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
-										>
-											<span>Register Now</span>
-											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
-										</a>
-									) : (
-										<Link
-											href={`/events/${event.slug}/register`}
-											className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
-										>
-											<span>Register Now</span>
-											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
-										</Link>
+							{/* Action Buttons - Registration and Feedback */}
+							{(isLatestEvent && isRegistrationEnabled) || isFeedbackEnabled ? (
+								<div className="flex flex-wrap items-center gap-4">
+									{/* Registration Button - Only show for latest event */}
+									{isLatestEvent && isRegistrationEnabled && (
+										<>
+											{useExternalRegistration ? (
+												<a
+													href={externalRegistrationUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="bg-accent hover:bg-accent/90 focus:ring-accent group border-accent inline-flex items-center justify-center gap-2 rounded-full border-2 px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
+												>
+													<span>Register Now</span>
+													<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+												</a>
+											) : (
+												<Link
+													href={`/events/${event.slug}/register`}
+													className="bg-accent hover:bg-accent/90 focus:ring-accent group border-accent inline-flex items-center justify-center gap-2 rounded-full border-2 px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
+												>
+													<span>Register Now</span>
+													<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+												</Link>
+											)}
+										</>
 									)}
-								</>
-							)}
+
+									{/* Feedback Button - Show independently based on config */}
+									{isFeedbackEnabled && (
+										<button
+											onClick={() => setIsFeedbackModalOpen(true)}
+											className="group border-accent text-accent hover:bg-accent focus:ring-accent inline-flex items-center justify-center gap-2 rounded-full border-2 px-8 py-3 font-sans font-semibold transition-all duration-300 hover:text-black hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
+										>
+											<MessageSquare className="h-5 w-5" />
+											<span>Give Feedback</span>
+										</button>
+									)}
+								</div>
+							) : null}
 						</motion.div>
 					</motion.div>
 
@@ -198,7 +225,7 @@ export default function EventDetailPage({ params }) {
 											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
 									}`}
 								>
-									<Target className="h-4 w-4 sm:h-5 sm:w-5 hidden sm:block" />
+									<Target className="hidden h-4 w-4 sm:block sm:h-5 sm:w-5" />
 									<span>Tracks</span>
 								</button>
 							)}
@@ -212,7 +239,7 @@ export default function EventDetailPage({ params }) {
 											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
 									}`}
 								>
-									<Clock className="h-4 w-4 sm:h-5 sm:w-5 hidden sm:block" />
+									<Clock className="hidden h-4 w-4 sm:block sm:h-5 sm:w-5" />
 									<span>Timeline</span>
 								</button>
 							)}
@@ -226,7 +253,7 @@ export default function EventDetailPage({ params }) {
 											: "hover:bg-accent/20 text-zinc-400 hover:text-white"
 									}`}
 								>
-									<Info className="h-4 w-4 sm:h-5 sm:w-5 hidden sm:block" />
+									<Info className="hidden h-4 w-4 sm:block sm:h-5 sm:w-5" />
 									<span>About</span>
 								</button>
 							)}
@@ -343,6 +370,13 @@ export default function EventDetailPage({ params }) {
 					</motion.div>
 				)}
 			</div>
+
+			{/* Feedback Modal */}
+			<FeedbackModal
+				isOpen={isFeedbackModalOpen}
+				onClose={() => setIsFeedbackModalOpen(false)}
+				eventName={event.title}
+			/>
 		</div>
 	);
 }
