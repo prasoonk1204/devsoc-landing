@@ -148,7 +148,7 @@ export default function AboutTab({ event }) {
 							<div className="mt-8 flex justify-center border-t border-white/10 pt-6">
 								<button
 									onClick={() => setShowFullDescription(false)}
-									className="group bg-accent/10 border-accent/30 hover:border-accent/60 text-accent hover:shadow-accent/20 flex items-center gap-2 rounded-3xl border px-4 py-2 font-medium transition-all duration-300 hover:shadow-lg"
+									className="group bg-accent/10 border-accent/30 hover:border-accent/60 text-accent hover:shadow-accent/20 flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-2 font-medium transition-all duration-300 hover:shadow-lg"
 								>
 									<span>Show Less</span>
 									<ChevronUp className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
@@ -160,17 +160,15 @@ export default function AboutTab({ event }) {
 							<ReactMarkdown remarkPlugins={[remarkGfm]}>
 								{getPreviewText(event.detailedDescription)}
 							</ReactMarkdown>
-							<div className="relative mt-6">
-								<div className="pointer-events-none absolute inset-x-0 -top-20 h-20 bg-linear-to-t from-zinc-900/50 to-transparent" />
-								<div className="flex justify-center pt-4">
-									<button
-										onClick={() => setShowFullDescription(true)}
-										className="group bg-accent/10 border-accent/30 hover:border-accent/60 text-accent hover:shadow-accent/20 flex items-center gap-2 rounded-3xl border px-4 py-2 font-medium transition-all duration-300 hover:shadow-lg"
-									>
-										<span>Read More</span>
-										<ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-									</button>
-								</div>
+
+							<div className="mt-6 flex justify-center pt-4">
+								<button
+									onClick={() => setShowFullDescription(true)}
+									className="group bg-accent/10 border-accent/30 hover:border-accent/60 text-accent hover:shadow-accent/20 flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-2 font-medium transition-all duration-300 hover:shadow-lg"
+								>
+									<span>Read More</span>
+									<ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+								</button>
 							</div>
 						</>
 					)}

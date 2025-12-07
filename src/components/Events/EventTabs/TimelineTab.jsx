@@ -19,12 +19,33 @@ export default function TimelineTab({ timeline }) {
 	};
 
 	const formatDate = (dateStr) => {
-		const [day, month, year] = dateStr.split("-");
-		const date = new Date(year, month - 1, day);
-		return date.toLocaleDateString("en-US", {
-			month: "short",
-			day: "numeric",
-		});
+		const parts = dateStr.split("-");
+
+		// Handle different date formats
+		if (parts.length === 1) {
+			// YYYY format
+			const year = parts[0];
+			return new Date(year, 0).toLocaleDateString("en-US", {
+				year: "numeric",
+			});
+		} else if (parts.length === 2) {
+			// MM-YYYY format
+			const [month, year] = parts;
+			return new Date(year, month - 1).toLocaleDateString("en-US", {
+				month: "short",
+				year: "numeric",
+			});
+		} else if (parts.length === 3) {
+			// DD-MM-YYYY format
+			const [day, month, year] = parts;
+			return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+				month: "short",
+				day: "numeric",
+				year: "numeric",
+			});
+		}
+
+		return dateStr; // Fallback to original string if format is unrecognized
 	};
 
 	return (
@@ -75,7 +96,7 @@ export default function TimelineTab({ timeline }) {
 									{item.subEvents && item.subEvents.length > 0 && (
 										<button
 											onClick={() => toggleItem(index)}
-											className="text-accent hover:text-accent/80 mt-3 inline-flex items-center gap-2 text-sm font-semibold transition-colors"
+											className="text-accent hover:text-accent/80 mt-3 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold transition-colors"
 										>
 											<span>
 												{expandedItems.has(index)

@@ -70,14 +70,16 @@ export default function Page() {
 											rel="noopener noreferrer"
 											className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
 										>
-											Register for Event
+											<span>Register Now</span>
+											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
 										</a>
 									) : (
 										<Link
 											href={`/events/${latestEvent.slug}/register`}
 											className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
 										>
-											Register for Event
+											<span>Register Now</span>
+											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
 										</Link>
 									)}
 									<Link

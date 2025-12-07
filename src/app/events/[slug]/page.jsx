@@ -92,9 +92,7 @@ export default function EventDetailPage({ params }) {
 	return (
 		<div className="relative flex min-h-screen w-full flex-col items-center px-4 pt-24 pb-16 text-white sm:pt-36 sm:pb-24">
 			<div className="relative w-full max-w-6xl">
-				{!isEventOnlyMode && (
-					<BackButton href="/events" label="Back to Events" />
-				)}
+				{!isEventOnlyMode && <BackButton href="/events" label="All Events" />}
 
 				{/* Main Content Grid */}
 				<div className="mt-6 grid w-full grid-cols-1 gap-8 md:mt-2 md:grid-cols-12 md:gap-12">
@@ -183,7 +181,7 @@ export default function EventDetailPage({ params }) {
 				{/* Tabbed Section - Only show if there's data */}
 				{showTabbedSection && (
 					<motion.div
-						className="mt-12 w-full overflow-visible rounded-3xl border border-white/10 bg-zinc-950/30 backdrop-blur-sm"
+						className="mt-12 w-full overflow-visible rounded-3xl border border-zinc-700/90 bg-zinc-950/30 backdrop-blur-sm"
 						variants={fadeInBlur}
 						initial="hidden"
 						whileInView="visible"

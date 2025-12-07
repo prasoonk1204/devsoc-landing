@@ -15,7 +15,7 @@ export default function NewsletterCard({ item, index }) {
 				whileInView="visible"
 				viewport={{ once: true }}
 				whileHover={{
-					scale: 1.02,
+					scale: 1.005,
 					borderColor: "rgb(82, 82, 91)",
 					transition: {
 						duration: 0.2,
