@@ -4,9 +4,9 @@ import { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 const morphTime = 1.56;
-const cooldownTime = 1.04;
+const defaultCooldownTime = 1.04;
 
-const useMorphingText = (texts) => {
+const useMorphingText = (texts, customTimings = []) => {
 	const textIndexRef = useRef(0);
 	const morphRef = useRef(0);
 	const cooldownRef = useRef(0);
@@ -14,6 +14,15 @@ const useMorphingText = (texts) => {
 
 	const text1Ref = useRef(null);
 	const text2Ref = useRef(null);
+
+	// Get cooldown time for current text
+	const getCurrentCooldownTime = useCallback(() => {
+		if (customTimings.length > 0) {
+			const currentIndex = textIndexRef.current % texts.length;
+			return customTimings[currentIndex] || defaultCooldownTime;
+		}
+		return defaultCooldownTime;
+	}, [customTimings, texts.length]);
 
 	const setStyles = useCallback(
 		(fraction) => {
@@ -49,7 +58,7 @@ const useMorphingText = (texts) => {
 		let fraction = morphRef.current / morphTime;
 
 		if (fraction > 1) {
-			cooldownRef.current = cooldownTime;
+			cooldownRef.current = getCurrentCooldownTime();
 			fraction = 1;
 		}
 
@@ -58,7 +67,7 @@ const useMorphingText = (texts) => {
 		if (fraction === 1) {
 			textIndexRef.current++;
 		}
-	}, [setStyles]);
+	}, [setStyles, getCurrentCooldownTime]);
 
 	const doCooldown = useCallback(() => {
 		morphRef.current = 0;
@@ -96,9 +105,11 @@ const useMorphingText = (texts) => {
 	return { text1Ref, text2Ref, textIndexRef, cooldownRef };
 };
 
-const Texts = ({ texts, links }) => {
-	const { text1Ref, text2Ref, textIndexRef, cooldownRef } =
-		useMorphingText(texts);
+const Texts = ({ texts, links, customTimings }) => {
+	const { text1Ref, text2Ref, textIndexRef, cooldownRef } = useMorphingText(
+		texts,
+		customTimings,
+	);
 
 	const handleClick = () => {
 		if (links && links.length > 0) {
@@ -152,14 +163,14 @@ const SvgFilters = () => (
 	</svg>
 );
 
-export const MorphingText = ({ texts, className, links }) => (
+export const MorphingText = ({ texts, className, links, customTimings }) => (
 	<span
 		className={cn(
-			"relative inline-block text-left font-sans leading-none font-bold [filter:url(#threshold)_blur(0.4px)]",
+			"relative inline-block text-left font-sans leading-none font-bold filter-[url(#threshold)_blur(0.4px)]",
 			className,
 		)}
 	>
-		<Texts texts={texts} links={links} />
+		<Texts texts={texts} links={links} customTimings={customTimings} />
 		<SvgFilters />
 	</span>
 );
