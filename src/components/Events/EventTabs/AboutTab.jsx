@@ -10,7 +10,8 @@ export default function AboutTab({ event }) {
 
 	const getPreviewText = (text) => {
 		if (!text) return "";
-		const lines = text.split("\n").filter((line) => line.trim());
+		// Keep empty lines for proper markdown paragraph spacing
+		const lines = text.split("\n");
 		let preview = "";
 		let charCount = 0;
 		for (let i = 0; i < lines.length && charCount < 800; i++) {
@@ -31,30 +32,50 @@ export default function AboutTab({ event }) {
 			</div>
 
 			<div className="relative bg-zinc-900/50 p-4 font-sans sm:p-10">
-				<div className="prose prose-invert prose-sm sm:prose-base lg:prose-lg max-w-none">
+				<div className="prose prose-invert max-w-none">
 					<style jsx global>{`
 						.prose h2 {
 							color: #fff;
 							font-weight: 700;
-							font-size: 1.75rem;
-							margin-top: 2.5rem;
+							font-size: 1.5rem;
+							margin-top: 2rem;
 							margin-bottom: 1rem;
 							padding-bottom: 0.5rem;
 							border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 							letter-spacing: 0.025em;
 						}
+						@media (min-width: 640px) {
+							.prose h2 {
+								font-size: 1.75rem;
+								margin-top: 2.5rem;
+							}
+						}
 						.prose h3 {
 							color: #e4e4e7;
 							font-weight: 600;
-							font-size: 1.35rem;
-							margin-top: 1.75rem;
+							font-size: 1.125rem;
+							margin-top: 1.5rem;
 							margin-bottom: 0.75rem;
 							letter-spacing: 0.015em;
 						}
+						@media (min-width: 640px) {
+							.prose h3 {
+								font-size: 1.35rem;
+								margin-top: 1.75rem;
+							}
+						}
 						.prose p {
 							color: #d4d4d8;
-							line-height: 1.8;
-							margin-bottom: 1.25rem;
+							line-height: 1.7;
+							margin-bottom: 1rem;
+							font-size: 0.95rem;
+						}
+						@media (min-width: 640px) {
+							.prose p {
+								font-size: 1rem;
+								line-height: 1.8;
+								margin-bottom: 1.25rem;
+							}
 						}
 						.prose strong {
 							color: #fff;

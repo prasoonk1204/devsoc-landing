@@ -41,6 +41,14 @@ export default function EventDetailPage({ params }) {
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "yes" ||
 		env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION === "true";
 
+	// Check if external registration URL is provided
+	const externalRegistrationUrl =
+		env.NEXT_PUBLIC_EXTERNAL_REGISTRATION_URL?.trim() || "";
+	const useExternalRegistration =
+		externalRegistrationUrl.length > 0 &&
+		(externalRegistrationUrl.startsWith("http://") ||
+			externalRegistrationUrl.startsWith("https://"));
+
 	// Check environment configurations
 	const problemStatementEvents = (
 		env.NEXT_PUBLIC_PROBLEM_STATEMENT_EVENTS || ""
@@ -58,7 +66,11 @@ export default function EventDetailPage({ params }) {
 	const hasAboutData = !!event.detailedDescription;
 	const hasTracksData = showProblemStatement && challengesData.length > 0;
 	const hasTimelineData =
-		showProblemStatement && operationalTimeline.length > 0;
+		showProblemStatement &&
+		operationalTimeline &&
+		(Array.isArray(operationalTimeline)
+			? operationalTimeline.length > 0
+			: Object.keys(operationalTimeline).length > 0);
 
 	// Determine default tab - prioritize tracks if available, then about
 	const getDefaultTab = () => {
@@ -118,13 +130,27 @@ export default function EventDetailPage({ params }) {
 
 							{/* Registration Button - Only show for latest event */}
 							{isLatestEvent && isRegistrationEnabled && (
-								<Link
-									href={`/events/${event.slug}/register`}
-									className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
-								>
-									<span>Register Now</span>
-									<ArrowRight className="h-5 w-5 transition-transform duration-300" />
-								</Link>
+								<>
+									{useExternalRegistration ? (
+										<a
+											href={externalRegistrationUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
+										>
+											<span>Register Now</span>
+											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+										</a>
+									) : (
+										<Link
+											href={`/events/${event.slug}/register`}
+											className="bg-accent hover:bg-accent/90 focus:ring-accent group inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 font-sans font-semibold text-black transition-all duration-300 hover:gap-4 hover:shadow-[0_0_20px_rgba(255,190,122,0.3)] focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none md:mb-6"
+										>
+											<span>Register Now</span>
+											<ArrowRight className="h-5 w-5 transition-transform duration-300" />
+										</Link>
+									)}
+								</>
 							)}
 						</motion.div>
 					</motion.div>

@@ -383,4 +383,153 @@ Over² promotes:
 			"https://ik.imagekit.io/devsoc/events/2025_Over_square/120+registrations.jpg?updatedAt=1763925616250",
 		],
 	},
+	{
+		title: "OverClocked",
+		slug: "overclocked-2025",
+		image:
+			"https://ik.imagekit.io/devsoc/events/2025_Over_square/overclocked.png",
+		date: "2025-12-12",
+		description:
+			"OverClocked is a 24 hour offline hackathon that blends serious building with a lively, student-driven vibe. It picks up right after our OverDrive bootcamp, giving you the space to turn ideas into working prototypes under real pressure. With six tracks, open problem themes, and a hall full of teams coding through the night, the event keeps things structured but still fun. You plan, you build, you fix, and you present your final demo to the judges. Bring your team, bring your energy, and get ready for a fast, creative sprint where something you imagine in the morning might be running by midnight.",
+		detailedDescription: `
+**OverClocked** is where Level 1 ends and the real game begins.
+
+*OverDrive* taught you how to build.  
+**OverClocked** asks if you can build when it counts.
+
+This is the **24 hour arena** ⏱️ where ideas stop being ideas and start becoming  
+**screens, buttons, flows, logic, and working demos.**
+
+Here, time moves fast ⚡, caffeine runs low ☕, files break 💥, features save you ✅, and teams discover what they're really capable of.
+
+Some students keep watching others code.  
+Some students pick a track, form a team, take a breath, and show up ready to build through the night 🌙.
+
+**OverClocked is for the second kind.**
+
+---
+
+## 🔍 What OverClocked Really Is
+
+It's a full-blown **24 hour hackathon** 💻 designed as **Level 2 of Over²**.
+
+Only **OverDrive students** get to enter, which means everyone around you already knows the basics and is ready to sprint 🏃‍♂️.
+
+You pick from **6 tracks** packed with campus-life problems, creativity tasks, media builds, wellness tools, sustainability hacks 🌱, social impact ideas 💙, or a free-for-all tech playground.
+
+No matter which track you choose, your job is simple:  
+**Turn a clear idea into a working product before the clock runs out ⏳.**
+
+---
+
+## 🧭 The Two Rounds
+
+### 🖥️ Round 1: PPT Pitch Round
+
+This is your **gate to the hackathon floor** 🚪.
+
+Your team must send:
+- A clean explanation of your idea
+- The track you chose
+- Your planned features
+- What you want to build in 24 hours
+- Why your solution fits the given track
+
+Judges check:
+- Creativity 🎨
+- Feasibility 🔧
+- Clarity 🧠
+- Relation to your track 🎯
+
+If your pitch hits right, you enter **Level 2: the real grind 🔥.**
+
+---
+
+### ⚙️ Round 2: The 24 Hour Offline Hackathon
+
+This is the **core of OverClocked** ❤️‍🔥.
+
+You come in with a laptop 💻, a charger 🔌, your team 🤝, your snacks 🍫, and your energy ⚡.
+
+You:
+- Code 👩‍💻👨‍💻  
+- Break things 💥  
+- Fix them 🔧  
+- Test flows 🔄  
+- Adjust features 🎛️  
+- Build screens 📱  
+- Deploy 🚀  
+- And finally demo your work 🎤  
+
+Mentors will roam around helping teams when stuck 🧑‍🏫.
+
+Judges will check your build for **clarity, logic, creativity, output, and smooth flow** ✅.
+
+Your demo must show **real screens.**  
+Not plans. Not promises. **Real working output.**
+
+By the end of the 24 hours, if your project runs, you win already 🏆.
+
+---
+
+## 👥 Team Rules
+
+To keep things fair:
+- Team size: **2 to 4 members**
+- All members must be from the same college 🏫
+- Mix any department, year, or stream
+- No person can join more than one team
+- Every member must be officially registered ✅
+- Teams with unregistered members get removed ❌
+- Once Round 1 ends, you cannot switch teams
+
+---
+
+## 🛠️ Build Rules
+
+These rules make sure everyone gets a fair shot:
+- Your build must follow the rules of your chosen track
+- Copy-paste projects or reused GitHub repos are not allowed 🚫
+- You must produce a working demo by the end
+- You may use tools, libraries, APIs
+- Keep backups unless heartbreak is your hobby 💔
+- Do not disturb or interfere with other teams
+- Keep your desk neat enough not to break wires 🔌
+- Follow campus safety rules 🛡️
+- Respect volunteers and organisers 🙏
+
+---
+
+## 📜 Hackathon Conduct Rules
+
+During the 24 hours:
+- You must stay at the venue except small breaks
+- At least one team member must always be at the table
+- You must submit code + build + demo 📦
+- Demos will have strict time limits ⏱️
+- Judges' decisions are final ⚖️
+- Any misconduct can get your team removed ❗
+
+---
+
+## 🌟 Why OverClocked Matters
+
+Because this is the moment where:
+- Students stop thinking they can't
+- Teams learn how powerful collaboration is 🤝
+- Creativity hits at odd hours 🌌
+- Builds go from rough to polished ✨
+- Confidence grows because you made something real
+
+This is where beginners become builders,  
+and builders become problem-solvers.
+
+Some students keep writing commentary.  
+Some students get on the field and change the scoreboard 🏟️.
+
+**OverClocked is built for those who want to change the scoreboard.**
+`,
+
+		gallery: [],
+	},
 ];
