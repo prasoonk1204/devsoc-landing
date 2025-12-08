@@ -13,7 +13,7 @@ import {
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
-import { useOutsideClick } from "@/hooks/use-outside-click";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 export const CarouselContext = createContext({
 	onCardClose: () => {},
