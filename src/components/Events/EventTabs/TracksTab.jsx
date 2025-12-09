@@ -9,12 +9,13 @@ import {
 	Leaf,
 	Users,
 	Sparkles,
-	AlertTriangle,
 	ChevronRight,
 	ChevronDown,
 	Target,
+	Lock,
 } from "lucide-react";
 import ScrollableSection from "./ScrollableSection";
+import { env } from "@/lib/env";
 
 // Helper to get icon for track
 const getTrackIcon = (trackId) => {
@@ -27,10 +28,20 @@ const getTrackIcon = (trackId) => {
 	return Target;
 };
 
-export default function TracksTab({ challenges }) {
+export default function TracksTab({ challenges, eventSlug }) {
 	const [selectedTrack, setSelectedTrack] = useState(null);
 	const [openAccordionId, setOpenAccordionId] = useState(null);
 	const accordionRefs = useRef({});
+
+	const unlockedProblemStatementEvents = (
+		env.NEXT_PUBLIC_UNLOCKED_PROBLEM_STATEMENTS || ""
+	)
+		.split(",")
+		.map((s) => s.trim())
+		.filter((s) => s.length > 0);
+	const isProblemStatementsLocked =
+		unlockedProblemStatementEvents.length === 0 ||
+		!unlockedProblemStatementEvents.includes(eventSlug);
 
 	// Group challenges by track
 	const groupedChallenges = challenges.reduce((groups, challenge) => {
@@ -108,8 +119,15 @@ export default function TracksTab({ challenges }) {
 								>
 									{/* Accordion Header */}
 									<button
-										onClick={() => toggleAccordion(track.id)}
-										className="group flex w-full items-center gap-4 px-6 py-5 text-left transition-all duration-300 hover:bg-white/3"
+										onClick={() =>
+											!isProblemStatementsLocked && toggleAccordion(track.id)
+										}
+										disabled={isProblemStatementsLocked}
+										className={`group flex w-full items-center gap-4 px-6 py-5 text-left transition-all duration-300 ${
+											isProblemStatementsLocked
+												? "cursor-not-allowed opacity-60"
+												: "hover:bg-white/3"
+										}`}
 									>
 										<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/5 transition-all duration-300 group-hover:bg-white/10">
 											<Icon className="h-5 w-5 text-zinc-400 transition-colors duration-300 group-hover:text-white" />
@@ -119,16 +137,20 @@ export default function TracksTab({ challenges }) {
 												{track.trackName.replace(/Track \d+: /, "")}
 											</span>
 										</div>
-										<ChevronDown
-											className={`h-5 w-5 text-zinc-400 transition-transform duration-300 ${
-												isOpen ? "rotate-180" : ""
-											}`}
-										/>
+										{isProblemStatementsLocked ? (
+											<Lock className="text-accent h-4 w-4" />
+										) : (
+											<ChevronDown
+												className={`h-5 w-5 text-zinc-400 transition-transform duration-300 ${
+													isOpen ? "rotate-180" : ""
+												}`}
+											/>
+										)}
 									</button>
 
 									{/* Accordion Content */}
 									<AnimatePresence initial={false} mode="wait">
-										{isOpen && (
+										{isOpen && !isProblemStatementsLocked && (
 											<motion.div
 												key={track.id}
 												initial={{ height: 0, opacity: 0 }}
@@ -141,7 +163,7 @@ export default function TracksTab({ challenges }) {
 													{track.challenges.map((challenge, idx) => (
 														<div
 															key={idx}
-															className="relative rounded-2xl border border-white/5 bg-zinc-950/60 p-5 shadow-lg"
+															className="rounded-2xl border border-white/5 bg-zinc-950/60 p-5 shadow-lg"
 														>
 															<div className="mb-4 flex items-start justify-between gap-4">
 																<h5 className="text-lg leading-tight font-bold text-white">
@@ -257,6 +279,69 @@ export default function TracksTab({ challenges }) {
 
 					{/* RIGHT: Track Details - 2 columns */}
 					<div className="bg-selected relative flex w-full flex-col border-l border-white/10 md:w-8/12 lg:w-2/3">
+						{/* Complete Lock Overlay for Right Section */}
+						{isProblemStatementsLocked && (
+							<motion.div
+								initial={{ opacity: 1 }}
+								animate={{ opacity: 1 }}
+								className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm"
+							>
+								<motion.div
+									initial={{ scale: 0, rotate: -180 }}
+									animate={{ scale: 1, rotate: 0 }}
+									transition={{
+										type: "spring",
+										stiffness: 200,
+										damping: 15,
+										delay: 0.2,
+									}}
+								>
+									<Lock className="text-accent mb-4 h-16 w-16 drop-shadow-[0_0_15px_rgba(255,190,122,0.5)]" />
+								</motion.div>
+
+								<motion.p
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.3 }}
+									className="font-iceland text-3xl font-bold text-white"
+								>
+									Coming Soon
+								</motion.p>
+
+								<motion.p
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{ delay: 0.4 }}
+									className="mt-3 max-w-md text-center text-sm text-zinc-400"
+								>
+									Problem statements will be revealed soon
+								</motion.p>
+
+								<motion.div
+									initial={{ opacity: 0, scale: 0.9 }}
+									animate={{ opacity: 1, scale: 1 }}
+									transition={{ delay: 0.5 }}
+									className="border-accent/30 bg-accent/10 mt-6 flex items-center gap-2 rounded-full border px-4 py-2"
+								>
+									<motion.div
+										animate={{
+											scale: [1, 1.2, 1],
+											opacity: [0.5, 1, 0.5],
+										}}
+										transition={{
+											duration: 2,
+											repeat: Infinity,
+											ease: "easeInOut",
+										}}
+										className="bg-accent h-2 w-2 rounded-full"
+									/>
+									<span className="text-accent text-xs font-medium tracking-wider uppercase">
+										Stay Tuned
+									</span>
+								</motion.div>
+							</motion.div>
+						)}
+
 						<AnimatePresence mode="wait">
 							{selectedTrack && (
 								<motion.div
@@ -265,7 +350,7 @@ export default function TracksTab({ challenges }) {
 									animate={{ opacity: 1 }}
 									exit={{ opacity: 0 }}
 									transition={{ duration: 0.3 }}
-									className="flex h-full flex-col"
+									className={`flex h-full flex-col ${isProblemStatementsLocked ? "invisible" : ""}`}
 								>
 									<div className="bg-selected border-b border-white/5 px-8 py-6 backdrop-blur-sm">
 										<h4 className="font-iceland text-2xl font-bold text-white">
@@ -273,7 +358,10 @@ export default function TracksTab({ challenges }) {
 										</h4>
 									</div>
 
-									<ScrollableSection className="flex-1" contentClassName="p-6">
+									<ScrollableSection
+										className={`flex-1 ${isProblemStatementsLocked ? "overflow-hidden" : ""}`}
+										contentClassName="p-6"
+									>
 										<div className="space-y-6 pb-6">
 											{selectedTrack.challenges.map((challenge, idx) => (
 												<div

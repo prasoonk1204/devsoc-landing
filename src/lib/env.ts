@@ -20,6 +20,7 @@ const clientSchema = z.object({
 	NEXT_PUBLIC_DISABLE_EVENT_SNAPS: z.string().default(""),
 	NEXT_PUBLIC_EVENT_ONLY_MODE: z.string().optional().default(""),
 	NEXT_PUBLIC_FEEDBACK_ENABLED_EVENTS: z.string().default(""),
+	NEXT_PUBLIC_UNLOCKED_PROBLEM_STATEMENTS: z.string().default(""),
 	NEXT_PUBLIC_API_URL: z
 		.string()
 		.optional()
@@ -76,6 +77,8 @@ function validateEnv() {
 		NEXT_PUBLIC_EVENT_ONLY_MODE: process.env.NEXT_PUBLIC_EVENT_ONLY_MODE,
 		NEXT_PUBLIC_FEEDBACK_ENABLED_EVENTS:
 			process.env.NEXT_PUBLIC_FEEDBACK_ENABLED_EVENTS,
+		NEXT_PUBLIC_UNLOCKED_PROBLEM_STATEMENTS:
+			process.env.NEXT_PUBLIC_UNLOCKED_PROBLEM_STATEMENTS,
 		FEEDBACK_API_URL: process.env.FEEDBACK_API_URL,
 		FEEDBACK_API_KEY: process.env.FEEDBACK_API_KEY,
 	};
