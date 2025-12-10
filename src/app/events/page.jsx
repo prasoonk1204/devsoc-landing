@@ -14,6 +14,9 @@ import {
 } from "@/lib/utils/eventUtils";
 import { env } from "@/lib/env";
 import { ArrowRight } from "lucide-react";
+import SectionHeader from "@/components/UI/SectionHeader";
+import Button from "@/components/UI/Button";
+import AnimatedContainer from "@/components/UI/AnimatedContainer";
 
 export default function Page() {
 	// Get sorted events (latest first)
@@ -36,19 +39,14 @@ export default function Page() {
 	return (
 		<PageContainer>
 			{latestEvent && (
-				<motion.div
-					className="mb-16 w-full"
-					variants={fadeInBlur}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true }}
-				>
-					<div className="mb-8">
-						<h2 className="font-iceland mb-2 text-5xl font-bold text-white">
-							Latest Event
-						</h2>
-						<div className="bg-accent h-1 w-20 rounded-full"></div>
-					</div>
+				<AnimatedContainer className="mb-16 w-full">
+					<SectionHeader
+						title="Latest Event"
+						size="5xl"
+						center={false}
+						className="mb-8"
+					/>
+					<div className="bg-accent mb-8 h-1 w-20 rounded-full"></div>
 
 					<div className="grid w-full grid-cols-1 gap-8 md:grid-cols-6 md:gap-12">
 						<div className="px-4 md:col-span-4 md:px-0">
@@ -65,40 +63,48 @@ export default function Page() {
 							{isRegistrationEnabled && (
 								<div className="flex flex-col gap-4 sm:flex-row">
 									{useExternalRegistration ? (
-										<a
+										<Button
 											href={externalRegistrationUrl}
+											variant="accent"
+											size="lg"
+											icon={<ArrowRight />}
+											className="font-sans"
 											target="_blank"
 											rel="noopener noreferrer"
-											className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
 										>
-											<span>Register Now</span>
-											<ArrowRight className="ml-1 h-5 w-5 transition-transform duration-300" />
-										</a>
+											Register Now
+										</Button>
 									) : (
-										<Link
+										<Button
 											href={`/events/${latestEvent.slug}/register`}
-											className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-8 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+											variant="accent"
+											size="lg"
+											icon={<ArrowRight />}
+											className="font-sans"
 										>
-											<span>Register Now</span>
-											<ArrowRight className="ml-1 h-5 w-5 transition-transform duration-300" />
-										</Link>
+											Register Now
+										</Button>
 									)}
-									<Link
+									<Button
 										href={`/events/${latestEvent.slug}`}
-										className="inline-flex items-center justify-center rounded-3xl border border-zinc-600 px-8 py-3 text-center font-sans font-medium text-white transition-colors hover:bg-zinc-800 focus:ring-2 focus:ring-zinc-600 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+										variant="secondary"
+										size="lg"
+										className="font-sans"
 									>
 										View Details
-									</Link>
+									</Button>
 								</div>
 							)}
 
 							{!isRegistrationEnabled && (
-								<Link
+								<Button
 									href={`/events/${latestEvent.slug}`}
-									className="bg-accent hover:bg-accent/90 focus:ring-accent inline-flex items-center justify-center rounded-3xl px-6 py-3 text-center font-sans font-medium text-black transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
+									variant="accent"
+									size="lg"
+									className="font-sans"
 								>
 									View Details
-								</Link>
+								</Button>
 							)}
 						</div>
 
@@ -114,23 +120,18 @@ export default function Page() {
 							/>
 						</div>
 					</div>
-				</motion.div>
+				</AnimatedContainer>
 			)}
 
 			{previousEvents.length > 0 && (
-				<motion.div
-					className="w-full"
-					variants={{ ...staggerContainer, ...fadeInBlur }}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true }}
-				>
-					<motion.div className="mb-8">
-						<h2 className="font-iceland mb-2 text-5xl font-bold text-white">
-							Previous Events
-						</h2>
-						<div className="bg-accent h-1 w-20 rounded-full"></div>
-					</motion.div>
+				<AnimatedContainer className="w-full" stagger>
+					<SectionHeader
+						title="Previous Events"
+						size="5xl"
+						center={false}
+						className="mb-8"
+					/>
+					<div className="bg-accent mb-8 h-1 w-20 rounded-full"></div>
 
 					<div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 md:px-0 lg:grid-cols-4">
 						{previousEvents.map((event) => (
@@ -139,7 +140,7 @@ export default function Page() {
 							</motion.div>
 						))}
 					</div>
-				</motion.div>
+				</AnimatedContainer>
 			)}
 		</PageContainer>
 	);

@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import ScrollableSection from "./ScrollableSection";
 import { env } from "@/lib/env";
+import SectionHeader from "@/components/UI/SectionHeader";
+import Badge from "@/components/UI/Badge";
 
 // Helper to get icon for track
 const getTrackIcon = (trackId) => {
@@ -97,12 +99,14 @@ export default function TracksTab({ challenges, eventSlug }) {
 				<div className="rounded-b-3xl bg-zinc-950/50">
 					{/* Header */}
 					<div className="border-b border-white/10 p-6 text-center backdrop-blur-sm">
-						<h3 className="font-iceland text-2xl leading-6 font-bold tracking-widest text-white uppercase">
-							The <span className="text-accent">Byte</span> Battlefield
-						</h3>
-						<p className="mt-2 font-mono text-xs tracking-[0.2em] text-zinc-500 uppercase">
-							Select Your Mission Track
-						</p>
+						<SectionHeader
+							title="The Byte Battlefield"
+							accent="Byte"
+							subtitle="Select Your Mission Track"
+							size="2xl"
+							uppercase
+							className="mb-0"
+						/>
 					</div>
 
 					{/* Accordion Items */}
@@ -169,9 +173,7 @@ export default function TracksTab({ challenges, eventSlug }) {
 																<h5 className="text-lg leading-tight font-bold text-white">
 																	{challenge.name}
 																</h5>
-																<span className="shrink-0 rounded bg-white/5 px-2.5 py-1 font-mono text-xs font-medium text-zinc-400">
-																	#{challenge.challengeNumber}
-																</span>
+																<Badge>#{challenge.challengeNumber}</Badge>
 															</div>
 															<div className="space-y-4 text-[15px]">
 																<div>
@@ -216,12 +218,14 @@ export default function TracksTab({ challenges, eventSlug }) {
 			<div className="hidden h-[700px] flex-col overflow-hidden rounded-b-3xl bg-zinc-950/50 md:flex">
 				{/* Header */}
 				<div className="border-b border-white/10 p-6 text-center backdrop-blur-sm">
-					<h3 className="font-iceland text-3xl font-bold tracking-widest text-white uppercase">
-						The <span className="text-accent">Byte</span> Battlefield
-					</h3>
-					<p className="mt-2 font-mono text-xs tracking-[0.2em] text-zinc-500 uppercase">
-						Select Your Mission Track
-					</p>
+					<SectionHeader
+						title="The Byte Battlefield"
+						accent="Byte"
+						subtitle="Select Your Mission Track"
+						size="3xl"
+						uppercase
+						className="mb-0"
+					/>
 				</div>
 
 				{/* Content area */}
@@ -372,9 +376,7 @@ export default function TracksTab({ challenges, eventSlug }) {
 														<h5 className="text-xl leading-tight font-bold text-white">
 															{challenge.name}
 														</h5>
-														<span className="shrink-0 rounded bg-white/5 px-2.5 py-1 font-mono text-xs font-medium text-zinc-400">
-															#{challenge.challengeNumber}
-														</span>
+														<Badge>#{challenge.challengeNumber}</Badge>
 													</div>
 													<div className="space-y-6 text-[15px] tracking-wide">
 														<div>

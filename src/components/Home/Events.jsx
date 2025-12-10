@@ -7,8 +7,12 @@ import { useState, useRef, useEffect } from "react";
 import { eventsData } from "@/constant/events";
 import { Carousel, Card } from "@/components/UI/mobileCarousel";
 import Image from "next/image";
-import { fadeInBlur, fadeInBlurFast } from "@/lib/motionVariants";
+import { fadeInBlurFast } from "@/lib/motionVariants";
 import { formatEventDate, sortEventsByDate } from "@/lib/utils/eventUtils";
+import SectionHeader from "@/components/UI/SectionHeader";
+import Container from "@/components/UI/Container";
+import Button from "@/components/UI/Button";
+import AnimatedContainer from "@/components/UI/AnimatedContainer";
 
 function useMediaQuery(query) {
 	const [matches, setMatches] = useState(null);
@@ -53,18 +57,10 @@ export default function Events() {
 				ref={ref}
 				className="bg-accent/20 mx-auto flex w-full flex-col items-start py-16 md:py-20"
 			>
-				<div className="w-full px-4">
-					<motion.h2
-						variants={fadeInBlur}
-						initial="hidden"
-						whileInView="visible"
-						viewport={{ once: true }}
-						className="font-iceland mx-auto mb-12 w-full max-w-6xl text-6xl font-bold"
-					>
-						Events
-					</motion.h2>
+				<Container>
+					<SectionHeader title="Events" size="6xl" />
 					<div className="h-96" />
-				</div>
+				</Container>
 			</section>
 		);
 	}
@@ -74,16 +70,8 @@ export default function Events() {
 			ref={ref}
 			className="bg-accent/20 mx-auto flex w-full flex-col items-start py-16 md:py-20"
 		>
-			<div className="w-full">
-				<motion.h2
-					variants={fadeInBlur}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true }}
-					className="font-iceland mx-auto w-full max-w-6xl px-4 text-6xl font-bold md:mb-12"
-				>
-					Events
-				</motion.h2>
+			<Container>
+				<SectionHeader title="Events" size="6xl" className="md:mb-12" />
 
 				{/* Responsive layout switch */}
 				{isMobile ? (
@@ -98,22 +86,21 @@ export default function Events() {
 				)}
 
 				{!isMobile && (
-					<motion.div
-						variants={fadeInBlurFast}
-						initial="hidden"
-						whileInView="visible"
-						viewport={{ once: true }}
+					<AnimatedContainer
+						variant="fadeInBlurFast"
 						className="flex justify-center"
 					>
-						<Link href="/events">
-							<button className="mx-auto flex items-center justify-center gap-1 rounded-3xl bg-zinc-950 px-6 py-2.5 text-xl text-white transition-all duration-300 hover:cursor-pointer hover:gap-4 hover:bg-zinc-800">
-								View More
-								<ArrowRight className="" />{" "}
-							</button>
-						</Link>
-					</motion.div>
+						<Button
+							href="/events"
+							size="lg"
+							icon={<ArrowRight />}
+							className="text-xl"
+						>
+							View More
+						</Button>
+					</AnimatedContainer>
 				)}
-			</div>
+			</Container>
 		</section>
 	);
 }

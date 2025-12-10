@@ -30,7 +30,7 @@ export default function ImageZoomModal({
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
-					className="fixed inset-0 z-200 flex flex-col items-center justify-center bg-black/95 p-4"
+					className="fixed inset-0 z-200 flex flex-col items-center justify-center bg-black/95 p-4 lg:p-8"
 					onClick={onClose}
 				>
 					<button
@@ -43,7 +43,7 @@ export default function ImageZoomModal({
 
 					{/* Desktop Layout */}
 					<motion.div
-						className="hidden items-center gap-4 md:flex"
+						className="hidden h-full w-full items-center justify-center gap-4 md:flex"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 0.1 }}
@@ -62,7 +62,7 @@ export default function ImageZoomModal({
 
 						<div className="flex flex-col items-center gap-4">
 							<motion.div
-								className="relative h-[85vh] w-auto max-w-[90vw]"
+								className="relative h-[70vh] w-auto max-w-[80vw] lg:h-[75vh] lg:max-w-[70vw] xl:h-[80vh] xl:max-w-[60vw]"
 								onClick={(e) => e.stopPropagation()}
 								initial={{ scale: 0.9 }}
 								animate={{ scale: 1 }}
@@ -78,7 +78,7 @@ export default function ImageZoomModal({
 									priority
 									placeholder="blur"
 									blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbGw9IiMyNzI3MjciLz48L3N2Zz4="
-									className="h-full w-auto rounded-3xl object-contain"
+									className="h-full max-h-[70vh] w-auto rounded-3xl object-contain lg:max-h-[75vh] xl:max-h-[80vh]"
 								/>
 							</motion.div>
 
@@ -125,13 +125,13 @@ export default function ImageZoomModal({
 
 					{/* Mobile Layout */}
 					<motion.div
-						className="flex flex-col items-center gap-4 md:hidden"
+						className="flex h-full w-full flex-col items-center justify-center gap-4 md:hidden"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 0.1 }}
 					>
 						<motion.div
-							className="relative h-[70vh] w-[90vw]"
+							className="relative h-[60vh] w-[90vw] max-w-md sm:h-[65vh] sm:max-w-lg"
 							onClick={(e) => e.stopPropagation()}
 							initial={{ scale: 0.9 }}
 							animate={{ scale: 1 }}
