@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as formConfigs from "../formConfigs.js";
 import type * as registrations from "../registrations.js";
 import type * as settings from "../settings.js";
 
@@ -18,6 +19,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  formConfigs: typeof formConfigs;
   registrations: typeof registrations;
   settings: typeof settings;
 }>;

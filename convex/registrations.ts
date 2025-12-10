@@ -1,6 +1,97 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
+export const createDynamicRegistration = mutation({
+	args: {
+		eventSlug: v.string(),
+		eventTitle: v.string(),
+		formData: v.any(), // Dynamic form data
+		transactionId: v.optional(v.string()),
+		amount: v.optional(v.number()),
+	},
+	handler: async (ctx, args) => {
+		// Extract email from form data for duplicate checking
+		const email = args.formData.email?.toLowerCase();
+
+		if (!email) {
+			throw new Error("Email is required for registration");
+		}
+
+		const existingRegistration = await ctx.db
+			.query("users")
+			.withIndex("by_email", (q) => q.eq("email", email))
+			.filter((q) => q.eq(q.field("eventSlug"), args.eventSlug))
+			.first();
+
+		if (existingRegistration) {
+			throw new Error(
+				`You have already registered for this event with the email ${email}. Each email can only register once per event.`,
+			);
+		}
+
+		// Check transaction ID if payment is involved
+		if (args.transactionId) {
+			const existingTransaction = await ctx.db
+				.query("payments")
+				.withIndex("by_transaction", (q) =>
+					q.eq("transactionId", args.transactionId!),
+				)
+				.first();
+
+			if (existingTransaction) {
+				throw new Error(
+					`This transaction ID (${args.transactionId}) has already been used. Please verify your transaction ID or use a different one.`,
+				);
+			}
+		}
+
+		const now = Date.now();
+
+		// Create user with dynamic form data
+		const userId = await ctx.db.insert("users", {
+			name: args.formData.name || "",
+			roll: args.formData.roll || "",
+			phone: args.formData.phone || "",
+			email: email,
+			department: args.formData.department || "",
+			year: args.formData.year || "",
+			questions: args.formData.questions || "",
+			eventSlug: args.eventSlug,
+			eventTitle: args.eventTitle,
+			registeredAt: now,
+			formData: args.formData, // Store all dynamic form data
+		});
+
+		let paymentId = undefined;
+
+		// Create payment record if transaction details provided
+		if (args.transactionId && args.amount) {
+			paymentId = await ctx.db.insert("payments", {
+				userId,
+				transactionId: args.transactionId,
+				paymentScreenshotUrl: "",
+				paymentScreenshotStorageId: "",
+				eventSlug: args.eventSlug,
+				eventTitle: args.eventTitle,
+				amount: args.amount,
+				status: "pending",
+				createdAt: now,
+			});
+
+			await ctx.db.patch(userId, {
+				paymentId,
+			});
+		}
+
+		return {
+			success: true,
+			userId,
+			paymentId,
+		};
+	},
+});
+
+// Legacy function for backward compatibility
 export const createPendingRegistration = mutation({
 	args: {
 		name: v.string(),
@@ -57,6 +148,15 @@ export const createPendingRegistration = mutation({
 			eventSlug: args.eventSlug,
 			eventTitle: args.eventTitle,
 			registeredAt: now,
+			formData: {
+				name: args.name,
+				roll: args.roll,
+				phone: args.phone,
+				email: normalizedEmail,
+				department: args.department,
+				year: args.year,
+				questions: args.questions,
+			},
 		});
 
 		const paymentId = await ctx.db.insert("payments", {

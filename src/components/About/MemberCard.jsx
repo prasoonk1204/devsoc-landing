@@ -104,7 +104,14 @@ export default function MemberCard({ member, index }) {
 				style={{ transformStyle: "preserve-3d" }}
 			>
 				{/* Front */}
-				<div className={styles.flipCardFront}>
+				<div
+					className={styles.flipCardFront}
+					style={{
+						opacity: isFlipped ? 0 : 1,
+						visibility: isFlipped ? "hidden" : "visible",
+						transition: "opacity 0.1s ease-in-out, visibility 0.1s ease-in-out",
+					}}
+				>
 					<Image
 						src={member.image}
 						alt={member.name}
@@ -124,7 +131,14 @@ export default function MemberCard({ member, index }) {
 				</div>
 
 				{/* Back */}
-				<div className={styles.flipCardBack}>
+				<div
+					className={styles.flipCardBack}
+					style={{
+						opacity: isFlipped ? 1 : 0,
+						visibility: isFlipped ? "visible" : "hidden",
+						transition: "opacity 0.1s ease-in-out, visibility 0.1s ease-in-out",
+					}}
+				>
 					<div className="flex h-full flex-col items-center justify-center gap-6 p-6">
 						<div className="text-center">
 							<h3 className="mb-1 text-lg font-bold text-white">
