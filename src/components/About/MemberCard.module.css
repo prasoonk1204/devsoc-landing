@@ -13,28 +13,15 @@
 	margin: 0 auto;
 }
 
-.flipCard {
-	transform-style: preserve-3d;
-	-webkit-transform-style: preserve-3d;
-}
-
 .flipCardFront,
 .flipCardBack {
 	position: absolute;
 	inset: 0;
 	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
-	-moz-backface-visibility: hidden;
-	-ms-backface-visibility: hidden;
 	border-radius: 1.5rem;
 	overflow: hidden;
 	background: linear-gradient(to bottom, rgb(39, 39, 42), rgb(24, 24, 27));
-	transform-origin: center center;
-	will-change: transform;
-}
-
-.flipCardFront {
-	transform: rotateY(0deg);
 }
 
 .flipCardBack {

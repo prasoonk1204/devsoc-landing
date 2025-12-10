@@ -4,7 +4,6 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbo",
-		"lint": "next lint",
 		"dev:server": "cd server && bun --watch index.ts",
 		"build": "next build",
 		"build:frontend": "next build",

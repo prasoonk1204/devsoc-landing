@@ -9,12 +9,13 @@ import {
 	managementTeam,
 	teacherCoordinators,
 } from "@/constant/members";
-import { fadeInBlurFast, staggerContainer } from "@/lib/motionVariants";
+import {
+	fadeInBlur,
+	fadeInBlurFast,
+	staggerContainer,
+} from "@/lib/motionVariants";
 import MemberCard from "@/components/About/MemberCard";
 import ActivityCard from "@/components/About/ActivityCard";
-import SectionHeader from "@/components/UI/SectionHeader";
-import Container from "@/components/UI/Container";
-import AnimatedContainer from "@/components/UI/AnimatedContainer";
 
 const activities = [
 	{
@@ -38,10 +39,24 @@ const activities = [
 export default function AboutPage() {
 	return (
 		<div className="min-h-screen bg-black px-4 py-8 text-white md:py-24">
-			<Container>
-				<SectionHeader title="About Us" size="6xl" className="mb-6" />
+			<div className="mx-auto max-w-6xl">
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true }}
+					className="mb-6 text-center"
+				>
+					<h1 className="font-iceland text-6xl font-bold">About Us</h1>
+				</motion.div>
 
-				<AnimatedContainer className="mb-16 text-center">
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true }}
+					className="mb-16 text-center"
+				>
 					<p className="mx-auto max-w-4xl text-lg leading-relaxed text-zinc-300">
 						DevSoc at Asansol Engineering College is where tech feels fun and
 						creative. We bring coders, designers, and thinkers into one space
@@ -50,7 +65,7 @@ export default function AboutPage() {
 						wants to learn and try something new. If you want a space that
 						sparks your drive to create, this is the place.
 					</p>
-				</AnimatedContainer>
+				</motion.div>
 
 				<motion.div
 					variants={staggerContainer}
@@ -110,14 +125,25 @@ export default function AboutPage() {
 					</div>
 				</motion.div>
 
-				<SectionHeader
-					title="Meet The Team"
-					size="5xl"
-					className="mb-6 text-orange-300"
-					center={false}
-				/>
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-6"
+				>
+					<h2 className="text-4xl font-bold text-orange-300 md:text-5xl">
+						Meet The Team
+					</h2>
+				</motion.div>
 
-				<AnimatedContainer className="mb-16">
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-16"
+				>
 					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
 						Teacher Coordinators
 					</h3>
@@ -126,9 +152,15 @@ export default function AboutPage() {
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</AnimatedContainer>
+				</motion.div>
 
-				<AnimatedContainer className="mb-16">
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-16"
+				>
 					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
 						Core Committee
 					</h3>
@@ -137,9 +169,15 @@ export default function AboutPage() {
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</AnimatedContainer>
+				</motion.div>
 
-				<AnimatedContainer className="mb-16">
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-16"
+				>
 					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
 						Management Team
 					</h3>
@@ -148,9 +186,15 @@ export default function AboutPage() {
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</AnimatedContainer>
+				</motion.div>
 
-				<AnimatedContainer className="mb-16">
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+					className="mb-16"
+				>
 					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
 						Tech Team
 					</h3>
@@ -159,9 +203,14 @@ export default function AboutPage() {
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</AnimatedContainer>
+				</motion.div>
 
-				<AnimatedContainer>
+				<motion.div
+					variants={fadeInBlur}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-100px" }}
+				>
 					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
 						Design Team
 					</h3>
@@ -170,8 +219,8 @@ export default function AboutPage() {
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</AnimatedContainer>
-			</Container>
+				</motion.div>
+			</div>
 		</div>
 	);
 }
