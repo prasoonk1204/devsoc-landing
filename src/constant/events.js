@@ -397,16 +397,14 @@ Over² promotes:
 
 This is the **24-hour arena** ⏱️ where ideas stop being ideas and start becoming  **screens, buttons, flows, logic, and working demos.**
 
-Here, time moves fast ⚡, caffeine runs low ☕, files break 💥, features save you, and teams discover what they’re truly capable of.
-
+Here, time moves fast ⚡, caffeine runs low ☕, files break 💥, features save you, and teams discover what they’re truly capable of.  
 Some students keep watching others code. Some pick a track, form a team, take a breath, and build through the night 🌙.
 
 *OverClocked is for the second kind.*
 
 ## 🔍 **What OverClocked Really Is**
 
-OverClocked is a full-scale, **24-hour hackathon** 💻 - the official **Level 2 of Over²**.
-
+OverClocked is a full-scale, **24-hour hackathon** 💻 - the official **Level 2 of Over²**.  
 Everyone participating is already an **OverDrive graduate**, so you enter an arena where every team is ready to sprint.
 
 ### **Hackathon Tracks :**
@@ -422,14 +420,32 @@ Regardless of the track, your mission is simple:  **Turn a sharp idea into a fun
 
 ## 🧭 **How OverClocked Works**
 
-### ⭐ **Round 1(Online): Revealing in a bit... Come back later to find out the secret..**
+### ⭐ **Round 1: Skill Check Round**
+
+This round tests how well your team thinks, builds, and cleans up real project tasks.  
+***Each team will work under the watch of a mentor, and you’ll get a fixed time slot to solve each task.***
+
+You will be given a base repo or a figma file, and your team must complete:
+- ➤ Improve one feature
+- ➤ Fix a bug
+- ➤ Add input validation
+- ➤ Create a small workflow
+- ➤ Add a simple model output
+- ➤ Build a small UI flow
+
+### Judging Criteria
+- ➤ Code quality
+- ➤ Clarity of workflow
+- ➤ Creativity in solving the task
+- ➤ How cleanly the feature integrates
+
+Teams that **perform well move to Round 2**, the overnight build 🔥.
 
 ---
 
 ### 🔥 **Round 2: The 24-Hour Offline Hackathon**
 
-*This is the **core of OverClocked**.*
-
+*This is the **core of OverClocked**.*  
 You arrive with a laptop 💻, charger 🔌, teammates 🤝, snacks 🍫, and determination.
 
 During the 24 hours, you will:
@@ -496,8 +512,7 @@ This is where:
 - ➤ Ideas evolve into polished builds ✨  
 - ➤ Confidence grows because you built something real  
 
-This is where **beginners become builders**, and **builders become problem-solvers**.
-
+This is where **beginners become builders**, and **builders become problem-solvers**.  
 Some students keep watching. Some step onto the field and change the scoreboard 🏟️.
 
 ***OverClocked is made for the ones who change the scoreboard.***
