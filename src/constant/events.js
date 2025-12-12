@@ -422,24 +422,7 @@ Regardless of the track, your mission is simple:  **Turn a sharp idea into a fun
 
 ## 🧭 **How OverClocked Works**
 
-### ⭐ **Round 1: PPT Pitch Round**
-
-This is your **gateway to the hackathon floor** 🚪.
-
-Your team must submit:
-- ➤ A clear explanation of your idea  
-- ➤ The track you’re competing in  
-- ➤ Planned features  
-- ➤ What you aim to build in 24 hours  
-- ➤ Why your idea fits the chosen track  
-
-**Judging Criteria**
-- ➤ Creativity  
-- ➤ Feasibility  
-- ➤ Clarity  
-- ➤ Alignment with track  
-
-Strong pitches move to **Round 2 - the overnight build 🔥**.
+### ⭐ **Round 1(Online): Revealing in a bit... Come back later to find out the secret..**
 
 ---
 
