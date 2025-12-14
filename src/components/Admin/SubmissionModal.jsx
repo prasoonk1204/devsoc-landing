@@ -4,7 +4,8 @@ import { useState } from "react";
 import { X, Lock, Send } from "lucide-react";
 
 export default function SubmissionModal({ formConfig, onClose, onSuccess }) {
-	const [password, setPassword] = useState("");
+	const [adminSecret, setAdminSecret] = useState("");
+	const [formAdminSecret, setFormAdminSecret] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState("");
 
@@ -14,22 +15,14 @@ export default function SubmissionModal({ formConfig, onClose, onSuccess }) {
 		setIsSubmitting(true);
 
 		try {
-			// Verify admin secret
-			const adminSecret = process.env.NEXT_PUBLIC_ADMIN_SECRET;
-			
-			if (password !== adminSecret) {
-				setError("Invalid admin password");
-				setIsSubmitting(false);
-				return;
-			}
-
 			// Submit to API
 			const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 			const response = await fetch(`${apiUrl}/api/v1/forms/admin/config`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"X-Admin-Secret": password,
+					"X-Admin-Secret": adminSecret,
+					"X-Form-Admin-Secret": formAdminSecret,
 				},
 				body: JSON.stringify(formConfig),
 			});
@@ -109,21 +102,42 @@ export default function SubmissionModal({ formConfig, onClose, onSuccess }) {
 					</div>
 
 				<form onSubmit={handleSubmit}>
-					<div className="mb-6">
-						<label className="mb-3 block text-sm font-medium text-zinc-200">
-							Admin Password
-						</label>
-						<div className="relative">
-							<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500" />
-							<input
-								type="password"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								placeholder="Enter admin password to confirm"
-								className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-700/50 bg-zinc-800/50 text-white placeholder-zinc-500 focus:border-orange-500/50 focus:bg-zinc-800 focus:outline-none transition-all duration-200"
-								required
-								disabled={isSubmitting}
-							/>
+					<div className="space-y-4 mb-6">
+						<div>
+							<label className="mb-2 block text-sm font-medium text-zinc-200">
+								Admin Secret
+							</label>
+							<div className="relative">
+								<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-500" />
+								<input
+									type="password"
+									value={adminSecret}
+									onChange={(e) => setAdminSecret(e.target.value)}
+									placeholder="Enter admin secret"
+									className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-700/50 bg-zinc-800/50 text-white placeholder-zinc-500 focus:border-orange-500/50 focus:bg-zinc-800 focus:outline-none transition-all duration-200"
+									required
+									disabled={isSubmitting}
+								/>
+							</div>
+						</div>
+						
+						<div>
+							<label className="mb-2 block text-sm font-medium text-zinc-200">
+								Form Admin Secret
+							</label>
+							<div className="relative">
+								<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-red-500" />
+								<input
+									type="password"
+									value={formAdminSecret}
+									onChange={(e) => setFormAdminSecret(e.target.value)}
+									placeholder="Enter form admin secret"
+									className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-700/50 bg-zinc-800/50 text-white placeholder-zinc-500 focus:border-red-500/50 focus:bg-zinc-800 focus:outline-none transition-all duration-200"
+									required
+									disabled={isSubmitting}
+								/>
+							</div>
+							<p className="mt-1 text-xs text-zinc-500">Enhanced security for form operations</p>
 						</div>
 					</div>
 
@@ -148,7 +162,7 @@ export default function SubmissionModal({ formConfig, onClose, onSuccess }) {
 						<button
 							type="submit"
 							className="flex-2 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-black font-medium hover:from-orange-400 hover:to-orange-500 transition-all duration-200 shadow-lg hover:shadow-orange-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
-							disabled={isSubmitting || !password}
+							disabled={isSubmitting || !adminSecret || !formAdminSecret}
 						>
 							{isSubmitting ? (
 								<>

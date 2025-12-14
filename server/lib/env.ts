@@ -8,6 +8,7 @@ export const env = {
 		process.env.CONVEX_URL || process.env.NEXT_PUBLIC_CONVEX_URL || "",
 	NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL || "",
 	ADMIN_SECRET: process.env.ADMIN_SECRET || "",
+	FORM_ADMIN_SECRET: process.env.FORM_ADMIN_SECRET || "",
 	IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY || "",
 	NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY:
 		process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || "",

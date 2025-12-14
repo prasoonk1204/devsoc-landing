@@ -81,6 +81,14 @@ const requireAdmin = (request: Request) => {
 	}
 };
 
+// Form admin authentication middleware (for form CRUD operations)
+const requireFormAdmin = (request: Request) => {
+	const formAdminSecret = request.headers.get("X-Form-Admin-Secret");
+	if (!formAdminSecret || formAdminSecret !== env.FORM_ADMIN_SECRET) {
+		throw new Error("Unauthorized: Invalid form admin secret");
+	}
+};
+
 export const formsRoutes = new Elysia({ prefix: "/forms" })
 	// Get form configuration
 	.get(
@@ -463,6 +471,8 @@ export const formsRoutes = new Elysia({ prefix: "/forms" })
 		try {
 			// Check admin authentication
 			requireAdmin(request);
+			// Check form admin authentication
+			requireFormAdmin(request);
 
 			const clientId = getClientIdentifier(request);
 			const rateLimit = rateLimiter.check(
@@ -556,6 +566,14 @@ export const formsRoutes = new Elysia({ prefix: "/forms" })
 				};
 			}
 
+			if (error.message === "Unauthorized: Invalid form admin secret") {
+				set.status = 401;
+				return {
+					success: false,
+					error: "Unauthorized: Invalid form admin secret",
+				};
+			}
+
 			set.status = 500;
 			return {
 				success: false,
@@ -618,6 +636,8 @@ export const formsRoutes = new Elysia({ prefix: "/forms" })
 			try {
 				// Check admin authentication
 				requireAdmin(request);
+				// Check form admin authentication
+				requireFormAdmin(request);
 
 				const clientId = getClientIdentifier(request);
 				const rateLimit = rateLimiter.check(
@@ -688,6 +708,14 @@ export const formsRoutes = new Elysia({ prefix: "/forms" })
 					};
 				}
 
+				if (error.message === "Unauthorized: Invalid form admin secret") {
+					set.status = 401;
+					return {
+						success: false,
+						error: "Unauthorized: Invalid form admin secret",
+					};
+				}
+
 				set.status = 500;
 				return {
 					success: false,
@@ -704,6 +732,8 @@ export const formsRoutes = new Elysia({ prefix: "/forms" })
 			try {
 				// Check admin authentication
 				requireAdmin(request);
+				// Check form admin authentication
+				requireFormAdmin(request);
 
 				const clientId = getClientIdentifier(request);
 				const rateLimit = rateLimiter.check(
@@ -752,6 +782,14 @@ export const formsRoutes = new Elysia({ prefix: "/forms" })
 					return {
 						success: false,
 						error: "Unauthorized: Invalid admin secret",
+					};
+				}
+
+				if (error.message === "Unauthorized: Invalid form admin secret") {
+					set.status = 401;
+					return {
+						success: false,
+						error: "Unauthorized: Invalid form admin secret",
 					};
 				}
 

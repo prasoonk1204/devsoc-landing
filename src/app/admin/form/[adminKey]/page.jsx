@@ -9,16 +9,26 @@ export default function AdminFormPage() {
 	const router = useRouter();
 	const [isAuthorized, setIsAuthorized] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const [editSlug, setEditSlug] = useState(null);
 
 	useEffect(() => {
 		const adminKey = params.adminKey;
-		const validAdminKey = process.env.NEXT_PUBLIC_ADMIN_KEY || "admin-2024";
+		const validAdminKey = process.env.NEXT_PUBLIC_ADMIN_KEY;
+		
+		// Check for session secrets from Dashboard
+		const sessionSecret = sessionStorage.getItem("admin_secret");
+		const formAdminSecret = sessionStorage.getItem("form_admin_secret");
 
-		if (adminKey === validAdminKey) {
+		if (adminKey === validAdminKey && formAdminSecret) {
+			// Direct access via admin key with form admin secret -> New Form
 			setIsAuthorized(true);
+		} else if (sessionSecret && formAdminSecret) {
+			// Authenticated via Dashboard with form admin secret -> Editing Event (adminKey is slug)
+			setIsAuthorized(true);
+			setEditSlug(adminKey);
 		} else {
-			// Redirect to home page if admin key is invalid
-			router.push("/");
+			// Redirect to admin dashboard if unauthorized
+			router.push(`/admin/${validAdminKey}`);
 			return;
 		}
 
@@ -34,12 +44,12 @@ export default function AdminFormPage() {
 	}
 
 	if (!isAuthorized) {
-		return null; // Will redirect
+		return null;
 	}
 
 	return (
 		<div className="min-h-screen bg-zinc-900">
-			<FormBuilder />
+			<FormBuilder initialSlug={editSlug} />
 		</div>
 	);
 }

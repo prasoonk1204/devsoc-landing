@@ -8,6 +8,15 @@ import {
 	getClientIdentifier,
 } from "../../lib/rateLimiter";
 import { logger } from "../../lib/logger";
+import { env } from "../../lib/env";
+
+// Form admin authentication middleware (for CSV export)
+const requireFormAdmin = (request: Request) => {
+	const formAdminSecret = request.headers.get("X-Form-Admin-Secret");
+	if (!formAdminSecret || formAdminSecret !== env.FORM_ADMIN_SECRET) {
+		throw new Error("Unauthorized: Invalid form admin secret");
+	}
+};
 
 export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 	.post(
@@ -364,6 +373,105 @@ export const registrationsRoutes = new Elysia({ prefix: "/registrations" })
 			return {
 				success: false,
 				error: error.message || "Failed to fetch user registration",
+			};
+		}
+	})
+	// Admin: Export registrations as CSV
+	.get("/admin/:eventSlug/export", async ({ params: { eventSlug }, set, request }) => {
+		try {
+			// Check form admin authentication
+			requireFormAdmin(request);
+
+			const clientId = getClientIdentifier(request);
+			const rateLimit = rateLimiter.check(
+				`admin:${clientId}`,
+				RateLimitPresets.ADMIN.maxRequests,
+				RateLimitPresets.ADMIN.windowMs,
+			);
+
+			if (!rateLimit.allowed) {
+				set.status = 429;
+				return {
+					success: false,
+					error: "Too many requests. Please try again later.",
+				};
+			}
+
+			const registrations = await convex.query(
+				api.registrations.getEventRegistrations,
+				{
+					eventSlug,
+				},
+			);
+
+			// Convert to CSV format
+			const csvHeaders = [
+				"Name",
+				"Email", 
+				"Phone",
+				"Roll",
+				"Department",
+				"Year",
+				"Event",
+				"Status",
+				"Amount",
+				"Transaction ID",
+				"Registration Date",
+				"Questions"
+			];
+
+			const csvRows = registrations.map(reg => [
+				reg.name || "",
+				reg.email || "",
+				reg.phone || "",
+				reg.roll || "",
+				reg.department || "",
+				reg.year || "",
+				reg.eventTitle || "",
+				reg.paymentStatus || "Registered",
+				reg.amount || 0,
+				reg.transactionId || "N/A",
+				new Date(reg._creationTime).toLocaleDateString(),
+				reg.questions || ""
+			]);
+
+			// Create CSV content
+			const csvContent = [
+				csvHeaders.join(","),
+				...csvRows.map(row => 
+					row.map(field => 
+						typeof field === 'string' && field.includes(',') 
+							? `"${field.replace(/"/g, '""')}"` 
+							: field
+					).join(",")
+				)
+			].join("\n");
+
+			// Set CSV headers
+			set.headers["Content-Type"] = "text/csv";
+			set.headers["Content-Disposition"] = `attachment; filename="registrations-${eventSlug}-${new Date().toISOString().split('T')[0]}.csv"`;
+
+			logger.info("CSV export completed", {
+				eventSlug,
+				count: registrations.length,
+			});
+
+			return csvContent;
+		} catch (error: any) {
+			logger.error("Error exporting CSV", error);
+
+			if (error.message === "Unauthorized: Invalid form admin secret") {
+				set.status = 401;
+				return {
+					success: false,
+					error: "Unauthorized: Invalid form admin secret",
+				};
+			}
+
+			set.status = 500;
+			return {
+				success: false,
+				error: error.message || "Failed to export registrations",
 			};
 		}
 	});
