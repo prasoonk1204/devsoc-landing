@@ -418,17 +418,17 @@ export const managementTeam = [
 ];
 
 export const designTeam = [
-	{
-		id: 1,
-		name: "Achhat Kumar Gupta",
-		designation: "Graphics Designer",
-		image:
-			"https://ik.imagekit.io/devsoc/Members/Design_Team/IMG-20251114-WA0075%20-%20Achhat%20kumar%20Gupta.jpg?updatedAt=1763989301495",
-		socials: {
-			linkedin:
-				"https://www.linkedin.com/in/achhat-kumar-gupta-034373200?utm_source=sha",
-		},
-	},
+	// {
+	// 	id: 1,
+	// 	name: "Achhat Kumar Gupta",
+	// 	designation: "Graphics Designer",
+	// 	image:
+	// 		"https://ik.imagekit.io/devsoc/Members/Design_Team/IMG-20251114-WA0075%20-%20Achhat%20kumar%20Gupta.jpg?updatedAt=1763989301495",
+	// 	socials: {
+	// 		linkedin:
+	// 			"https://www.linkedin.com/in/achhat-kumar-gupta-034373200?utm_source=sha",
+	// 	},
+	// },
 	{
 		id: 2,
 		name: "Arpita Sharma",
