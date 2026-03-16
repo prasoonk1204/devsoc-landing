@@ -15,6 +15,7 @@ export default function EventCard({ event }) {
 			whileInView="visible"
 			viewport={{ once: true }}
 			className="group"
+			style={{ willChange: "transform, opacity, filter" }}
 		>
 			<Link href={`/events/${event.slug}`}>
 				<div className="relative aspect-3/4 w-full overflow-hidden rounded-3xl bg-zinc-700 shadow-lg">
@@ -23,6 +24,7 @@ export default function EventCard({ event }) {
 						alt={event.title}
 						fill
 						className="object-fill"
+						sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
 					/>
 					{/* Mobile Overlay: Always visible */}
 					{/* <div className="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-black to-transparent to-60% p-4 md:hidden">

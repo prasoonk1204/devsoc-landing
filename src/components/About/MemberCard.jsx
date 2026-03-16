@@ -24,7 +24,7 @@ const socialIcons = {
 	email: Mail,
 };
 
-export default function MemberCard({ member, index }) {
+export default function MemberCard({ member, index, priority = false }) {
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [isTouchDevice, setIsTouchDevice] = useState(false);
 	const cardRef = useRef(null);
@@ -90,6 +90,7 @@ export default function MemberCard({ member, index }) {
 			viewport={{ once: true, margin: "-50px" }}
 			transition={{ delay: index * 0.05 }}
 			className={styles.flipCardContainer}
+			style={{ willChange: "transform, opacity, filter" }}
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			onClick={handleClick}
@@ -111,7 +112,7 @@ export default function MemberCard({ member, index }) {
 						height={500}
 						width={500}
 						quality={80}
-						priority={index < 8}
+						priority={priority}
 						placeholder="blur"
 						blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzI3MjcyNyIvPjwvc3ZnPg=="
 					/>

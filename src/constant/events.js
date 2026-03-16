@@ -386,7 +386,7 @@ Over² promotes:
 		slug: "overclocked-2025",
 		image:
 			"https://ik.imagekit.io/devsoc/events/2025_Over_square/overclocked.png",
-		date: "TBD",
+		date: "2026-03-27",
 		description:
 			"OverClocked is a 24-hour offline hackathon where you turn ideas into working prototypes under real pressure. Coming right after OverDrive, it offers six tracks, open themes, and a hall full of teams building through the night. You plan, build, debug, and finish with a demo to the judges. Bring your team and your energy, ideas in the morning can become prototypes by midnight.",
 		detailedDescription: `

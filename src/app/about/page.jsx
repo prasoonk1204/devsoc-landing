@@ -137,89 +137,90 @@ export default function AboutPage() {
 					</h2>
 				</motion.div>
 
-				<motion.div
-					variants={fadeInBlur}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true, margin: "-100px" }}
-					className="mb-16"
-				>
-					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+				<div className="mb-16">
+					<motion.h3
+						variants={fadeInBlur}
+						initial="hidden"
+						whileInView="visible"
+						viewport={{ once: true, margin: "-100px" }}
+						className="mb-6 text-2xl font-bold text-white md:text-3xl"
+					>
 						Teacher Coordinators
-					</h3>
+					</motion.h3>
 					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 						{teacherCoordinators.map((member, index) => (
-							<MemberCard key={member.id} member={member} index={index} />
+							<MemberCard key={member.id} member={member} index={index} priority={index < 5} />
 						))}
 					</div>
-				</motion.div>
+				</div>
 
-				<motion.div
-					variants={fadeInBlur}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true, margin: "-100px" }}
-					className="mb-16"
-				>
-					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+				<div className="mb-16">
+					<motion.h3
+						variants={fadeInBlur}
+						initial="hidden"
+						whileInView="visible"
+						viewport={{ once: true, margin: "-100px" }}
+						className="mb-6 text-2xl font-bold text-white md:text-3xl"
+					>
 						Core Committee
-					</h3>
+					</motion.h3>
 					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 						{coreCommittee.map((member, index) => (
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</motion.div>
+				</div>
 
-				<motion.div
-					variants={fadeInBlur}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true, margin: "-100px" }}
-					className="mb-16"
-				>
-					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+				<div className="mb-16">
+					<motion.h3
+						variants={fadeInBlur}
+						initial="hidden"
+						whileInView="visible"
+						viewport={{ once: true, margin: "-100px" }}
+						className="mb-6 text-2xl font-bold text-white md:text-3xl"
+					>
 						Management Team
-					</h3>
+					</motion.h3>
 					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 						{managementTeam.map((member, index) => (
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</motion.div>
+				</div>
 
-				<motion.div
-					variants={fadeInBlur}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true, margin: "-100px" }}
-					className="mb-16"
-				>
-					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+				<div className="mb-16">
+					<motion.h3
+						variants={fadeInBlur}
+						initial="hidden"
+						whileInView="visible"
+						viewport={{ once: true, margin: "-100px" }}
+						className="mb-6 text-2xl font-bold text-white md:text-3xl"
+					>
 						Tech Team
-					</h3>
+					</motion.h3>
 					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 						{techTeam.map((member, index) => (
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</motion.div>
+				</div>
 
-				<motion.div
-					variants={fadeInBlur}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true, margin: "-100px" }}
-				>
-					<h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+				<div className="mb-16">
+					<motion.h3
+						variants={fadeInBlur}
+						initial="hidden"
+						whileInView="visible"
+						viewport={{ once: true, margin: "-100px" }}
+						className="mb-6 text-2xl font-bold text-white md:text-3xl"
+					>
 						Design Team
-					</h3>
+					</motion.h3>
 					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 						{designTeam.map((member, index) => (
 							<MemberCard key={member.id} member={member} index={index} />
 						))}
 					</div>
-				</motion.div>
+				</div>
 			</div>
 		</div>
 	);

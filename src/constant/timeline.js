@@ -1,7 +1,7 @@
 export const operationalTimeline = [
 	{
 		time: "09:00",
-		date: "01-2026",
+		date: "27-03-2026",
 		title: "SYSTEM INITIATION",
 		description:
 			"Arrive, power up and complete registration to receive your official hackathon badge and materials.",
@@ -28,7 +28,7 @@ export const operationalTimeline = [
 	},
 	{
 		time: "12:00",
-		date: "01-2026",
+		date: "27-03-2026",
 		title: "CODE MODE LOCKED IN",
 		description:
 			"Reach your station, select your mission track, and begin the intense brainstorming and initial architecture planning.",
@@ -54,7 +54,7 @@ export const operationalTimeline = [
 	},
 	{
 		time: "18:00",
-		date: "01-2026",
+		date: "27-03-2026",
 		title: "MID-GAME CHECKPOINT",
 		description:
 			"Fuel up with dinner and leverage your first critical opportunity to get feedback and direction from experienced mentors.",
@@ -84,7 +84,7 @@ export const operationalTimeline = [
 	},
 	{
 		time: "00:00",
-		date: "01-2026",
+		date: "28-03-2026",
 		title: "CODE CRUNCH",
 		description:
 			"Enjoy a late-night energy boost and fun activities before you enter the critical phase of deep, focused coding and execution.",
@@ -115,7 +115,7 @@ export const operationalTimeline = [
 	},
 	{
 		time: "08:00",
-		date: "01-2026",
+		date: "28-03-2026",
 		title: "CODE FREEZE",
 		description:
 			"Stop all coding activity, finalize your documentation, and submit your project to the judging platform.",
@@ -141,7 +141,7 @@ export const operationalTimeline = [
 	},
 	{
 		time: "11:00",
-		date: "01-2026",
+		date: "28-03-2026",
 		title: "JUDGEMENT DAY",
 		description:
 			"Present your final projects, receive the judges' verdict, and witness the distribution of epic prizes at the ceremony.",

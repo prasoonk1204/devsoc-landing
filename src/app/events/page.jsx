@@ -124,23 +124,23 @@ export default function Page() {
 			)}
 
 			{previousEvents.length > 0 && (
-				<AnimatedContainer className="w-full" stagger>
-					<SectionHeader
-						title="Previous Events"
-						size="5xl"
-						center={false}
-						className="mb-8"
-					/>
-					<div className="bg-accent mb-8 h-1 w-20 rounded-full"></div>
+				<div className="w-full">
+					<AnimatedContainer className="w-full">
+						<SectionHeader
+							title="Previous Events"
+							size="5xl"
+							center={false}
+							className="mb-8"
+						/>
+						<div className="bg-accent mb-8 h-1 w-20 rounded-full"></div>
+					</AnimatedContainer>
 
 					<div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 md:px-0 lg:grid-cols-4">
 						{previousEvents.map((event) => (
-							<motion.div key={event.slug} variants={fadeInBlur}>
-								<EventCard event={event} />
-							</motion.div>
+							<EventCard key={event.slug} event={event} />
 						))}
 					</div>
-				</AnimatedContainer>
+				</div>
 			)}
 		</PageContainer>
 	);
