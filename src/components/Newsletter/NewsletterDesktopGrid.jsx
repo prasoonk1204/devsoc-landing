@@ -7,13 +7,7 @@ import { fadeInBlur } from "@/lib/motionVariants";
 
 export default function NewsletterDesktopGrid({ images, title, onImageClick }) {
 	return (
-		<motion.div
-			className="hidden grid-cols-2 gap-6 md:grid"
-			variants={fadeInBlur}
-			initial="hidden"
-			whileInView="visible"
-			viewport={{ once: true }}
-		>
+		<div className="hidden grid-cols-2 gap-6 md:grid">
 			{images.map((image, index) => (
 				<motion.div
 					key={index}
@@ -24,6 +18,7 @@ export default function NewsletterDesktopGrid({ images, title, onImageClick }) {
 					viewport={{ once: true }}
 					transition={{ duration: 0.5, delay: 0.1 * index }}
 					whileTap={{ scale: 0.98 }}
+					style={{ willChange: "transform, opacity" }}
 				>
 					<Image
 						src={image}
@@ -35,6 +30,7 @@ export default function NewsletterDesktopGrid({ images, title, onImageClick }) {
 						placeholder="blur"
 						blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSIxNjAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjE2MDAiIGZpbGw9IiMyNzI3MjciLz48L3N2Zz4="
 						className="h-auto w-full rounded-3xl object-cover"
+						sizes="(max-width: 768px) 100vw, 50vw"
 					/>
 					<motion.div
 						className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white opacity-0 transition-opacity group-hover:opacity-100"
@@ -45,6 +41,5 @@ export default function NewsletterDesktopGrid({ images, title, onImageClick }) {
 					</motion.div>
 				</motion.div>
 			))}
-		</motion.div>
-	);
+		</div>	);
 }

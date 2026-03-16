@@ -12,13 +12,7 @@ export default function NewsletterMobileCarousel({
 	visibleImageIndex,
 }) {
 	return (
-		<motion.div
-			className="relative w-full md:hidden"
-			variants={fadeInBlur}
-			initial="hidden"
-			whileInView="visible"
-			viewport={{ once: true }}
-		>
+		<div className="relative w-full md:hidden">
 			<div className="mobile-scroll-container relative overflow-x-scroll overscroll-x-auto scroll-smooth py-4 [scrollbar-width:none]">
 				<div className="flex gap-4">
 					{images.map((image, index) => (
@@ -27,6 +21,7 @@ export default function NewsletterMobileCarousel({
 							initial={{ opacity: 0, scale: 0.9 }}
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
+							style={{ willChange: "transform, opacity" }}
 							transition={{
 								duration: 0.5,
 								delay: 0.1 * index,
@@ -76,6 +71,6 @@ export default function NewsletterMobileCarousel({
 					/>
 				))}
 			</motion.div>
-		</motion.div>
+		</div>
 	);
 }

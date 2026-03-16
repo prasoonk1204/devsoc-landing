@@ -71,7 +71,7 @@ export default function Events() {
 			className="bg-accent/20 mx-auto flex w-full flex-col items-start py-16 md:py-20"
 		>
 			<Container>
-				<SectionHeader title="Events" size="6xl" className="md:mb-12" />
+				<SectionHeader title="Events" size="6xl" className="md:mb-12 text-black" />
 
 				{/* Responsive layout switch */}
 				{isMobile ? (

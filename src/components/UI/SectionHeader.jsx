@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
+import { cn } from "@/lib/utils";
 
 export default function SectionHeader({
 	title,
@@ -27,10 +28,10 @@ export default function SectionHeader({
 			initial="hidden"
 			whileInView="visible"
 			viewport={{ once: true }}
-			className={`mb-8 ${center ? "text-center" : ""} ${className}`}
+			className={cn("mb-8 text-white", center && "text-center", className)}
 		>
 			<h1
-				className={`font-iceland font-bold text-white ${sizeClasses[size]} ${uppercase ? "tracking-widest uppercase" : ""}`}
+				className={`font-iceland font-bold ${sizeClasses[size]} ${uppercase ? "tracking-widest uppercase" : ""}`}
 			>
 				{accent ? (
 					<>
