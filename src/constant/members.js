@@ -1,15 +1,6 @@
 export const teacherCoordinators = [
 	{
 		id: 1,
-		name: "Sambit S. Mondal",
-		designation: "Teacher Coordinator",
-		image: "https://ik.imagekit.io/devsoc/Members/Teachers/sambit_sir.png",
-		socials: {
-			linkedin: "https://www.linkedin.com/in/sambit-s-mondal-ba956a45",
-		},
-	},
-	{
-		id: 2,
 		name: "Khushbu Chandrakar",
 		designation: "Teacher Coordinator",
 		image: "https://ik.imagekit.io/devsoc/Members/Teachers/khushbu_mam.jpeg",
