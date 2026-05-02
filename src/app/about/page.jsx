@@ -137,7 +137,7 @@ export default function AboutPage() {
 					</h2>
 				</motion.div>
 
-				<div className="mb-16">
+				{/* <div className="mb-16">
 					<motion.h3
 						variants={fadeInBlur}
 						initial="hidden"
@@ -152,7 +152,7 @@ export default function AboutPage() {
 							<MemberCard key={member.id} member={member} index={index} priority={index < 5} />
 						))}
 					</div>
-				</div>
+				</div> */}
 
 				<div className="mb-16">
 					<motion.h3

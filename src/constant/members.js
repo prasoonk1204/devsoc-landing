@@ -1,11 +1,4 @@
 export const teacherCoordinators = [
-	{
-		id: 1,
-		name: "Khushbu Chandrakar",
-		designation: "Teacher Coordinator",
-		image: "https://ik.imagekit.io/devsoc/Members/Teachers/khushbu_mam.jpeg",
-		socials: {},
-	},
 ];
 export const coreCommittee = [
 	{
