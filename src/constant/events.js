@@ -386,7 +386,7 @@ Over² promotes:
 		slug: "overclocked-2025",
 		image:
 			"https://ik.imagekit.io/devsoc/events/2025_Over_square/overclocked.png",
-		date: "2026-03-27",
+		date: "2026-03-28",
 		description:
 			"OverClocked is a 24-hour offline hackathon where you turn ideas into working prototypes under real pressure. Coming right after OverDrive, it offers six tracks, open themes, and a hall full of teams building through the night. You plan, build, debug, and finish with a demo to the judges. Bring your team and your energy, ideas in the morning can become prototypes by midnight.",
 		detailedDescription: `
@@ -520,6 +520,30 @@ Some students keep watching. Some step onto the field and change the scoreboard 
 
 `,
 
-		gallery: [],
+		gallery: [
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07214.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07338.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07333.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07373.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07228.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07348.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07327.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07255.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07543.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07340.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07283.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07523.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07518.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07517.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07437.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07231.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07282.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07458.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07212.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07207.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07233.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07236.JPG",
+			"https://ik.imagekit.io/devsoc/events/2025_OverClocked/DSC07217.JPG",
+		],
 	},
 ];
