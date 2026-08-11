@@ -23,7 +23,7 @@ export const coreCommittee = [
 	{
 		id: 3,
 		name: "Amrit Kumar",
-		designation: "Secretary",
+		designation: "Secretary/Management Lead",
 		image:
 			"https://ik.imagekit.io/devsoc/Members/Management_Team/IMG_20251115_193014%20-%20Amrit%20Kumar.jpg?updatedAt=1763989996844",
 		socials: {
@@ -60,17 +60,6 @@ export const coreCommittee = [
 			"https://ik.imagekit.io/devsoc/Members/Core-Committee/IMG_20251118_015208%20-%20Sayandeep%20Pal.png?updatedAt=1763989710432",
 		socials: {
 			twitter: "https://x.com/SayandeepPal06",
-		},
-	},
-	{
-		id: 7,
-		name: "Amrit Kumar",
-		designation: "Management Lead",
-		image:
-			"https://ik.imagekit.io/devsoc/Members/Management_Team/IMG_20251115_193014%20-%20Amrit%20Kumar.jpg?updatedAt=1763989996844",
-		socials: {
-			linkedin:
-				"https://www.linkedin.com/in/amrit-kumar-319780329?utm_source=share&utm_",
 		},
 	},
 	{
