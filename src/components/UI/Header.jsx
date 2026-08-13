@@ -99,6 +99,8 @@ export default function Header() {
 						<a
 							key={item.title}
 							href={item.href}
+							target="_blank"
+							rel="noopener noreferrer"
 							ref={(el) => (navRefs.current[idx] = el)}
 							onMouseEnter={() => setHovered(idx)}
 							onMouseLeave={() => setHovered(null)}
