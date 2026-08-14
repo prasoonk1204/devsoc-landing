@@ -124,7 +124,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 								exit={{ opacity: 0, scale: 0.92 }}
 								transition={{ type: "spring", stiffness: 420, damping: 30 }}
 							>
-								Step into our space
+								Click to Join
 							</motion.button>
 						)}
 					</AnimatePresence>
