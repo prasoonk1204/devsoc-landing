@@ -28,7 +28,7 @@ export const coreCommittee = [
 			"https://ik.imagekit.io/devsoc/Members/Management_Team/IMG_20251115_193014%20-%20Amrit%20Kumar.jpg?updatedAt=1763989996844",
 		socials: {
 			linkedin:
-				"https://www.linkedin.com/in/amrit-kumar-319780329?utm_source=share&utm_",
+				"https://www.linkedin.com/in/amrit-kumar-319780329",
 		},
 	},
 	{
@@ -49,7 +49,7 @@ export const coreCommittee = [
 			"https://ik.imagekit.io/devsoc/Members/Core-Committee/IMG_20250909_190923_446%20-%2078_swarup%20Goswami_B3.webp?updatedAt=1763989850114",
 		socials: {
 			linkedin:
-				"https://www.linkedin.com/in/swarup-goswami-7a9444311?utm_source=share&",
+				"https://www.linkedin.com/in/swarup-goswami-7a9444311",
 		},
 	},
 	{
@@ -80,7 +80,7 @@ export const coreCommittee = [
 			"https://ik.imagekit.io/devsoc/Members/Management_Team/IMG-20250214-WA0030(2)%20-%20Mehroof%20Saba.jpg?updatedAt=1763989981571",
 		socials: {
 			linkedin: "https://www.linkedin.com/in/mehroof-saba-295484329",
-			instagram: "https://www.instagram.com/ms_37ann?igsh=dWFrNGpmdms3aWFz",
+			instagram: "https://www.instagram.com/ms_37ann",
 		},
 	},
 	{
@@ -131,7 +131,7 @@ export const coreCommittee = [
 			"https://ik.imagekit.io/devsoc/Members/Tech_Team/IMG-20250729-WA0001%20-%20Prerna%20Priya.jpg?updatedAt=1763988727457",
 		socials: {
 			linkedin:
-				"https://www.linkedin.com/in/prerna-priya-ab3581329?utm_source=share&utm_",
+				"https://www.linkedin.com/in/prerna-priya-ab3581329",
 		},
 	},
 ];
@@ -145,7 +145,7 @@ export const techTeam = [
 			"https://ik.imagekit.io/devsoc/Members/Tech_Team/r20837r923r2br3c.png?updatedAt=1763988556656",
 		socials: {
 			linkedin:
-				"https://www.linkedin.com/in/elhan-yasir-164445350?utm_source=share&utm_c",
+				"https://www.linkedin.com/in/elhan-yasir-164445350",
 		},
 	},
 	{
@@ -198,7 +198,6 @@ export const techTeam = [
 			"https://ik.imagekit.io/devsoc/Members/Tech_Team/IMG_20251111_181720%20-%20Prasoon%20Kumar.jpg?updatedAt=1763988727493",
 		socials: {
 			website: "https://prasoon.xyz",
-			twitter: "https://x.com/kenma_dev",
 		},
 	},
 	{
@@ -209,7 +208,7 @@ export const techTeam = [
 			"https://ik.imagekit.io/devsoc/Members/Tech_Team/IMG-20251115-WA0212%20-%20Pravanjan%20Roy.jpg?updatedAt=1763988762375",
 		socials: {
 			linkedin:
-				"https://www.linkedin.com/in/pravanjan-roy-bb0a1a383?utm_source=share_via&",
+				"https://www.linkedin.com/in/pravanjan-roy-bb0a1a383",
 		},
 	},
 	{
@@ -253,7 +252,7 @@ export const managementTeam = [
 			"https://ik.imagekit.io/devsoc/Members/Management_Team/Picsgw4t26HIL.jpg?updatedAt=1763990135702",
 		socials: {
 			instagram:
-				"https://www.instagram.com/n_ikhilgupta?igsh=MWR4ZzgyYnNzMmJvaA==",
+				"https://www.instagram.com/n_ikhilgupta",
 		},
 	},
 	{
@@ -297,7 +296,7 @@ export const designTeam = [
 			"https://ik.imagekit.io/devsoc/Members/Design_Team/Profile%20Picture%20-%20Sohom%20Paul.jpg?updatedAt=1763990359693",
 		socials: {
 			instagram:
-				"https://www.instagram.com/sohom_since_006?igsh=cXlqajRvODF6OGsw",
+				"https://www.instagram.com/sohom_since_006",
 		},
 	}
 ];

@@ -14,6 +14,7 @@ export default function MaintenancePage() {
 						width={120}
 						height={120}
 						className="animate-pulse"
+						unoptimized
 					/>
 				</div>
 

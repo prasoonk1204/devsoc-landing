@@ -94,7 +94,7 @@ export default function Events() {
 							href="/events"
 							size="lg"
 							icon={<ArrowRight />}
-							className="text-xl"
+							className="text-text-base sm:text-lg md:px-8 md:py-3"
 						>
 							View More
 						</Button>

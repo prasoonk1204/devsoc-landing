@@ -37,7 +37,7 @@ export default function LoadingScreen({ onLoadComplete, isModelLoaded }) {
 						quality={90}
 						onLoad={() => setImageLoaded(true)}
 						className="drop-shadow-lg"
-						unoptimized={false}
+						unoptimized
 					/>
 				</div>
 

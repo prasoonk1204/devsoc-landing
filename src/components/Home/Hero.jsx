@@ -35,7 +35,13 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 				}}
 			/>
 			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
-				<Image src={LOGO} alt="DevSoc Logo" height={50} width={50} />
+				<Image
+					src={LOGO}
+					alt="DevSoc Logo"
+					height={50}
+					width={50}
+					unoptimized
+				/>
 				<h2 className="font-iceland text-2xl font-bold min-[400px]:text-3xl">
 					DEV<span className="text-orange-300">SOC</span>
 				</h2>
@@ -77,7 +83,7 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0.92 }}
 								transition={{ type: "spring", stiffness: 420, damping: 30 }}
-								className="absolute inset-0 flex gap-1.5 rounded-4xl bg-zinc-950/95 p-1.5 shadow-xl backdrop-blur-sm"
+								className="absolute inset-0 flex gap-1.5 rounded-3xl bg-zinc-950/95 p-1.5 shadow-xl backdrop-blur-sm"
 							>
 								<a
 									href={WHATSAPP_LINK}
