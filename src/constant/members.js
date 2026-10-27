@@ -1,4 +1,12 @@
-export const teacherCoordinators = [];
+export const teacherCoordinators = [
+	{
+		id: 1,
+		name: "Ashmi Chakraborty",
+		designation: "Teacher Coordinator",
+		image:
+			"https://ik.imagekit.io/devsoc/Members/Teachers/Ashmi_maam.jpeg",
+	},
+];
 export const coreCommittee = [
 	{
 		id: 1,
@@ -94,16 +102,6 @@ export const coreCommittee = [
 		},
 	},
 	{
-		id: 11,
-		name: "Souvik Majee",
-		designation: "Event Lead",
-		image:
-			"https://ik.imagekit.io/devsoc/Members/Tech_Team/WhatsApp%20Image%202025-11-23%20at%2012.44.56.jpeg?updatedAt=1763988617771",
-		socials: {
-			linkedin: "https://www.linkedin.com/in/souvik-majee-4b1b88292/",
-		},
-	},
-	{
 		id: 12,
 		name: "Asif Qamar",
 		designation: "Sub-Tech Lead",
@@ -159,16 +157,6 @@ export const techTeam = [
 		},
 	},
 	{
-		id: 5,
-		name: "Khushi Singh",
-		designation: "Tech Team",
-		image:
-			"https://ik.imagekit.io/devsoc/Members/Tech_Team/1746396179553.jpeg?updatedAt=1763988574654",
-		socials: {
-			linkedin: "https://www.linkedin.com/in/khushi-singh-3k",
-		},
-	},
-	{
 		id: 6,
 		name: "Monu Kumar Singh",
 		designation: "Competitive Programming",
@@ -201,17 +189,6 @@ export const techTeam = [
 		},
 	},
 	{
-		id: 13,
-		name: "Pravanjan Roy",
-		designation: "Web Development",
-		image:
-			"https://ik.imagekit.io/devsoc/Members/Tech_Team/IMG-20251115-WA0212%20-%20Pravanjan%20Roy.jpg?updatedAt=1763988762375",
-		socials: {
-			linkedin:
-				"https://www.linkedin.com/in/pravanjan-roy-bb0a1a383",
-		},
-	},
-	{
 		id: 14,
 		name: "Rishika Kaur",
 		designation: "Machine Learning",
@@ -219,16 +196,6 @@ export const techTeam = [
 			"https://ik.imagekit.io/devsoc/Members/Tech_Team/Rishika_image%20-%20Rishika%20Kaur.png?updatedAt=1763990896302",
 		socials: {
 			linkedin: "https://www.linkedin.com/in/kaurrishika/",
-		},
-	},
-	{
-		id: 15,
-		name: "Roshan Kumar",
-		designation: "Tech Team",
-		image:
-			"https://ik.imagekit.io/devsoc/Members/Tech_Team/IMG-20251109-WA0009%20-%20Roshan%20Kumar.jpg?updatedAt=1763988762418",
-		socials: {
-			linkedin: "https://www.linkedin.com/in/roshankumaryadav-/",
 		},
 	},
 ];
@@ -253,16 +220,6 @@ export const managementTeam = [
 		socials: {
 			instagram:
 				"https://www.instagram.com/n_ikhilgupta",
-		},
-	},
-	{
-		id: 8,
-		name: "Sanjay Sharma",
-		designation: "Event Management & PR",
-		image:
-			"https://ik.imagekit.io/devsoc/Members/Management_Team/1761717478199.jpeg?updatedAt=1763989970560",
-		socials: {
-			linkedin: "https://www.linkedin.com/in/expertcoder06",
 		},
 	},
 	{
