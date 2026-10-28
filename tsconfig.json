@@ -9,19 +9,18 @@
 		"incremental": true,
 		"module": "esnext",
 		"esModuleInterop": true,
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
+		"allowImportingTsExtensions": true,
 		"jsx": "react-jsx",
 		"plugins": [
 			{
 				"name": "next"
 			}
 		],
-		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
-			"convex/*": ["./convex/*"]
+			"@/*": ["./src/*"]
 		}
 	},
 	"include": [
@@ -32,5 +31,5 @@
 		"**/*.ts",
 		"**/*.tsx"
 	],
-	"exclude": ["node_modules", "server"]
+	"exclude": ["node_modules", ".local-migration", "migration-output"]
 }

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	turbopack: { root: process.cwd() },
 	images: {
 		remotePatterns: [
 			{
@@ -26,26 +27,8 @@ const nextConfig = {
 		contentDispositionType: "attachment",
 		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 	},
-	env: {
-		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-		NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
-		NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY:
-			process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
-		NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT:
-			process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT,
-		NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION:
-			process.env.NEXT_PUBLIC_ENABLE_EVENT_REGISTRATION,
-		NEXT_PUBLIC_EXTERNAL_REGISTRATION_URL:
-			process.env.NEXT_PUBLIC_EXTERNAL_REGISTRATION_URL,
-		NEXT_PUBLIC_EVENT_ONLY_MODE: process.env.NEXT_PUBLIC_EVENT_ONLY_MODE,
-	},
 	async redirects() {
 		return [];
-	},
-	experimental: {
-		serverActions: {
-			bodySizeLimit: "10mb",
-		},
 	},
 };
 

@@ -1,57 +1,9 @@
 import axios from "axios";
-import { env } from "./env";
-
-// Determine API URL based on environment
-const getApiUrl = () => {
-	// Use provided API URL or fallback to same origin
-	const apiUrl = env.NEXT_PUBLIC_API_URL;
-
-	// If no API URL is set, use same origin (works for single deployment)
-	if (!apiUrl || apiUrl === "" || apiUrl === undefined) {
-		// In browser, use current origin
-		if (typeof window !== "undefined") {
-			return `${window.location.origin}/api/v1`;
-		}
-		// During SSR/build, use relative path (Next.js API route handles it)
-		return "/api/v1";
-	}
-
-	// If API URL is provided, check if it's same as current origin
-	if (typeof window !== "undefined") {
-		const baseUrl = apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl;
-		try {
-			const apiOrigin = new URL(baseUrl).origin;
-			const currentOrigin = window.location.origin;
-
-			// If same origin (including localhost:3000 in dev), use relative path
-			if (apiOrigin === currentOrigin) {
-				return "/api/v1";
-			}
-
-			if (
-				apiOrigin.includes("localhost:3001") &&
-				currentOrigin.includes("localhost:3000")
-			) {
-				return "/api/v1";
-			}
-		} catch (e) {
-			// Invalid URL, fall through to use as-is
-		}
-	}
-
-	// If API URL is provided and different origin, use it
-	const baseUrl = apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl;
-	return `${baseUrl}/api/v1`;
-};
-
 const api = axios.create({
-	baseURL: getApiUrl(),
+	baseURL: "/api/v1",
 	timeout: 30000,
-	headers: {
-		"Content-Type": "application/json",
-	},
+	headers: { "Content-Type": "application/json" },
 });
-
 // Add request interceptor for debugging
 api.interceptors.request.use(
 	(config) => {

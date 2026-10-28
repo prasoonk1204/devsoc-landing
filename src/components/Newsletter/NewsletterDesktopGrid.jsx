@@ -41,5 +41,6 @@ export default function NewsletterDesktopGrid({ images, title, onImageClick }) {
 					</motion.div>
 				</motion.div>
 			))}
-		</div>	);
+		</div>
+	);
 }

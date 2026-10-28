@@ -3,17 +3,18 @@
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import {
-	LOGO,
-	BACKGROUND_IMG,
-	HERO_IMG,
-	WHATSAPP_LINK,
-	DISCORD_LINK,
-} from "@/constant/assets";
+import { useSite } from "@/providers/SiteProvider";
 import AstronautScene from "./AstronautScene";
 import { fadeInBlurFast, fadeInFromBottom } from "@/lib/motionVariants";
 
 export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
+	const {
+		logo: LOGO,
+		background: BACKGROUND_IMG,
+		hero: HERO_IMG,
+		whatsapp: WHATSAPP_LINK,
+		discord: DISCORD_LINK,
+	} = useSite();
 	const [isCommunityMenuOpen, setIsCommunityMenuOpen] = useState(false);
 
 	useEffect(() => {
@@ -22,26 +23,30 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 
 	return (
 		<div className="to-accent/30 relative flex h-dvh w-full flex-col items-center justify-end bg-linear-to-t from-slate-300 px-4 pt-4 md:h-[768px]">
-			<Image
-				src={BACKGROUND_IMG}
-				alt="DevSoc Background"
-				fill
-				priority
-				quality={85}
-				sizes="100vw"
-				className="absolute inset-0 z-0 object-cover object-center opacity-25 md:object-cover"
-				style={{
-					objectPosition: "center center",
-				}}
-			/>
-			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
+			{BACKGROUND_IMG && (
 				<Image
-					src={LOGO}
-					alt="DevSoc Logo"
-					height={50}
-					width={50}
-					unoptimized
+					src={BACKGROUND_IMG}
+					alt="DevSoc Background"
+					fill
+					priority
+					quality={85}
+					sizes="100vw"
+					className="absolute inset-0 z-0 object-cover object-center opacity-25 md:object-cover"
+					style={{
+						objectPosition: "center center",
+					}}
 				/>
+			)}
+			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
+				{LOGO && (
+					<Image
+						src={LOGO}
+						alt="DevSoc Logo"
+						height={50}
+						width={50}
+						unoptimized
+					/>
+				)}
 				<h2 className="font-iceland text-2xl font-bold min-[400px]:text-3xl">
 					DEV<span className="text-orange-300">SOC</span>
 				</h2>
@@ -86,7 +91,8 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 								className="absolute inset-0 flex gap-1.5 rounded-3xl bg-zinc-950/95 p-1.5 shadow-xl backdrop-blur-sm"
 							>
 								<a
-									href={WHATSAPP_LINK}
+									href={WHATSAPP_LINK || undefined}
+									aria-disabled={!WHATSAPP_LINK}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-[#25D366] px-3 py-2.5 text-base font-semibold text-zinc-950 transition-transform hover:scale-105"
@@ -101,7 +107,8 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 									WhatsApp
 								</a>
 								<a
-									href={DISCORD_LINK}
+									href={DISCORD_LINK || undefined}
+									aria-disabled={!DISCORD_LINK}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-[#5865F2] px-3 py-2.5 text-base font-semibold text-white transition-transform hover:scale-105"
@@ -145,15 +152,17 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 				className="flex h-[400px] w-full justify-center md:hidden"
 			>
 				<div className="relative h-full w-full max-w-[400px]">
-					<Image
-						src={HERO_IMG}
-						alt="DevSoc Astronaut"
-						fill
-						className="object-contain object-bottom"
-						priority
-						quality={90}
-						sizes="(max-width: 768px) 400px, 0px"
-					/>
+					{HERO_IMG && (
+						<Image
+							src={HERO_IMG}
+							alt="DevSoc Astronaut"
+							fill
+							className="object-contain object-bottom"
+							priority
+							quality={90}
+							sizes="(max-width: 768px) 400px, 0px"
+						/>
+					)}
 				</div>
 			</motion.div>
 			<motion.div

@@ -15,7 +15,7 @@ import {
 	Lock,
 } from "lucide-react";
 import ScrollableSection from "./ScrollableSection";
-import { env } from "@/lib/env";
+
 import SectionHeader from "@/components/UI/SectionHeader";
 import Badge from "@/components/UI/Badge";
 
@@ -30,20 +30,19 @@ const getTrackIcon = (trackId) => {
 	return Target;
 };
 
-export default function TracksTab({ challenges, eventSlug }) {
+export default function TracksTab({ challenges, unlocked }) {
 	const [selectedTrack, setSelectedTrack] = useState(null);
 	const [openAccordionId, setOpenAccordionId] = useState(null);
 	const accordionRefs = useRef({});
 
-	const unlockedProblemStatementEvents = (
-		env.NEXT_PUBLIC_UNLOCKED_PROBLEM_STATEMENTS || ""
-	)
-		.split(",")
-		.map((s) => s.trim())
-		.filter((s) => s.length > 0);
-	const isProblemStatementsLocked =
-		unlockedProblemStatementEvents.length === 0 ||
-		!unlockedProblemStatementEvents.includes(eventSlug);
+	const isProblemStatementsLocked = !unlocked;
+	if (isProblemStatementsLocked)
+		return (
+			<div className="p-8 text-center text-zinc-300">
+				<Lock className="mx-auto mb-3" />
+				Problem statements are locked.
+			</div>
+		);
 
 	// Group challenges by track
 	const groupedChallenges = challenges.reduce((groups, challenge) => {

@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { fadeInBlur } from "@/lib/motionVariants";
 import { registrationSchema } from "@/lib/validations/registration";
 import api from "@/lib/axios";
+import { uploadImage, apiRequest } from "@/lib/upload-image";
 import FormInput from "./Registration/FormInput";
 import FormSelect from "./Registration/FormSelect";
 import FormTextarea from "./Registration/FormTextarea";
@@ -59,7 +60,7 @@ export default function EventRegistrationForm({ event }) {
 					const res = await api.get("/registrations/check", {
 						params: {
 							email: formData.email.toLowerCase(),
-							eventSlug: event.slug,
+							eventId: event._id,
 						},
 					});
 					setEmailCheck(res.data.data);
@@ -71,13 +72,13 @@ export default function EventRegistrationForm({ event }) {
 
 		const timeoutId = setTimeout(checkEmail, 500);
 		return () => clearTimeout(timeoutId);
-	}, [formData.email, event.slug]);
+	}, [formData.email, event._id]);
 
 	useEffect(() => {
 		const fetchSettings = async () => {
 			try {
 				const res = await api.get("/settings/payment", {
-					params: { eventSlug: event.slug },
+					params: { eventId: event._id },
 				});
 				setPaymentSettings(res.data.data);
 			} catch (error) {
@@ -85,7 +86,7 @@ export default function EventRegistrationForm({ event }) {
 			}
 		};
 		fetchSettings();
-	}, [event.slug]);
+	}, [event._id]);
 
 	useEffect(() => {
 		if (emailCheck?.isRegistered) {
@@ -178,34 +179,23 @@ export default function EventRegistrationForm({ event }) {
 
 			setUploadProgress("Submitting registration...");
 
-			const registrationFormData = new FormData();
-			registrationFormData.append("name", validatedData.name);
-			registrationFormData.append("roll", validatedData.roll);
-			registrationFormData.append("phone", validatedData.phone);
-			registrationFormData.append("email", validatedData.email);
-			registrationFormData.append("department", validatedData.department);
-			registrationFormData.append("year", validatedData.year);
-			registrationFormData.append("questions", validatedData.questions);
-			registrationFormData.append("eventSlug", event.slug);
-			registrationFormData.append("eventTitle", event.title);
-			registrationFormData.append("transactionId", validatedData.transactionId);
-			registrationFormData.append(
-				"amount",
-				String(paymentSettings?.amount || 50),
+			const { paymentScreenshot, ...fields } = validatedData;
+			const registration = { ...fields, eventId: event._id };
+			const media = await uploadImage(
+				paymentScreenshot,
+				{ ownerKind: "registrations", registration },
+				setUploadProgress,
 			);
-			registrationFormData.append("image", validatedData.paymentScreenshot);
-
-			const response = await api.post(
-				"/registrations/register",
-				registrationFormData,
-				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
+			setUploadProgress("Submitting registration...");
+			const result = await apiRequest("registrations/register", {
+				method: "POST",
+				body: {
+					registration,
+					mediaId: media._id,
+					registrationId: media.ownerId,
+					uploadToken: media.uploadToken,
 				},
-			);
-
-			const result = response.data;
+			});
 
 			if (!result.success) {
 				const errorMessage =
@@ -385,7 +375,7 @@ export default function EventRegistrationForm({ event }) {
 					error={errors.questions}
 				/>
 
-				<PaymentQRCode eventSlug={event.slug} />
+				<PaymentQRCode eventId={event._id} />
 
 				<FormInput
 					label="Enter Transaction ID"

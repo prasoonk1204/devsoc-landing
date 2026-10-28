@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { eventsData } from "@/constant/events";
+
 import { Carousel, Card } from "@/components/UI/mobileCarousel";
 import Image from "next/image";
 import { fadeInBlurFast } from "@/lib/motionVariants";
@@ -30,7 +30,7 @@ function useMediaQuery(query) {
 	return { matches, mounted };
 }
 
-export default function Events() {
+export default function Events({ eventsData }) {
 	const [hoveredIndex, setHoveredIndex] = useState(null);
 	const ref = useRef(null);
 	const { matches: isMobile, mounted } = useMediaQuery("(max-width: 768px)");
@@ -71,7 +71,11 @@ export default function Events() {
 			className="bg-accent/20 mx-auto flex w-full flex-col items-start py-16 md:py-20"
 		>
 			<Container>
-				<SectionHeader title="Events" size="6xl" className="md:mb-12 text-black" />
+				<SectionHeader
+					title="Events"
+					size="6xl"
+					className="text-black md:mb-12"
+				/>
 
 				{/* Responsive layout switch */}
 				{isMobile ? (

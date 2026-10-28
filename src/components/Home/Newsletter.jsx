@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { newsletterItems } from "@/constant/newsletter";
+
 import NewsletterCard from "@/components/Newsletter/NewsletterCard";
 import { formatNewsletterDate } from "@/lib/utils/formatDate";
 import SectionHeader from "@/components/UI/SectionHeader";
@@ -9,7 +9,10 @@ import Container from "@/components/UI/Container";
 import Button from "@/components/UI/Button";
 import AnimatedContainer from "@/components/UI/AnimatedContainer";
 
-export default function Newsletter({ showViewMoreButton = true }) {
+export default function Newsletter({
+	newsletterItems,
+	showViewMoreButton = true,
+}) {
 	// Sort newsletters by date in descending order (latest first)
 	const sortedNewsletters = [...newsletterItems].sort((a, b) => {
 		return b.date.localeCompare(a.date);
