@@ -2,11 +2,12 @@
 
 import { motion } from "motion/react";
 import { ChevronRight } from "lucide-react";
-import { galleryItems } from "@/constant/gallery";
+import { useSite } from "@/providers/SiteProvider";
 import Image from "next/image";
 import { fadeInBlur, staggerContainer } from "@/lib/motionVariants";
 
 export default function Gallery() {
+	const { gallery: galleryItems } = useSite();
 	return (
 		<section className="bg-accent/20 w-full pt-0 pb-24 md:pt-8">
 			<div className="mx-auto max-w-6xl px-4">

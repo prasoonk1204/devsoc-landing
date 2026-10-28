@@ -50,11 +50,14 @@ convex/*.d.ts.map
 .convex
 
 package-lock.json
-pnpm-lock.yaml
 bun.lock
 
 .vscode
 *.txt
 *.md
+/.local-migration/
+/migration-output/
+/test-results/
+/.local-mongo/
 # Prettier cache
 .prettier-cache

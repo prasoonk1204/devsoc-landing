@@ -3,17 +3,18 @@
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import {
-	LOGO,
-	BACKGROUND_IMG,
-	HERO_IMG,
-	WHATSAPP_LINK,
-	DISCORD_LINK,
-} from "@/constant/assets";
+import { useSite } from "@/providers/SiteProvider";
 import AstronautScene from "./AstronautScene";
 import { fadeInBlurFast, fadeInFromBottom } from "@/lib/motionVariants";
 
 export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
+	const {
+		logo: LOGO,
+		background: BACKGROUND_IMG,
+		hero: HERO_IMG,
+		whatsapp: WHATSAPP_LINK,
+		discord: DISCORD_LINK,
+	} = useSite();
 	const [isCommunityMenuOpen, setIsCommunityMenuOpen] = useState(false);
 
 	useEffect(() => {
@@ -86,7 +87,8 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 								className="absolute inset-0 flex gap-1.5 rounded-3xl bg-zinc-950/95 p-1.5 shadow-xl backdrop-blur-sm"
 							>
 								<a
-									href={WHATSAPP_LINK}
+									href={WHATSAPP_LINK || undefined}
+									aria-disabled={!WHATSAPP_LINK}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-[#25D366] px-3 py-2.5 text-base font-semibold text-zinc-950 transition-transform hover:scale-105"
@@ -101,7 +103,8 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 									WhatsApp
 								</a>
 								<a
-									href={DISCORD_LINK}
+									href={DISCORD_LINK || undefined}
+									aria-disabled={!DISCORD_LINK}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-[#5865F2] px-3 py-2.5 text-base font-semibold text-white transition-transform hover:scale-105"

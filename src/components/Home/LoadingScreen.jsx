@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { LOGO } from "@/constant/assets";
+import { useSite } from "@/providers/SiteProvider";
 
 export default function LoadingScreen({ onLoadComplete, isModelLoaded }) {
+	const { logo: LOGO } = useSite();
 	const [shouldHide, setShouldHide] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 

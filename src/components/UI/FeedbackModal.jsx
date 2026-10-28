@@ -4,7 +4,12 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Star } from "lucide-react";
 
-export default function FeedbackModal({ isOpen, onClose, eventName }) {
+export default function FeedbackModal({
+	isOpen,
+	onClose,
+	eventName,
+	eventSlug,
+}) {
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -28,6 +33,7 @@ export default function FeedbackModal({ isOpen, onClose, eventName }) {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
+					eventSlug,
 					feedback: formData.feedback,
 					name: formData.name,
 					email: formData.email,

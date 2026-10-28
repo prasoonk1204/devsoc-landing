@@ -1,9 +1,10 @@
 "use client";
 
-import { LOGO } from "@/constant/assets";
+import { useSite } from "@/providers/SiteProvider";
 import Image from "next/image";
 
 export default function MaintenancePage() {
+	const { logo: LOGO } = useSite();
 	return (
 		<div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 px-4 text-white">
 			<div className="max-w-2xl text-center">

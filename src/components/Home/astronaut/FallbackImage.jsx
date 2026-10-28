@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { HERO_IMG } from "@/constant/assets";
+import { useSite } from "@/providers/SiteProvider";
 
 export function FallbackImage() {
+	const { hero: HERO_IMG } = useSite();
 	return (
 		<div className="flex h-full w-full items-end justify-center bg-transparent">
 			<div className="relative h-full w-full max-w-[500px]">

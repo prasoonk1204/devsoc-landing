@@ -21,5 +21,7 @@ bun.lock
 yarn.lock
 
 # Misc
+.local-migration/
+migration-output/
 .DS_Store
 *.pem
