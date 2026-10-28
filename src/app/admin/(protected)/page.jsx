@@ -1,4 +1,6 @@
 import AdminPortal from "@/components/Admin/Portal";
-export default function Page() {
-	return <AdminPortal />;
+import { listContent } from "@/lib/server/content";
+export default async function Page() {
+	const [site] = await listContent("settings", true);
+	return <AdminPortal logo={site?.logo || ""} />;
 }

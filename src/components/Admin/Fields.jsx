@@ -1,7 +1,15 @@
 "use client";
-import { useState } from "react";
 
-import { apiRequest, uploadImage } from "@/lib/upload-image";
+import { useState } from "react";
+import ImageField from "./ImageField";
+import ImageCollection from "./ImageCollection";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import {
+	dateInputValue,
+	timeInputValue,
+	timelineDateValue,
+} from "@/lib/admin-dates";
 import "./admin.css";
 
 import {
@@ -11,8 +19,6 @@ import {
 	CreditCard,
 	Globe,
 	MessageCircle,
-	Pencil,
-	Trash2,
 } from "lucide-react";
 
 const groups = [
@@ -123,7 +129,37 @@ function Field({
 	required = false,
 	options,
 	hint,
+	allowTbd = false,
 }) {
+	if (type === "date")
+		return (
+			<div className="admin-field">
+				<label className="admin-field">
+					<span>{label}</span>
+					<input
+						type="date"
+						value={dateInputValue(value)}
+						disabled={allowTbd && value === "TBD"}
+						required={required && !(allowTbd && value === "TBD")}
+						onChange={(event) => onChange(event.target.value)}
+					/>
+				</label>
+				{allowTbd && (
+					<label className="admin-inline-check">
+						<input
+							type="checkbox"
+							checked={value === "TBD"}
+							onChange={(event) => onChange(event.target.checked ? "TBD" : "")}
+						/>
+						Date to be confirmed
+					</label>
+				)}
+				{value && (value !== "TBD" || !allowTbd) && !dateInputValue(value) && (
+					<small>Current value: {value}. Pick a date to replace it.</small>
+				)}
+				{hint && <small>{hint}</small>}
+			</div>
+		);
 	return (
 		<label className="admin-field">
 			<span>{label}</span>
@@ -157,7 +193,8 @@ function Field({
 			) : (
 				<input
 					type={type}
-					value={value ?? ""}
+					value={type === "time" ? timeInputValue(value) : (value ?? "")}
+					step={type === "time" ? 1 : undefined}
 					onChange={(event) =>
 						onChange(
 							type === "number"
@@ -167,6 +204,9 @@ function Field({
 					}
 					required={required}
 				/>
+			)}
+			{type === "time" && value && !timeInputValue(value) && (
+				<small>Current value: {value}. Pick a time to replace it.</small>
 			)}
 			{hint && <small>{hint}</small>}
 		</label>
@@ -220,150 +260,18 @@ function OrderedList({ label, items, onChange, create, children }) {
 		</fieldset>
 	);
 }
-function ImageField({
-	label,
-	value,
-	onChange,
-	ownerKind,
-	ownerId,
-	slot,
-	onError,
-	onSuccess,
-	setBusy,
-}) {
-	const [progress, setProgress] = useState("");
-	const [editing, setEditing] = useState(false);
-	const [previous, setPrevious] = useState([]);
-	const [loadingImages, setLoadingImages] = useState(false);
-	const [imageError, setImageError] = useState("");
-	async function edit() {
-		setEditing(true);
-		setLoadingImages(true);
-		setImageError("");
-		try {
-			setPrevious(
-				await apiRequest(
-					`admin/media?ownerKind=${ownerKind}&ownerId=${encodeURIComponent(ownerId)}`,
-				),
-			);
-		} catch (error) {
-			setImageError(error.message);
-			onError(error.message);
-		} finally {
-			setLoadingImages(false);
-		}
-	}
-	async function choose(event) {
-		const file = event.target.files?.[0];
-		if (!file) return;
-		setBusy(true);
-		onError("");
-		try {
-			const image = await uploadImage(
-				file,
-				{ ownerKind, ownerId, slot },
-				setProgress,
-			);
-			onChange(image.url);
-			onSuccess("Image uploaded. Save changes to use it.");
-			setProgress("");
-			setEditing(false);
-		} catch (error) {
-			onError(error.message);
-			setProgress("");
-		} finally {
-			setBusy(false);
-			event.target.value = "";
-		}
-	}
-	return (
-		<div className="admin-image">
-			<div className="admin-image-heading">
-				<strong>{label}</strong>
-				<div className="admin-actions">
-					<button
-						type="button"
-						onClick={() => (editing ? setEditing(false) : edit())}
-					>
-						<Pencil size={14} />
-						{editing ? "Close" : value ? "Edit" : "Set image"}
-					</button>
-					{value && (
-						<button
-							type="button"
-							className="admin-danger"
-							onClick={() => onChange("")}
-						>
-							<Trash2 size={14} />
-							Delete
-						</button>
-					)}
-				</div>
-			</div>
-			{value ? (
-				<img src={value} alt={label} className="admin-preview" />
-			) : (
-				<div className="admin-image-empty">No image selected</div>
-			)}
-			{editing && (
-				<div className="admin-image-editor">
-					<label className="admin-field">
-						<span>Upload replacement</span>
-						<input
-							type="file"
-							accept="image/jpeg,image/png,image/webp"
-							onChange={choose}
-						/>
-						<small>JPEG, PNG or WebP, up to 10 MB.</small>
-					</label>
-					<p className="admin-muted">
-						Or reuse a previous image for this item.
-					</p>
-					{loadingImages ? (
-						<p role="status">Loading previous images...</p>
-					) : imageError ? (
-						<button type="button" onClick={edit}>
-							Retry loading images
-						</button>
-					) : previous.length ? (
-						<div className="admin-image-library">
-							{previous.map((image) => (
-								<button
-									type="button"
-									key={image._id}
-									aria-label={`Use ${image.name || "previous image"}`}
-									aria-pressed={value === image.url}
-									onClick={() => {
-										onChange(image.url);
-										setEditing(false);
-									}}
-								>
-									<img
-										src={image.url}
-										alt={image.name || "Previous image"}
-										loading="lazy"
-									/>
-								</button>
-							))}
-						</div>
-					) : (
-						<p className="admin-muted">No previous images available.</p>
-					)}
-				</div>
-			)}
-			{progress && <p role="status">{progress}</p>}
-		</div>
-	);
-}
 function ContentForm({
 	kind,
 	section,
 	draft,
 	setDraft,
 	setBusy,
+	busy,
 	onError,
 	onSuccess,
+	onPendingChange,
 }) {
+	const [aboutPreview, setAboutPreview] = useState(false);
 	const update = (key, value) =>
 		setDraft((previous) => ({ ...previous, [key]: value }));
 	const imageProps = {
@@ -372,6 +280,7 @@ function ContentForm({
 		onError,
 		onSuccess,
 		setBusy,
+		onPendingChange,
 	};
 	const field = (key, label, extra = {}) => (
 		<Field
@@ -392,29 +301,21 @@ function ContentForm({
 		/>
 	);
 	const imageList = (key, label, slot) => (
-		<OrderedList
+		<ImageCollection
+			{...imageProps}
 			label={label}
+			slot={slot}
 			items={draft[key]}
+			busy={busy}
+			maxImages={kind === "events" ? 300 : 200}
 			onChange={(value) => update(key, value)}
-			create={() => ""}
-		>
-			{(value, change, index) => (
-				<ImageField
-					{...imageProps}
-					label={`${label} ${index + 1}`}
-					slot={slot}
-					value={value}
-					onChange={(value) =>
-						value
-							? change(value)
-							: update(
-									key,
-									draft[key].filter((_, entryIndex) => entryIndex !== index),
-								)
-					}
-				/>
-			)}
-		</OrderedList>
+			onAdd={(url) =>
+				setDraft((previous) => ({
+					...previous,
+					[key]: [...previous[key], url],
+				}))
+			}
+		/>
 	);
 	if (kind === "settings")
 		return (
@@ -517,26 +418,52 @@ function ContentForm({
 				</fieldset>
 			</>
 		);
+	const basics = (
+		<fieldset className="admin-section admin-field-grid">
+			<legend>
+				{kind === "newsletters" ? "Issue details" : "Event basics"}
+			</legend>
+			{field("title", "Title", { required: true })}
+			{field("slug", "Page slug", {
+				required: true,
+				hint: "Changing this changes the page URL. Registrations stay linked to the event ID.",
+			})}
+			{field("date", kind === "newsletters" ? "Issue month" : "Event date", {
+				required: true,
+				type: kind === "newsletters" ? "month" : "date",
+				allowTbd: kind === "events",
+			})}
+			{field("published", "Published", { type: "checkbox" })}
+		</fieldset>
+	);
+	const schedule = (
+		<fieldset className="admin-section admin-field-grid">
+			<legend>When & where</legend>
+			{field("timezone", "Timezone", { required: true })}
+			{field("startsAt", "Start time", {
+				type: "time",
+				hint: "Local time in the event timezone, for example 09:00.",
+			})}
+			{field("endsAt", "End time", { type: "time" })}
+			{field("location", "Location")}
+		</fieldset>
+	);
 	return (
 		<>
-			<fieldset className="admin-section admin-field-grid">
-				<legend>
-					{kind === "newsletters" ? "Issue details" : "Event basics"}
-				</legend>
-				{field("title", "Title", { required: true })}
-				{field("slug", "Page slug", {
-					required: true,
-					hint: "Changing this changes the page URL. Registrations stay linked to the event ID.",
-				})}
-				{field(
-					"date",
-					kind === "newsletters"
-						? "Issue month (YYYY-MM)"
-						: "Date (YYYY-MM-DD or TBD)",
-					{ required: true },
-				)}
-				{field("published", "Published", { type: "checkbox" })}
-			</fieldset>
+			{kind === "events" ? (
+				<div className="admin-event-overview">
+					<div className="admin-event-details">
+						{basics}
+						{schedule}
+					</div>
+					<fieldset className="admin-section admin-banner-panel">
+						<legend>Event banner</legend>
+						{image("image", "Event banner", "banner")}
+					</fieldset>
+				</div>
+			) : (
+				basics
+			)}
 			{kind === "newsletters" ? (
 				<>
 					<fieldset className="admin-section">
@@ -548,26 +475,58 @@ function ContentForm({
 				</>
 			) : (
 				<>
-					<fieldset className="admin-section admin-field-grid">
-						<legend>When & where</legend>
-						{field("timezone", "Timezone", { required: true })}
-						{field("startsAt", "Start time", {
-							type: "time",
-							hint: "Local time in the event timezone, for example 09:00.",
-						})}
-						{field("endsAt", "End time", { type: "time" })}
-						{field("location", "Location")}
-					</fieldset>
 					<fieldset className="admin-section">
 						<legend>Event story</legend>
 						{field("description", "Description", {
 							multiline: true,
 							required: true,
 						})}
-						{field("detailedDescription", "About section (Markdown)", {
-							multiline: true,
-							hint: "Use the uploader below for inline images. Raw HTML is disabled.",
-						})}
+						<div className="admin-markdown-editor">
+							<p>About section (Markdown)</p>
+							<div
+								className="admin-markdown-tabs"
+								role="group"
+								aria-label="About editor mode"
+							>
+								<button
+									type="button"
+									aria-pressed={!aboutPreview}
+									onClick={() => setAboutPreview(false)}
+								>
+									Write
+								</button>
+								<button
+									type="button"
+									aria-pressed={aboutPreview}
+									onClick={() => setAboutPreview(true)}
+								>
+									Preview
+								</button>
+							</div>
+							{!aboutPreview &&
+								field("detailedDescription", "Markdown text", {
+									multiline: true,
+									hint: "Use the uploader below for inline images. Raw HTML is disabled.",
+								})}
+							{aboutPreview && (
+								<section
+									className="admin-markdown-preview"
+									aria-label="About section preview"
+								>
+									<div className="admin-markdown-body">
+										{draft.detailedDescription ? (
+											<ReactMarkdown remarkPlugins={[remarkGfm]}>
+												{draft.detailedDescription}
+											</ReactMarkdown>
+										) : (
+											<p className="admin-muted">
+												Write Markdown to preview the About section here.
+											</p>
+										)}
+									</div>
+								</section>
+							)}
+						</div>
 						<ImageField
 							{...imageProps}
 							label="Upload image for About section"
@@ -582,10 +541,7 @@ function ContentForm({
 							}}
 						/>
 					</fieldset>
-					<fieldset className="admin-section">
-						<legend>Banner</legend>
-						{image("image", "Event banner", "banner")}
-					</fieldset>
+
 					{imageList("gallery", "Gallery images", "gallery")}
 					<fieldset className="admin-section">
 						<legend>Registration & payment</legend>
@@ -686,9 +642,18 @@ function ContentForm({
 									<Field
 										key={key}
 										label={key}
+										type={
+											key === "date" ? "date" : key === "time" ? "time" : "text"
+										}
 										multiline={key === "description"}
 										value={item[key]}
-										onChange={(value) => change({ ...item, [key]: value })}
+										onChange={(value) =>
+											change({
+												...item,
+												[key]:
+													key === "date" ? timelineDateValue(value) : value,
+											})
+										}
 									/>
 								))}
 								<OrderedList
@@ -702,6 +667,7 @@ function ContentForm({
 											<Field
 												key={key}
 												label={key}
+												type={key === "time" ? "time" : "text"}
 												value={sub[key]}
 												onChange={(value) =>
 													updateSub({ ...sub, [key]: value })

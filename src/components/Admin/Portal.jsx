@@ -54,11 +54,17 @@ function ConfirmAction({ action, onClose }) {
 	);
 }
 
-export default function AdminPortal() {
+export default function AdminPortal({ logo = "" }) {
 	const [kind, setKind] = useState("events");
 	const [records, setRecords] = useState([]);
 	const [draft, setDraft] = useState(null);
 	const [dirty, setDirty] = useState(false);
+	const [pendingUploads, setPendingUploads] = useState(0);
+	const [editorVersion, setEditorVersion] = useState(0);
+	const changePendingUploads = useCallback(
+		(delta) => setPendingUploads((count) => Math.max(0, count + delta)),
+		[],
+	);
 	const [busy, setBusy] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [loadFailed, setLoadFailed] = useState(false);
@@ -135,14 +141,14 @@ export default function AdminPortal() {
 		return () => controller.abort();
 	}, [kind, selectedEvent, page, reload, onError]);
 	useEffect(() => {
-		if (!dirty) return;
+		if (!dirty && !pendingUploads) return;
 		const warn = (event) => {
 			event.preventDefault();
 			event.returnValue = "";
 		};
 		window.addEventListener("beforeunload", warn);
 		return () => window.removeEventListener("beforeunload", warn);
-	}, [dirty]);
+	}, [dirty, pendingUploads]);
 	function focusHeading() {
 		requestAnimationFrame(() => {
 			heading.current?.focus({ preventScroll: true });
@@ -155,11 +161,11 @@ export default function AdminPortal() {
 			run();
 			focusHeading();
 		};
-		if (dirty)
+		if (dirty || pendingUploads)
 			setConfirmation({
 				title: "Discard unsaved changes?",
 				message:
-					"Your changes have not been saved. Leave this editor and discard them?",
+					"Your changes and selected files have not been saved. Leave this editor and discard them?",
 				label: "Discard changes",
 				run: proceed,
 			});
@@ -187,6 +193,10 @@ export default function AdminPortal() {
 	}
 	async function save(event) {
 		event.preventDefault();
+		if (pendingUploads) {
+			onError("Upload selected images or clear their selection before saving.");
+			return;
+		}
 		setBusy(true);
 		try {
 			const saved = await apiRequest(`admin/content/${resource}/${draft._id}`, {
@@ -207,6 +217,16 @@ export default function AdminPortal() {
 		} finally {
 			setBusy(false);
 		}
+	}
+	function discardDraft() {
+		leaveDraft(() => {
+			setDraft(
+				structuredClone(
+					records.find((item) => item._id === draft._id) || blank(kind),
+				),
+			);
+			setEditorVersion((version) => version + 1);
+		});
 	}
 	function remove(record) {
 		setConfirmation({
@@ -267,10 +287,11 @@ export default function AdminPortal() {
 				setBusy(false);
 			}
 		};
-		if (dirty)
+		if (dirty || pendingUploads)
 			setConfirmation({
 				title: "Sign out without saving?",
-				message: "Your unsaved changes will be discarded when you sign out.",
+				message:
+					"Your unsaved changes and selected files will be discarded when you sign out.",
 				label: "Sign out",
 				run,
 			});
@@ -292,7 +313,7 @@ export default function AdminPortal() {
 							navigate("events");
 						}}
 					>
-						<span className="admin-brand-mark">D.</span>
+						{logo && <img src={logo} alt="" className="admin-brand-logo" />}
 						<span>
 							DevSoc <small>Admin workspace</small>
 						</span>
@@ -579,7 +600,7 @@ export default function AdminPortal() {
 							<form
 								onSubmit={save}
 								className="admin-editor"
-								key={`${kind}:${draft._id}`}
+								key={`${kind}:${draft._id}:${editorVersion}`}
 							>
 								<fieldset disabled={busy} className="admin-form">
 									<ContentForm
@@ -591,40 +612,39 @@ export default function AdminPortal() {
 											setDraft(value);
 										}}
 										setBusy={setBusy}
+										busy={busy}
 										onSuccess={notify}
 										onError={onError}
+										onPendingChange={changePendingUploads}
 									/>
 								</fieldset>
 								<div className="admin-save">
 									<div>
 										<strong>
-											{dirty
-												? "You have unsaved changes"
-												: "Changes are up to date"}
+											{pendingUploads
+												? "Images are waiting to be uploaded"
+												: dirty
+													? "You have unsaved changes"
+													: "Changes are up to date"}
 										</strong>
-										<p>Removed images remain available in the image editor.</p>
+										<p>
+											{pendingUploads
+												? "Click Upload image or Upload selected, or clear the selection before saving."
+												: "Removed images remain available in the image editor."}
+										</p>
 									</div>
 									<div className="admin-actions">
 										<button
 											type="button"
-											disabled={busy || !dirty}
-											onClick={() =>
-												leaveDraft(() =>
-													setDraft(
-														structuredClone(
-															records.find((item) => item._id === draft._id) ||
-																blank(kind),
-														),
-													),
-												)
-											}
+											disabled={busy || (!dirty && !pendingUploads)}
+											onClick={discardDraft}
 										>
 											Discard changes
 										</button>
 										<button
 											className="admin-primary"
 											type="submit"
-											disabled={busy}
+											disabled={busy || pendingUploads > 0}
 										>
 											{busy ? "Working..." : "Save changes"}
 										</button>
