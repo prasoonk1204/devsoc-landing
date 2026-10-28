@@ -23,26 +23,30 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 
 	return (
 		<div className="to-accent/30 relative flex h-dvh w-full flex-col items-center justify-end bg-linear-to-t from-slate-300 px-4 pt-4 md:h-[768px]">
-			<Image
-				src={BACKGROUND_IMG}
-				alt="DevSoc Background"
-				fill
-				priority
-				quality={85}
-				sizes="100vw"
-				className="absolute inset-0 z-0 object-cover object-center opacity-25 md:object-cover"
-				style={{
-					objectPosition: "center center",
-				}}
-			/>
-			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
+			{BACKGROUND_IMG && (
 				<Image
-					src={LOGO}
-					alt="DevSoc Logo"
-					height={50}
-					width={50}
-					unoptimized
+					src={BACKGROUND_IMG}
+					alt="DevSoc Background"
+					fill
+					priority
+					quality={85}
+					sizes="100vw"
+					className="absolute inset-0 z-0 object-cover object-center opacity-25 md:object-cover"
+					style={{
+						objectPosition: "center center",
+					}}
 				/>
+			)}
+			<div className="absolute top-4 left-4 z-2 flex items-center gap-2">
+				{LOGO && (
+					<Image
+						src={LOGO}
+						alt="DevSoc Logo"
+						height={50}
+						width={50}
+						unoptimized
+					/>
+				)}
 				<h2 className="font-iceland text-2xl font-bold min-[400px]:text-3xl">
 					DEV<span className="text-orange-300">SOC</span>
 				</h2>
@@ -148,15 +152,17 @@ export default function Hero({ onModelLoaded, shouldAnimate, onDataLoaded }) {
 				className="flex h-[400px] w-full justify-center md:hidden"
 			>
 				<div className="relative h-full w-full max-w-[400px]">
-					<Image
-						src={HERO_IMG}
-						alt="DevSoc Astronaut"
-						fill
-						className="object-contain object-bottom"
-						priority
-						quality={90}
-						sizes="(max-width: 768px) 400px, 0px"
-					/>
+					{HERO_IMG && (
+						<Image
+							src={HERO_IMG}
+							alt="DevSoc Astronaut"
+							fill
+							className="object-contain object-bottom"
+							priority
+							quality={90}
+							sizes="(max-width: 768px) 400px, 0px"
+						/>
+					)}
 				</div>
 			</motion.div>
 			<motion.div

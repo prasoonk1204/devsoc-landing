@@ -1,596 +1,59 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiRequest, uploadImage } from "@/lib/upload-image";
+import {
+	ArrowLeft,
+	ArrowUpRight,
+	LogOut,
+	Plus,
+	Pencil,
+	Trash2,
+} from "lucide-react";
+import { apiRequest } from "@/lib/upload-image";
+import {
+	ContentForm,
+	blank,
+	groupLabels,
+	resources,
+	icons,
+	singular,
+	descriptions,
+} from "./Fields";
+import Toast from "./Toast";
 import "./admin.css";
 
-const groups = [
-	"teacherCoordinators",
-	"coreCommittee",
-	"techTeam",
-	"designTeam",
-	"managementTeam",
-];
-const groupLabels = {
-	teacherCoordinators: "Teacher coordinators",
-	coreCommittee: "Core committee",
-	techTeam: "Tech team",
-	designTeam: "Design team",
-	managementTeam: "Management team",
-};
-const resources = {
-	settings: "Website & community",
-	events: "Events",
-	newsletters: "Newsletters",
-	members: "Members",
-	payments: "Payments",
-};
-function blank(kind) {
-	const _id = crypto.randomUUID();
-	if (kind === "events")
-		return {
-			_id,
-			slug: "",
-			title: "",
-			date: new Date().toISOString().slice(0, 10),
-			timezone: "Asia/Kolkata",
-			startsAt: "",
-			endsAt: "",
-			location: "",
-			description: "",
-			detailedDescription: "",
-			image: "",
-			gallery: [],
-			timeline: [],
-			challenges: [],
-			published: false,
-			registrationMode: "closed",
-			externalRegistrationUrl: "",
-			payment: null,
-			showSnaps: true,
-			showProblemStatements: false,
-			problemStatementsUnlocked: false,
-			feedbackEnabled: false,
-		};
-	if (kind === "newsletters")
-		return {
-			_id,
-			slug: "",
-			title: "",
-			author: "DevSoc",
-			date: new Date().toISOString().slice(0, 7),
-			cover: "",
-			images: [],
-			published: false,
-		};
-	return {
-		_id,
-		name: "",
-		designation: "",
-		group: "coreCommittee",
-		image: "",
-		socials: {
-			github: "",
-			linkedin: "",
-			twitter: "",
-			instagram: "",
-			website: "",
-			email: "",
-		},
-		order: 0,
-		active: true,
-	};
-}
-function Field({
-	label,
-	value,
-	onChange,
-	type = "text",
-	multiline = false,
-	required = false,
-	options,
-	hint,
-}) {
+function ConfirmAction({ action, onClose }) {
+	const dialog = useRef(null);
+	useEffect(() => {
+		dialog.current.showModal();
+	}, []);
 	return (
-		<label className="admin-field">
-			<span>{label}</span>
-			{type === "checkbox" ? (
-				<input
-					type="checkbox"
-					checked={Boolean(value)}
-					onChange={(event) => onChange(event.target.checked)}
-				/>
-			) : options ? (
-				<select
-					value={value || ""}
-					onChange={(event) => onChange(event.target.value)}
-				>
-					{options.map((option) => (
-						<option
-							key={typeof option === "string" ? option : option.value}
-							value={typeof option === "string" ? option : option.value}
-						>
-							{typeof option === "string" ? option : option.label}
-						</option>
-					))}
-				</select>
-			) : multiline ? (
-				<textarea
-					rows={label.includes("Markdown") ? 12 : 4}
-					value={value || ""}
-					onChange={(event) => onChange(event.target.value)}
-					required={required}
-				/>
-			) : (
-				<input
-					type={type}
-					value={value ?? ""}
-					onChange={(event) =>
-						onChange(
-							type === "number"
-								? Number(event.target.value)
-								: event.target.value,
-						)
-					}
-					required={required}
-				/>
-			)}
-			{hint && <small>{hint}</small>}
-		</label>
-	);
-}
-function OrderedList({ label, items, onChange, create, children }) {
-	function move(index, offset) {
-		const next = [...items];
-		[next[index], next[index + offset]] = [next[index + offset], next[index]];
-		onChange(next);
-	}
-	return (
-		<fieldset className="admin-section">
-			<legend>{label}</legend>
-			{items.map((item, index) => (
-				<div className="admin-list-item" key={index}>
-					<div className="admin-actions">
-						<span>{index + 1}</span>
-						<button
-							type="button"
-							disabled={index === 0}
-							onClick={() => move(index, -1)}
-						>
-							Move up
-						</button>
-						<button
-							type="button"
-							disabled={index === items.length - 1}
-							onClick={() => move(index, 1)}
-						>
-							Move down
-						</button>
-						<button
-							type="button"
-							onClick={() => onChange(items.filter((_, i) => i !== index))}
-						>
-							Remove
-						</button>
-					</div>
-					{children(
-						item,
-						(value) =>
-							onChange(items.map((entry, i) => (i === index ? value : entry))),
-						index,
-					)}
-				</div>
-			))}
-			<button type="button" onClick={() => onChange([...items, create()])}>
-				Add {label.toLowerCase()}
-			</button>
-		</fieldset>
-	);
-}
-function ImageField({
-	label,
-	value,
-	onChange,
-	ownerKind,
-	ownerId,
-	slot,
-	onError,
-	setBusy,
-}) {
-	const [progress, setProgress] = useState("");
-	async function choose(event) {
-		const file = event.target.files?.[0];
-		if (!file) return;
-		setBusy(true);
-		onError("");
-		try {
-			const image = await uploadImage(
-				file,
-				{ ownerKind, ownerId, slot },
-				setProgress,
-			);
-			onChange(image.url);
-			setProgress("Upload verified. Save changes to use this image.");
-		} catch (error) {
-			onError(error.message);
-			setProgress("");
-		} finally {
-			setBusy(false);
-			event.target.value = "";
-		}
-	}
-	return (
-		<div className="admin-image">
-			<label className="admin-field">
-				<span>{label}</span>
-				<input
-					type="file"
-					accept="image/jpeg,image/png,image/webp"
-					onChange={choose}
-				/>
-				<small>JPEG, PNG or WebP, up to 10 MB.</small>
-			</label>
-			{value && (
-				<>
-					<img src={value} alt={label} className="admin-preview" />
-					<button type="button" onClick={() => onChange("")}>
-						Remove image
-					</button>
-				</>
-			)}
-			{progress && <p role="status">{progress}</p>}
-		</div>
-	);
-}
-function ContentForm({ kind, draft, setDraft, setBusy, onError }) {
-	const update = (key, value) =>
-		setDraft((previous) => ({ ...previous, [key]: value }));
-	const imageProps = { ownerKind: kind, ownerId: draft._id, onError, setBusy };
-	const field = (key, label, extra = {}) => (
-		<Field
-			key={key}
-			label={label}
-			value={draft[key]}
-			onChange={(value) => update(key, value)}
-			{...extra}
-		/>
-	);
-	const image = (key, label, slot) => (
-		<ImageField
-			{...imageProps}
-			label={label}
-			slot={slot}
-			value={draft[key]}
-			onChange={(value) => update(key, value)}
-		/>
-	);
-	const imageList = (key, label, slot) => (
-		<OrderedList
-			label={label}
-			items={draft[key]}
-			onChange={(value) => update(key, value)}
-			create={() => ""}
+		<dialog
+			ref={dialog}
+			className="admin-dialog"
+			onClose={onClose}
+			aria-labelledby="confirm-title"
 		>
-			{(value, change, index) => (
-				<ImageField
-					{...imageProps}
-					label={`${label} ${index + 1}`}
-					slot={slot}
-					value={value}
-					onChange={(value) =>
-						value
-							? change(value)
-							: update(
-									key,
-									draft[key].filter((_, entryIndex) => entryIndex !== index),
-								)
-					}
-				/>
-			)}
-		</OrderedList>
-	);
-	if (kind === "settings")
-		return (
-			<>
-				{field("whatsapp", "WhatsApp join link", { type: "url" })}
-				{field("discord", "Discord join link", { type: "url" })}
-				{image("logo", "Logo", "brand")}
-				{image("background", "Hero background", "hero")}
-				{image("hero", "Astronaut fallback image", "hero")}
-				{image("ogImage", "Social sharing banner", "brand")}
-				<OrderedList
-					label="Homepage gallery"
-					items={draft.gallery}
-					onChange={(value) => update("gallery", value)}
-					create={() => ({ title: "", image: "" })}
+			<h2 id="confirm-title">{action.title}</h2>
+			<p>{action.message}</p>
+			<div className="admin-actions">
+				<button autoFocus onClick={() => dialog.current.close()}>
+					Cancel
+				</button>
+				<button
+					className="admin-primary"
+					onClick={() => {
+						dialog.current.close();
+						action.run();
+					}}
 				>
-					{(item, change, index) => (
-						<>
-							<Field
-								label="Caption"
-								value={item.title}
-								onChange={(title) => change({ ...item, title })}
-							/>
-							<ImageField
-								{...imageProps}
-								label="Gallery image"
-								slot="gallery"
-								value={item.image}
-								onChange={(value) =>
-									value
-										? change({ ...item, image: value })
-										: update(
-												"gallery",
-												draft.gallery.filter(
-													(_, entryIndex) => entryIndex !== index,
-												),
-											)
-								}
-							/>
-						</>
-					)}
-				</OrderedList>
-				{field("maintenance", "Maintenance mode", { type: "checkbox" })}
-				{field("eventOnlySlug", "Event-only mode slug", {
-					hint: "Leave empty for the full website. Admin remains accessible.",
-				})}
-			</>
-		);
-	if (kind === "members")
-		return (
-			<>
-				{field("name", "Name", { required: true })}
-				{field("designation", "Designation", { required: true })}
-				{field("group", "Group", {
-					options: groups.map((value) => ({
-						value,
-						label: groupLabels[value],
-					})),
-				})}
-				{field("order", "Display order", { type: "number" })}
-				{field("active", "Visible on About page", { type: "checkbox" })}
-				{image("image", "Member photo", "photo")}
-				<fieldset className="admin-section">
-					<legend>Social links</legend>
-					{[
-						"github",
-						"linkedin",
-						"twitter",
-						"instagram",
-						"website",
-						"email",
-					].map((key) => (
-						<Field
-							key={key}
-							label={key}
-							type={key === "email" ? "email" : "url"}
-							value={draft.socials[key]}
-							onChange={(value) =>
-								update("socials", { ...draft.socials, [key]: value })
-							}
-						/>
-					))}
-				</fieldset>
-			</>
-		);
-	return (
-		<>
-			{field("title", "Title", { required: true })}
-			{field("slug", "Page slug", {
-				required: true,
-				hint: "Existing event slugs cannot change once registrations exist.",
-			})}
-			{field(
-				"date",
-				kind === "newsletters"
-					? "Issue month (YYYY-MM)"
-					: "Date (YYYY-MM-DD or TBD)",
-				{ required: true },
-			)}
-			{field("published", "Published", { type: "checkbox" })}
-			{kind === "newsletters" ? (
-				<>
-					{field("author", "Author", { required: true })}
-					{image("cover", "Newsletter banner", "banner")}
-					{imageList("images", "Inside pages", "pages")}
-				</>
-			) : (
-				<>
-					{field("timezone", "Timezone", { required: true })}
-					{field("startsAt", "Start time", {
-						hint: "Local time in the event timezone, for example 09:00.",
-					})}
-					{field("endsAt", "End time")}
-					{field("location", "Location")}
-					{field("description", "Description", {
-						multiline: true,
-						required: true,
-					})}
-					{field("detailedDescription", "About section (Markdown)", {
-						multiline: true,
-						hint: "Use the uploader below for inline images. Raw HTML is disabled.",
-					})}
-					<ImageField
-						{...imageProps}
-						label="Upload image for About section"
-						slot="about"
-						value=""
-						onChange={(url) => {
-							if (url)
-								setDraft((previous) => ({
-									...previous,
-									detailedDescription: `${previous.detailedDescription}\n\n![Event image](${url})`,
-								}));
-						}}
-					/>
-					{image("image", "Event banner", "banner")}
-					{imageList("gallery", "Gallery images", "gallery")}
-					{field("registrationMode", "Registration", {
-						options: [
-							{ value: "closed", label: "Closed" },
-							{ value: "internal", label: "Internal registration" },
-							{ value: "external", label: "External registration link" },
-						],
-					})}
-					{draft.registrationMode === "external" &&
-						field("externalRegistrationUrl", "External registration URL", {
-							type: "url",
-							required: true,
-						})}
-					<label className="admin-field">
-						<span>Configure payment details</span>
-						<input
-							type="checkbox"
-							checked={Boolean(draft.payment)}
-							onChange={(event) =>
-								update(
-									"payment",
-									event.target.checked
-										? { amount: 50, upiId: "", qrCodeUrl: "" }
-										: null,
-								)
-							}
-						/>
-					</label>
-					{draft.payment && (
-						<fieldset className="admin-section">
-							<legend>Payment</legend>
-							<Field
-								label="Amount (INR)"
-								type="number"
-								value={draft.payment.amount}
-								onChange={(amount) =>
-									update("payment", { ...draft.payment, amount })
-								}
-								required
-							/>
-							<Field
-								label="UPI ID"
-								value={draft.payment.upiId}
-								onChange={(upiId) =>
-									update("payment", { ...draft.payment, upiId })
-								}
-								required
-							/>
-							<ImageField
-								{...imageProps}
-								label="Payment QR code"
-								slot="payment-qr"
-								value={draft.payment.qrCodeUrl}
-								onChange={(qrCodeUrl) =>
-									update("payment", { ...draft.payment, qrCodeUrl })
-								}
-							/>
-						</fieldset>
-					)}
-					{[
-						"showSnaps",
-						"showProblemStatements",
-						"problemStatementsUnlocked",
-						"feedbackEnabled",
-					].map((key, index) =>
-						field(
-							key,
-							[
-								"Show event gallery",
-								"Show tracks and problem statements",
-								"Unlock problem statements publicly",
-								"Enable feedback",
-							][index],
-							{ type: "checkbox" },
-						),
-					)}
-					<OrderedList
-						label="Timeline entries"
-						items={draft.timeline}
-						onChange={(value) => update("timeline", value)}
-						create={() => ({
-							date: "",
-							time: "",
-							title: "",
-							description: "",
-							subEvents: [],
-						})}
-					>
-						{(item, change) => (
-							<>
-								{["date", "time", "title", "description"].map((key) => (
-									<Field
-										key={key}
-										label={key}
-										multiline={key === "description"}
-										value={item[key]}
-										onChange={(value) => change({ ...item, [key]: value })}
-									/>
-								))}
-								<OrderedList
-									label="Sub-events"
-									items={item.subEvents}
-									onChange={(subEvents) => change({ ...item, subEvents })}
-									create={() => ({ time: "", title: "", description: "" })}
-								>
-									{(sub, updateSub) =>
-										["time", "title", "description"].map((key) => (
-											<Field
-												key={key}
-												label={key}
-												value={sub[key]}
-												onChange={(value) =>
-													updateSub({ ...sub, [key]: value })
-												}
-											/>
-										))
-									}
-								</OrderedList>
-							</>
-						)}
-					</OrderedList>
-					<OrderedList
-						label="Problem statements"
-						items={draft.challenges}
-						onChange={(value) => update("challenges", value)}
-						create={() => ({
-							trackId: "",
-							trackName: "",
-							challengeNumber: 1,
-							slug: "",
-							name: "",
-							problemStatement: "",
-							keyDeliverable: "",
-							constraint: "",
-						})}
-					>
-						{(item, change) =>
-							[
-								"trackId",
-								"trackName",
-								"challengeNumber",
-								"slug",
-								"name",
-								"problemStatement",
-								"keyDeliverable",
-								"constraint",
-							].map((key) => (
-								<Field
-									key={key}
-									label={key}
-									type={key === "challengeNumber" ? "number" : "text"}
-									multiline={[
-										"problemStatement",
-										"keyDeliverable",
-										"constraint",
-									].includes(key)}
-									value={item[key]}
-									onChange={(value) => change({ ...item, [key]: value })}
-								/>
-							))
-						}
-					</OrderedList>
-				</>
-			)}
-		</>
+					{action.label}
+				</button>
+			</div>
+		</dialog>
 	);
 }
+
 export default function AdminPortal() {
 	const [kind, setKind] = useState("events");
 	const [records, setRecords] = useState([]);
@@ -598,264 +61,739 @@ export default function AdminPortal() {
 	const [dirty, setDirty] = useState(false);
 	const [busy, setBusy] = useState(false);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
-	const [notice, setNotice] = useState("");
+	const [loadFailed, setLoadFailed] = useState(false);
+	const [toast, setToast] = useState(null);
+	const [confirmation, setConfirmation] = useState(null);
+	const [selectedEvent, setSelectedEvent] = useState(null);
+	const [page, setPage] = useState(1);
+	const [registrations, setRegistrations] = useState(null);
+	const [registrationLoading, setRegistrationLoading] = useState(false);
+	const [registrationFailed, setRegistrationFailed] = useState(false);
+	const [reload, setReload] = useState(0);
+	const heading = useRef(null);
 	const router = useRouter();
-	async function load(resource = kind, signal) {
+	const resource = kind === "community" ? "settings" : kind;
+	const notify = useCallback((message, error = false) => {
+		if (message) setToast({ message, error });
+	}, []);
+	const closeToast = useCallback(() => setToast(null), []);
+	const onError = useCallback((message) => notify(message, true), [notify]);
+	const isSettings = resource === "settings";
+
+	async function fetchRecords(signal) {
 		const data = await apiRequest(
-			resource === "payments"
-				? "admin/payments/pending"
+			kind === "payments"
+				? "admin/registrations/events"
 				: `admin/content/${resource}`,
 			{ signal },
 		);
-		setRecords(data);
-		if (resource === "settings") setDraft(data[0] || null);
+		if (!signal?.aborted) setRecords(data);
+		return data;
 	}
 	useEffect(() => {
 		const controller = new AbortController();
 		setLoading(true);
-		setDraft(null);
-		setDirty(false);
-		setError("");
-		setNotice("");
-		load(kind, controller.signal)
+		setLoadFailed(false);
+		fetchRecords(controller.signal)
+			.then((data) => {
+				if (!controller.signal.aborted && resource === "settings")
+					setDraft(structuredClone(data[0]));
+			})
 			.catch((error) => {
-				if (error.name !== "AbortError") setError(error.message);
+				if (!controller.signal.aborted) {
+					onError(error.message);
+					setLoadFailed(true);
+				}
 			})
 			.finally(() => {
 				if (!controller.signal.aborted) setLoading(false);
 			});
 		return () => controller.abort();
-	}, [kind]);
-	function leaveDraft(action) {
-		if (!dirty || confirm("Leave this editor? Unsaved changes will be lost.")) {
+	}, [kind, reload]);
+
+	useEffect(() => {
+		if (kind !== "payments" || !selectedEvent) return;
+		const controller = new AbortController();
+		setRegistrationLoading(true);
+		setRegistrationFailed(false);
+		apiRequest(
+			`admin/registrations?eventId=${encodeURIComponent(selectedEvent._id)}&eventSlug=${encodeURIComponent(selectedEvent.slug)}&page=${page}`,
+			{ signal: controller.signal },
+		)
+			.then((data) => {
+				if (!controller.signal.aborted) setRegistrations(data);
+			})
+			.catch((error) => {
+				if (!controller.signal.aborted) {
+					onError(error.message);
+					setRegistrationFailed(true);
+				}
+			})
+			.finally(() => {
+				if (!controller.signal.aborted) setRegistrationLoading(false);
+			});
+		return () => controller.abort();
+	}, [kind, selectedEvent, page, reload, onError]);
+	useEffect(() => {
+		if (!dirty) return;
+		const warn = (event) => {
+			event.preventDefault();
+			event.returnValue = "";
+		};
+		window.addEventListener("beforeunload", warn);
+		return () => window.removeEventListener("beforeunload", warn);
+	}, [dirty]);
+	function focusHeading() {
+		requestAnimationFrame(() => {
+			heading.current?.focus({ preventScroll: true });
+			window.scrollTo({ top: 0, behavior: "instant" });
+		});
+	}
+	function leaveDraft(run) {
+		const proceed = () => {
 			setDirty(false);
-			action();
-		}
+			run();
+			focusHeading();
+		};
+		if (dirty)
+			setConfirmation({
+				title: "Discard unsaved changes?",
+				message:
+					"Your changes have not been saved. Leave this editor and discard them?",
+				label: "Discard changes",
+				run: proceed,
+			});
+		else proceed();
+	}
+	function navigate(next) {
+		if (next === kind) return;
+		leaveDraft(() => {
+			// Clear the old shape before rendering a different resource's form.
+			setDraft(null);
+			setToast(null);
+			setRecords([]);
+			setSelectedEvent(null);
+			setRegistrations(null);
+			setPage(1);
+			setLoading(true);
+			setKind(next);
+		});
+	}
+	function edit(record) {
+		leaveDraft(() => {
+			setToast(null);
+			setDraft(structuredClone(record));
+		});
 	}
 	async function save(event) {
 		event.preventDefault();
 		setBusy(true);
-		setError("");
-		setNotice("");
 		try {
-			const saved = await apiRequest(`admin/content/${kind}/${draft._id}`, {
+			const saved = await apiRequest(`admin/content/${resource}/${draft._id}`, {
 				method: "PUT",
 				body: draft,
 			});
-			await load();
 			setDraft(saved);
 			setDirty(false);
-			setNotice("Changes saved.");
+			notify("Changes saved.");
+			setRecords((items) =>
+				items.some((item) => item._id === saved._id)
+					? items.map((item) => (item._id === saved._id ? saved : item))
+					: [saved, ...items],
+			);
 			router.refresh();
 		} catch (error) {
-			setError(error.message);
+			onError(error.message);
 		} finally {
 			setBusy(false);
 		}
 	}
-	async function remove(record) {
-		if (
-			!confirm(
-				`Delete ${record.title || record.name}? This cannot be undone. Uploaded images are retained.`,
-			)
-		)
-			return;
-		setBusy(true);
-		setError("");
-		try {
-			await apiRequest(`admin/content/${kind}/${record._id}`, {
-				method: "DELETE",
-			});
-			setDraft(null);
-			await load();
-			setNotice("Deleted.");
-			router.refresh();
-		} catch (error) {
-			setError(error.message);
-		} finally {
-			setBusy(false);
-		}
+	function remove(record) {
+		setConfirmation({
+			title: `Delete ${singular[kind]}?`,
+			message: `“${record.title || record.name}” will be deleted permanently. Uploaded images are retained.`,
+			label: "Delete item",
+			run: async () => {
+				setBusy(true);
+				try {
+					await apiRequest(`admin/content/${resource}/${record._id}`, {
+						method: "DELETE",
+					});
+					setRecords((items) =>
+						items.filter((item) => item._id !== record._id),
+					);
+					notify("Item deleted.");
+					router.refresh();
+				} catch (error) {
+					onError(error.message);
+				} finally {
+					setBusy(false);
+				}
+			},
+		});
 	}
 	async function review(paymentId, status) {
 		setBusy(true);
-		setError("");
 		try {
 			await apiRequest("admin/payments/verify", {
 				method: "POST",
 				body: { paymentId, status },
 			});
-			await load();
-			setNotice(`Payment ${status}.`);
+			setRegistrations((data) => ({
+				...data,
+				rows: data.rows.map((row) =>
+					row.payment?._id === paymentId
+						? { ...row, payment: { ...row.payment, status } }
+						: row,
+				),
+			}));
+			notify(`Payment ${status}.`);
 		} catch (error) {
-			setError(error.message);
+			onError(error.message);
 		} finally {
 			setBusy(false);
 		}
 	}
+	function signOut() {
+		const run = async () => {
+			setBusy(true);
+			try {
+				await apiRequest("auth/logout", { method: "POST", body: {} });
+				router.replace("/admin/login");
+				router.refresh();
+			} catch (error) {
+				onError(error.message);
+			} finally {
+				setBusy(false);
+			}
+		};
+		if (dirty)
+			setConfirmation({
+				title: "Sign out without saving?",
+				message: "Your unsaved changes will be discarded when you sign out.",
+				label: "Sign out",
+				run,
+			});
+		else run();
+	}
+	const editor = draft && !isSettings;
 	return (
 		<main className="admin-portal">
-			<header>
-				<div>
-					<a href="/" target="_blank" rel="noreferrer">
-						View website
-					</a>
-					<h1>DevSoc Admin</h1>
-				</div>
-				<button
-					disabled={busy}
-					onClick={async () => {
-						try {
-							await apiRequest("auth/logout", { method: "POST", body: {} });
-							router.replace("/admin/login");
-							router.refresh();
-						} catch (error) {
-							setError(error.message);
-						}
-					}}
-				>
-					Sign out
-				</button>
-			</header>
-			<nav aria-label="Admin sections">
-				{Object.entries(resources).map(([key, label]) => (
-					<button
-						key={key}
-						disabled={busy || loading}
-						aria-current={kind === key ? "page" : undefined}
-						onClick={() => {
-							if (key !== kind) leaveDraft(() => setKind(key));
+			<a className="admin-skip" href="#admin-content">
+				Skip to content
+			</a>
+			<header className="admin-header">
+				<div className="admin-header-top">
+					<a
+						href="/admin"
+						className="admin-brand"
+						onClick={(event) => {
+							event.preventDefault();
+							navigate("events");
 						}}
 					>
-						{label}
-					</button>
-				))}
-			</nav>
-			{error && (
-				<p role="alert" className="admin-error">
-					{error}
-				</p>
-			)}
-			{notice && (
-				<p role="status" className="admin-notice">
-					{notice}
-				</p>
-			)}
-			{loading ? (
-				<p role="status">Loading...</p>
-			) : (
-				<div className="admin-columns">
-					<aside>
-						<h2>{resources[kind]}</h2>
-						{!["settings", "payments"].includes(kind) && (
+						<span className="admin-brand-mark">D.</span>
+						<span>
+							DevSoc <small>Admin workspace</small>
+						</span>
+					</a>
+					<div className="admin-actions">
+						<a
+							className="admin-button"
+							href="/"
+							target="_blank"
+							rel="noreferrer"
+						>
+							Visit website <ArrowUpRight size={16} />
+						</a>
+						<button disabled={busy} onClick={signOut}>
+							<LogOut size={16} />
+							Sign out
+						</button>
+					</div>
+				</div>
+				<nav aria-label="Admin sections">
+					{Object.entries(resources).map(([key, label]) => {
+						const Icon = icons[key];
+						return (
 							<button
+								key={key}
 								disabled={busy}
-								onClick={() => leaveDraft(() => setDraft(blank(kind)))}
+								aria-current={kind === key ? "page" : undefined}
+								onClick={() => navigate(key)}
 							>
-								Create new
+								<Icon size={17} />
+								{label}
 							</button>
-						)}
-						{kind !== "payments" &&
-							records.map((record) => (
-								<div key={record._id} className="admin-record">
-									<button
-										disabled={busy}
-										onClick={() =>
-											leaveDraft(() => setDraft(structuredClone(record)))
-										}
-									>
-										{record.title || record.name || "Website settings"}
-									</button>
-									<small>
-										{record.published === false
-											? "Draft"
-											: record.group
-												? `${groupLabels[record.group]}${record.active ? "" : " (hidden)"}`
-												: record.slug || ""}
-									</small>
-									{kind !== "settings" && (
-										<button disabled={busy} onClick={() => remove(record)}>
-											Delete
-										</button>
-									)}
-								</div>
-							))}
-						{!records.length && <p>No records yet.</p>}
-					</aside>
-					<section>
-						{kind === "payments" ? (
-							records.map((payment) => (
-								<article key={payment._id} className="admin-section">
-									<h3>{payment.user?.name || "Unknown registration"}</h3>
-									<p>
-										{payment.eventTitle} | INR {payment.amount}
-									</p>
-									<p>{payment.user?.email}</p>
-									<p>Transaction: {payment.transactionId}</p>
-									{payment.historicalDuplicate && (
-										<p className="admin-error">
-											Historical duplicate transaction ID. Check original
-											payment evidence before reviewing.
-										</p>
-									)}
-									{payment.receiptUnavailable && (
-										<p className="admin-error">
-											Original screenshot is missing from the legacy source.
-											Payment record retained.
-										</p>
-									)}
-									<a
-										href={`/api/v1/admin/payments/${payment._id}/screenshot`}
-										target="_blank"
-										rel="noreferrer"
-									>
-										View private screenshot
-									</a>
-									<div className="admin-actions">
-										<button
-											disabled={busy}
-											onClick={() => review(payment._id, "verified")}
+						);
+					})}
+				</nav>
+			</header>
+			<div id="admin-content" className="admin-content" aria-busy={loading}>
+				<div className="admin-page-heading">
+					<div>
+						<p className="admin-eyebrow">
+							Workspace / {resources[kind]}
+							{editor ? " / Editor" : selectedEvent ? " / Registrations" : ""}
+						</p>
+						<h1 ref={heading} tabIndex={-1}>
+							{editor
+								? `${singular[kind][0].toUpperCase()}${singular[kind].slice(1)} editor`
+								: selectedEvent
+									? selectedEvent.title
+									: resources[kind]}
+						</h1>
+						<p className="admin-muted">
+							{editor
+								? "Make your changes below, then save when you’re ready."
+								: descriptions[kind]}
+						</p>
+					</div>
+					{!loading && !editor && !isSettings && kind !== "payments" && (
+						<button
+							className="admin-primary"
+							disabled={busy}
+							onClick={() => edit(blank(kind))}
+						>
+							<Plus size={17} />
+							New {singular[kind]}
+						</button>
+					)}
+				</div>
+				{loading ? (
+					<div className="admin-skeleton" role="status">
+						<span>Loading {resources[kind].toLowerCase()}...</span>
+						<div />
+						<div />
+						<div />
+					</div>
+				) : loadFailed ? (
+					<div className="admin-empty">
+						<h2>Couldn’t load this section</h2>
+						<p>Try again to retrieve your latest content.</p>
+						<button onClick={() => setReload((value) => value + 1)}>
+							Try again
+						</button>
+					</div>
+				) : kind === "payments" && selectedEvent ? (
+					<>
+						<button
+							disabled={busy}
+							onClick={() => {
+								setSelectedEvent(null);
+								setRegistrations(null);
+								focusHeading();
+							}}
+						>
+							<ArrowLeft size={16} />
+							All events
+						</button>
+						{registrationLoading ? (
+							<p className="admin-empty" role="status">
+								Loading registrations...
+							</p>
+						) : registrationFailed ? (
+							<div className="admin-empty">
+								<p>Couldn’t load registrations.</p>
+								<button onClick={() => setReload((value) => value + 1)}>
+									Try again
+								</button>
+							</div>
+						) : (
+							registrations && (
+								<>
+									<div className="admin-table-heading">
+										<h2>
+											Registrations{" "}
+											<span className="admin-badge">{registrations.total}</span>
+										</h2>
+										<span className="admin-muted">All payment statuses</span>
+									</div>
+									{registrations.rows.length ? (
+										<div
+											className="admin-table-wrap"
+											tabIndex={0}
+											role="region"
+											aria-label="Event registrations"
 										>
-											Verify
-										</button>
+											<table>
+												<caption className="sr-only">
+													Registrations for {selectedEvent.title}
+												</caption>
+												<thead>
+													<tr>
+														<th>Registrant</th>
+														<th>Academic details</th>
+														<th>Payment</th>
+														<th>Status</th>
+														<th>Review</th>
+													</tr>
+												</thead>
+												<tbody>
+													{registrations.rows.map((row) => {
+														const payment = row.payment;
+														return (
+															<tr key={row._id}>
+																<td>
+																	<strong>{row.name}</strong>
+																	<a href={`mailto:${row.email}`}>
+																		{row.email}
+																	</a>
+																	<span>{row.phone}</span>
+																	{row.registeredAt && (
+																		<small>
+																			{new Date(
+																				row.registeredAt,
+																			).toLocaleDateString("en-IN")}
+																		</small>
+																	)}
+																	{row.questions && (
+																		<details>
+																			<summary>Questions</summary>
+																			<p>{row.questions}</p>
+																		</details>
+																	)}
+																</td>
+																<td>
+																	{row.roll || "No roll number"}
+																	<span>
+																		{[row.department, row.year]
+																			.filter(Boolean)
+																			.join(" · ")}
+																	</span>
+																</td>
+																<td>
+																	{payment ? (
+																		<>
+																			<strong>INR {payment.amount}</strong>
+																			<span className="admin-transaction">
+																				{payment.transactionId}
+																			</span>
+																			{payment.historicalDuplicate && (
+																				<p className="admin-warning">
+																					Duplicate transaction ID. Check
+																					original evidence.
+																				</p>
+																			)}
+																			{payment.receiptUnavailable ? (
+																				<p className="admin-warning">
+																					Original receipt unavailable. Record
+																					retained.
+																				</p>
+																			) : payment.paymentScreenshotStorageId ? (
+																				<a
+																					href={`/api/v1/admin/payments/${payment._id}/screenshot`}
+																					target="_blank"
+																					rel="noreferrer"
+																				>
+																					View receipt{" "}
+																					<ArrowUpRight size={12} />
+																				</a>
+																			) : (
+																				<span>No receipt available</span>
+																			)}
+																		</>
+																	) : (
+																		"No payment record"
+																	)}
+																</td>
+																<td>
+																	<span
+																		className={`admin-badge status-${payment?.status || "none"}`}
+																	>
+																		{payment?.status || "No payment"}
+																	</span>
+																</td>
+																<td>
+																	{payment && (
+																		<div className="admin-actions">
+																			<button
+																				disabled={
+																					busy || payment.status === "verified"
+																				}
+																				onClick={() =>
+																					review(payment._id, "verified")
+																				}
+																			>
+																				Verify
+																			</button>
+																			<button
+																				disabled={
+																					busy || payment.status === "rejected"
+																				}
+																				onClick={() =>
+																					review(payment._id, "rejected")
+																				}
+																			>
+																				Reject
+																			</button>
+																		</div>
+																	)}
+																</td>
+															</tr>
+														);
+													})}
+												</tbody>
+											</table>
+										</div>
+									) : (
+										<div className="admin-empty">
+											<h2>No registrations yet</h2>
+											<p>Registrations will appear here when people sign up.</p>
+										</div>
+									)}
+									<div className="admin-pagination">
 										<button
-											disabled={busy}
-											onClick={() => review(payment._id, "rejected")}
+											disabled={page === 1 || busy}
+											onClick={() => setPage((value) => value - 1)}
 										>
-											Reject
+											Previous
+										</button>
+										<span>
+											Page {page} of{" "}
+											{Math.max(1, Math.ceil(registrations.total / 50))}
+										</span>
+										<button
+											disabled={page * 50 >= registrations.total || busy}
+											onClick={() => setPage((value) => value + 1)}
+										>
+											Next
 										</button>
 									</div>
-								</article>
-							))
-						) : draft ? (
-							<form onSubmit={save}>
+								</>
+							)
+						)}
+					</>
+				) : editor || isSettings ? (
+					draft ? (
+						<>
+							{editor && (
+								<button
+									disabled={busy}
+									onClick={() => leaveDraft(() => setDraft(null))}
+								>
+									<ArrowLeft size={16} />
+									Back to {resources[kind].toLowerCase()}
+								</button>
+							)}
+							<form
+								onSubmit={save}
+								className="admin-editor"
+								key={`${kind}:${draft._id}`}
+							>
 								<fieldset disabled={busy} className="admin-form">
 									<ContentForm
-										kind={kind}
+										kind={resource}
+										section={kind}
 										draft={draft}
 										setDraft={(value) => {
 											setDirty(true);
 											setDraft(value);
 										}}
 										setBusy={setBusy}
-										onError={setError}
+										onSuccess={notify}
+										onError={onError}
 									/>
 								</fieldset>
 								<div className="admin-save">
-									<button type="submit" disabled={busy}>
-										{busy ? "Working..." : "Save changes"}
-									</button>
-									<p>
-										Removing an image detaches it. Original files remain
-										available for rollback.
-									</p>
+									<div>
+										<strong>
+											{dirty
+												? "You have unsaved changes"
+												: "Changes are up to date"}
+										</strong>
+										<p>Removed images remain available in the image editor.</p>
+									</div>
+									<div className="admin-actions">
+										<button
+											type="button"
+											disabled={busy || !dirty}
+											onClick={() =>
+												leaveDraft(() =>
+													setDraft(
+														structuredClone(
+															records.find((item) => item._id === draft._id) ||
+																blank(kind),
+														),
+													),
+												)
+											}
+										>
+											Discard changes
+										</button>
+										<button
+											className="admin-primary"
+											type="submit"
+											disabled={busy}
+										>
+											{busy ? "Working..." : "Save changes"}
+										</button>
+									</div>
 								</div>
 							</form>
+						</>
+					) : (
+						<div className="admin-empty">
+							Website settings are missing. Initialize the preview database
+							first.
+						</div>
+					)
+				) : (
+					<>
+						<div className="admin-list-heading">
+							<span>
+								{records.length}{" "}
+								{kind === "payments" ? "events" : resources[kind].toLowerCase()}
+							</span>
+							<span className="admin-muted">
+								{kind === "payments"
+									? "Select an event to view registrations"
+									: "Select Edit to manage an item"}
+							</span>
+						</div>
+						{records.length ? (
+							<div
+								className={`admin-card-grid ${kind === "members" ? "admin-member-grid" : ""}`}
+							>
+								{records.map((record) => {
+									const image = record.image || record.cover;
+									const Icon = icons[kind];
+									return (
+										<article className="admin-card" key={record._id}>
+											{image ? (
+												<img
+													className={
+														kind === "members"
+															? "admin-member-photo"
+															: "admin-card-banner"
+													}
+													src={image}
+													alt=""
+													loading="lazy"
+												/>
+											) : (
+												<div
+													className={
+														kind === "members"
+															? "admin-member-photo admin-card-placeholder"
+															: "admin-card-banner admin-card-placeholder"
+													}
+												>
+													<Icon size={28} />
+												</div>
+											)}
+											<div className="admin-card-body">
+												<div className="admin-card-meta">
+													<span>
+														{kind === "members"
+															? groupLabels[record.group]
+															: record.date || "Date to be confirmed"}
+													</span>
+													{kind !== "payments" && (
+														<span
+															className={`admin-badge ${record.published === false || record.active === false ? "" : "status-verified"}`}
+														>
+															{kind === "members"
+																? record.active
+																	? "Visible"
+																	: "Hidden"
+																: record.published
+																	? "Published"
+																	: "Draft"}
+														</span>
+													)}
+												</div>
+												<h2>{record.title || record.name}</h2>
+												<p className="admin-muted">
+													{kind === "payments"
+														? `${record.count} registrations`
+														: kind === "members"
+															? record.designation
+															: record.description ||
+																(record.author
+																	? `By ${record.author}`
+																	: record.slug)}
+												</p>
+												<div className="admin-card-actions">
+													{kind === "payments" ? (
+														<button
+															className="admin-primary"
+															onClick={() => {
+																setPage(1);
+																setRegistrations(null);
+																setRegistrationLoading(true);
+																setSelectedEvent(record);
+																focusHeading();
+															}}
+														>
+															View registrations <ArrowUpRight size={16} />
+														</button>
+													) : (
+														<>
+															<button
+																disabled={busy}
+																onClick={() => edit(record)}
+																aria-label={`Edit ${record.title || record.name}`}
+															>
+																<Pencil size={15} />
+																Edit
+															</button>
+															<button
+																className="admin-danger"
+																disabled={busy}
+																onClick={() => remove(record)}
+																aria-label={`Delete ${record.title || record.name}`}
+															>
+																<Trash2 size={15} />
+																Delete
+															</button>
+														</>
+													)}
+												</div>
+											</div>
+										</article>
+									);
+								})}
+							</div>
 						) : (
-							<p>Select an item or create one.</p>
+							<div className="admin-empty">
+								<h2>
+									No{" "}
+									{kind === "payments"
+										? "registrations"
+										: resources[kind].toLowerCase()}{" "}
+									yet
+								</h2>
+								<p>
+									{kind === "payments"
+										? "Events appear here after their first registration."
+										: `Create your first ${singular[kind]} to get started.`}
+								</p>
+								<button
+									className="admin-primary"
+									onClick={() =>
+										kind === "payments" ? navigate("events") : edit(blank(kind))
+									}
+								>
+									{kind === "payments"
+										? "Go to events"
+										: `New ${singular[kind]}`}
+								</button>
+							</div>
 						)}
-					</section>
-				</div>
+					</>
+				)}
+			</div>
+			<Toast
+				message={toast?.message}
+				error={toast?.error}
+				onClose={closeToast}
+			/>
+			{confirmation && (
+				<ConfirmAction
+					action={confirmation}
+					onClose={() => setConfirmation(null)}
+				/>
 			)}
 		</main>
 	);

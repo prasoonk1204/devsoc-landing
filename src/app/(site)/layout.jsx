@@ -11,20 +11,25 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata() {
 	const site = await getSite();
 	return {
-		icons: { icon: site.logo, apple: site.logo },
+		icons: site.logo ? { icon: site.logo, apple: site.logo } : undefined,
 		openGraph: {
 			title: "DevSoc",
 			description: "Development Society of Asansol Engineering College",
-			images: [
-				{
-					url: site.ogImage,
-					width: 1200,
-					height: 630,
-					alt: "Development Society",
-				},
-			],
+			images: site.ogImage
+				? [
+						{
+							url: site.ogImage,
+							width: 1200,
+							height: 630,
+							alt: "Development Society",
+						},
+					]
+				: [],
 		},
-		twitter: { card: "summary_large_image", images: [site.ogImage] },
+		twitter: {
+			card: "summary_large_image",
+			images: site.ogImage ? [site.ogImage] : [],
+		},
 	};
 }
 export default async function SiteLayout({ children }) {

@@ -29,17 +29,19 @@ export default function LoadingScreen({ onLoadComplete, isModelLoaded }) {
 				<div
 					className={`animate-spin-slow ${!imageLoaded ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
 				>
-					<Image
-						src={LOGO}
-						alt="DevSoc Logo"
-						width={150}
-						height={150}
-						priority
-						quality={90}
-						onLoad={() => setImageLoaded(true)}
-						className="drop-shadow-lg"
-						unoptimized
-					/>
+					{LOGO && (
+						<Image
+							src={LOGO}
+							alt="DevSoc Logo"
+							width={150}
+							height={150}
+							priority
+							quality={90}
+							onLoad={() => setImageLoaded(true)}
+							className="drop-shadow-lg"
+							unoptimized
+						/>
+					)}
 				</div>
 
 				{imageLoaded && (

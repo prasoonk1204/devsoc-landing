@@ -1,13 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { apiRequest } from "@/lib/upload-image";
+import Toast from "./Toast";
+import "./admin.css";
 
 export default function AdminLogin() {
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [busy, setBusy] = useState(false);
 	const router = useRouter();
+	const closeToast = useCallback(() => setError(""), []);
 	async function submit(event) {
 		event.preventDefault();
 		setBusy(true);
@@ -44,11 +47,7 @@ export default function AdminLogin() {
 						className="w-full rounded-lg border border-zinc-600 bg-zinc-950 p-3 focus:outline-2 focus:outline-orange-300"
 					/>
 				</label>
-				{error && (
-					<p role="alert" className="text-sm text-red-300">
-						{error}
-					</p>
-				)}
+				<Toast message={error} error onClose={closeToast} />
 				<button
 					disabled={busy}
 					className="w-full rounded-lg bg-orange-300 p-3 font-semibold text-black disabled:opacity-50"

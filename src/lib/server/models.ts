@@ -147,13 +147,23 @@ export const Registration = model(
 		department: String,
 		year: String,
 		questions: String,
+		eventId: String,
 		eventSlug: { type: String, required: true },
 		eventTitle: String,
 		registeredAt: Number,
 		paymentId: String,
 		legacy: Schema.Types.Mixed,
 	},
-	[[{ email: 1, eventSlug: 1 }, { unique: true }]],
+	[
+		[
+			{ email: 1, eventId: 1 },
+			{
+				unique: true,
+				partialFilterExpression: { eventId: { $type: "string" } },
+			},
+		],
+		[{ eventId: 1, registeredAt: -1, _id: 1 }, {}],
+	],
 );
 export const Payment = model(
 	"Payment",
@@ -163,6 +173,7 @@ export const Payment = model(
 		transactionKey: String,
 		historicalDuplicate: { type: Boolean, default: false },
 		receiptUnavailable: { type: Boolean, default: false },
+		eventId: String,
 		eventSlug: String,
 		eventTitle: String,
 		amount: Number,
@@ -179,6 +190,7 @@ export const Payment = model(
 		legacyCreatedAt: Number,
 	},
 	[
+		[{ eventId: 1, userId: 1 }, {}],
 		[
 			{ transactionKey: 1 },
 			{

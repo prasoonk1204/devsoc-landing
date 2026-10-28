@@ -19,9 +19,10 @@ import {
 	removeContent,
 } from "../src/lib/server/content.ts";
 
-const database = `devsoc_test_${randomUUID().replaceAll("-", "")}`;
+const database = `devsoc_test_${randomUUID().replaceAll("-", "").slice(0, 24)}`;
 before(async () => {
 	process.env.MONGODB_URI =
+		process.env.TEST_MONGODB_URI ||
 		"mongodb://127.0.0.1:27018/?replicaSet=devsoc-local";
 	process.env.MONGODB_DB = database;
 	await connectDb();
@@ -58,13 +59,17 @@ before(async () => {
 	);
 });
 after(async () => {
-	assert.match(database, /^devsoc_test_[a-f0-9]{32}$/);
+	assert.match(database, /^devsoc_test_[a-f0-9]{24}$/);
 	assert.equal(mongoose.connection.name, database);
 	await mongoose.connection.dropDatabase();
 	await mongoose.disconnect();
 });
 test("database indexes reject concurrent duplicate registrations and transactions", async () => {
-	const data = { email: "test@example.com", eventSlug: "event" };
+	const data = {
+		email: "test@example.com",
+		eventId: "event",
+		eventSlug: "event",
+	};
 	const writes = await Promise.allSettled([
 		Registration.create({ _id: "a", ...data }),
 		Registration.create({ _id: "b", ...data }),

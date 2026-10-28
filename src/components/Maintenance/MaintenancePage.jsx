@@ -9,14 +9,16 @@ export default function MaintenancePage() {
 		<div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 px-4 text-white">
 			<div className="max-w-2xl text-center">
 				<div className="mb-8 flex justify-center">
-					<Image
-						src={LOGO}
-						alt="DevSoc Logo"
-						width={120}
-						height={120}
-						className="animate-pulse"
-						unoptimized
-					/>
+					{LOGO && (
+						<Image
+							src={LOGO}
+							alt="DevSoc Logo"
+							width={120}
+							height={120}
+							className="animate-pulse"
+							unoptimized
+						/>
+					)}
 				</div>
 
 				<h1 className="mb-4 text-4xl font-bold md:text-6xl">

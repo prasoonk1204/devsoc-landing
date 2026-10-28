@@ -60,7 +60,7 @@ export default function EventRegistrationForm({ event }) {
 					const res = await api.get("/registrations/check", {
 						params: {
 							email: formData.email.toLowerCase(),
-							eventSlug: event.slug,
+							eventId: event._id,
 						},
 					});
 					setEmailCheck(res.data.data);
@@ -72,13 +72,13 @@ export default function EventRegistrationForm({ event }) {
 
 		const timeoutId = setTimeout(checkEmail, 500);
 		return () => clearTimeout(timeoutId);
-	}, [formData.email, event.slug]);
+	}, [formData.email, event._id]);
 
 	useEffect(() => {
 		const fetchSettings = async () => {
 			try {
 				const res = await api.get("/settings/payment", {
-					params: { eventSlug: event.slug },
+					params: { eventId: event._id },
 				});
 				setPaymentSettings(res.data.data);
 			} catch (error) {
@@ -86,7 +86,7 @@ export default function EventRegistrationForm({ event }) {
 			}
 		};
 		fetchSettings();
-	}, [event.slug]);
+	}, [event._id]);
 
 	useEffect(() => {
 		if (emailCheck?.isRegistered) {
@@ -180,7 +180,7 @@ export default function EventRegistrationForm({ event }) {
 			setUploadProgress("Submitting registration...");
 
 			const { paymentScreenshot, ...fields } = validatedData;
-			const registration = { ...fields, eventSlug: event.slug };
+			const registration = { ...fields, eventId: event._id };
 			const media = await uploadImage(
 				paymentScreenshot,
 				{ ownerKind: "registrations", registration },
@@ -375,7 +375,7 @@ export default function EventRegistrationForm({ event }) {
 					error={errors.questions}
 				/>
 
-				<PaymentQRCode eventSlug={event.slug} />
+				<PaymentQRCode eventId={event._id} />
 
 				<FormInput
 					label="Enter Transaction ID"

@@ -14,7 +14,7 @@
 		"local:setup": "node scripts/setup-local.ts",
 		"admin:hash": "node scripts/hash-password.ts",
 		"verify:http": "node scripts/verify-http.ts",
-		"db:init": "node --env-file=.env.local scripts/init-db.ts"
+		"db:init": "node --env-file=.env scripts/init-db.ts"
 	},
 	"dependencies": {
 		"@react-three/drei": "10.7.7",

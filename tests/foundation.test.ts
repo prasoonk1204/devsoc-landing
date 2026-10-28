@@ -4,6 +4,7 @@ import {
 	eventSchema,
 	newsletterSchema,
 	memberSchema,
+	siteSchema,
 	publicEvent,
 } from "../src/lib/content-schemas.ts";
 import {
@@ -21,6 +22,23 @@ const event = {
 	description: "Example",
 	image: "https://ik.imagekit.io/demo/a.jpg",
 };
+test("website images can be detached while URL validation remains enforced", () => {
+	const site = siteSchema.parse({
+		_id: "site",
+		logo: "",
+		background: "",
+		hero: "",
+		ogImage: "",
+	});
+	assert.equal(site.logo, "");
+	assert.deepEqual(site.gallery, []);
+	assert.throws(() =>
+		siteSchema.parse({ ...site, logo: "javascript:alert(1)" }),
+	);
+	assert.throws(() =>
+		siteSchema.parse({ ...site, gallery: [{ title: "Gallery", image: "" }] }),
+	);
+});
 test("event defaults close registration and hide unpublished content", () => {
 	const result = eventSchema.parse(event);
 	assert.equal(result.registrationMode, "closed");

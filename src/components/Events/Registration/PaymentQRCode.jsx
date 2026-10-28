@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import api from "@/lib/axios";
 
-export default function PaymentQRCode({ eventSlug }) {
+export default function PaymentQRCode({ eventId }) {
 	const [paymentSettings, setPaymentSettings] = useState(undefined);
 
 	useEffect(() => {
 		const fetchSettings = async () => {
 			try {
 				const res = await api.get("/settings/payment", {
-					params: { eventSlug },
+					params: { eventId },
 				});
 				setPaymentSettings(res.data.data);
 			} catch (error) {
@@ -20,7 +20,7 @@ export default function PaymentQRCode({ eventSlug }) {
 			}
 		};
 		fetchSettings();
-	}, [eventSlug]);
+	}, [eventId]);
 
 	if (paymentSettings === undefined) {
 		return (

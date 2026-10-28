@@ -23,13 +23,15 @@ import { newsletterSchema } from "../src/lib/content-schemas.ts";
 import { hashPassword } from "../src/lib/server/auth.ts";
 import { handleApi } from "../src/lib/server/api.ts";
 
-const database = `devsoc_test_${randomUUID().replaceAll("-", "")}`;
+const database = `devsoc_test_${randomUUID().replaceAll("-", "").slice(0, 24)}`;
 const originalFetch = globalThis.fetch;
 const bytes = Buffer.from([0xff, 0xd8, 0xff, 0]);
 let cookie = "";
 before(async () => {
 	Object.assign(process.env, {
-		MONGODB_URI: "mongodb://127.0.0.1:27018/?replicaSet=devsoc-local",
+		MONGODB_URI:
+			process.env.TEST_MONGODB_URI ||
+			"mongodb://127.0.0.1:27018/?replicaSet=devsoc-local",
 		MONGODB_DB: database,
 		APP_ORIGIN: "http://localhost:3000",
 		IMAGEKIT_PRIVATE_KEY: "synthetic-private-key",
@@ -56,7 +58,7 @@ before(async () => {
 });
 after(async () => {
 	globalThis.fetch = originalFetch;
-	assert.match(database, /^devsoc_test_[a-f0-9]{32}$/);
+	assert.match(database, /^devsoc_test_[a-f0-9]{24}$/);
 	assert.equal(mongoose.connection.name, database);
 	await mongoose.connection.dropDatabase();
 	await mongoose.disconnect();

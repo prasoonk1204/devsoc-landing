@@ -186,10 +186,10 @@ export const siteSchema = z
 		_id: z.literal("site"),
 		whatsapp: optionalUrl,
 		discord: optionalUrl,
-		logo: webUrl,
-		background: webUrl,
-		hero: webUrl,
-		ogImage: webUrl,
+		logo: optionalUrl,
+		background: optionalUrl,
+		hero: optionalUrl,
+		ogImage: optionalUrl,
 		gallery: z
 			.array(z.object({ title: requiredText, image: webUrl }).strict())
 			.max(100)

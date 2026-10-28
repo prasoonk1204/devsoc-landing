@@ -19,12 +19,24 @@ import {
 	saveContent,
 	removeContent,
 } from "./content.ts";
-import { models, contentData, Registration, Payment, plain } from "./models.ts";
+import {
+	models,
+	contentData,
+	Registration,
+	Payment,
+	Media,
+	plain,
+} from "./models.ts";
 import {
 	completeRegistration,
 	eventRegistrations,
 	registrationInput,
 } from "./registrations.ts";
+import {
+	historicalEventId,
+	registrationEventFilter,
+	resolveRegistrationEvent,
+} from "./event-links.ts";
 import {
 	prepareUpload,
 	finishUpload,
@@ -69,12 +81,16 @@ export async function handleApi(request: Request) {
 				})
 				.strict()
 				.parse(await readJson(request));
-			if (!(await getEventForRegistration(body.registration.eventSlug)))
+			const event = await getEventForRegistration(
+				body.registration.eventSlug,
+				body.registration.eventId,
+			);
+			if (!event)
 				throw new HttpError(403, "Registration is closed for this event");
 			if (
 				(await Registration.exists({
 					email: body.registration.email,
-					eventSlug: body.registration.eventSlug,
+					...registrationEventFilter(event._id, event.slug),
 				})) ||
 				(await Payment.exists({
 					transactionId: body.registration.transactionId,
@@ -125,6 +141,131 @@ export async function handleApi(request: Request) {
 		) {
 			const principal = await requireAdmin(request);
 			await rateLimit(`admin:${principal.id}`, 240, 60000);
+			if (path === "admin/media" && method === "GET") {
+				const ownerKind = z
+					.enum(["settings", "events", "newsletters", "members"])
+					.parse(url.searchParams.get("ownerKind"));
+				const ownerId = identifier.parse(url.searchParams.get("ownerId"));
+				await connectDb();
+				return json({
+					success: true,
+					data: plain(
+						await Media.find({ ownerKind, ownerId, private: false })
+							.select("url name slot")
+							.sort({ createdAt: -1, _id: 1 })
+							.lean(),
+					),
+				});
+			}
+			if (path === "admin/registrations/events" && method === "GET") {
+				await connectDb();
+				const [events, totals] = await Promise.all([
+					models.events
+						.find()
+						.select("slug title image date")
+						.sort({ date: -1 })
+						.lean(),
+					Registration.aggregate([
+						{
+							$group: {
+								_id: {
+									$ifNull: ["$eventId", { $concat: ["legacy:", "$eventSlug"] }],
+								},
+								eventId: { $first: "$eventId" },
+								slug: { $first: "$eventSlug" },
+								title: { $first: "$eventTitle" },
+								count: { $sum: 1 },
+							},
+						},
+					]),
+				]);
+				const groups = new Map<string, any>();
+				for (const total of totals) {
+					const event = events.find((event: any) =>
+						total.eventId
+							? event._id === total.eventId
+							: event.slug === total.slug,
+					);
+					const id =
+						total.eventId || event?._id || historicalEventId(total.slug);
+					const row = groups.get(id) || {
+						...(event || {
+							_id: id,
+							slug: total.slug,
+							title: total.title || total.slug,
+						}),
+						count: 0,
+					};
+					row.count += total.count;
+					groups.set(id, row);
+				}
+				return json({
+					success: true,
+					data: plain(
+						[...groups.values()].sort((a, b) =>
+							(b.date || "").localeCompare(a.date || ""),
+						),
+					),
+				});
+			}
+			if (path === "admin/registrations" && method === "GET") {
+				const eventId = identifier
+					.optional()
+					.parse(url.searchParams.get("eventId") || undefined);
+				const eventSlug = z
+					.string()
+					.min(1)
+					.max(200)
+					.optional()
+					.parse(url.searchParams.get("eventSlug") || undefined);
+				const reference = await resolveRegistrationEvent(eventId, eventSlug);
+				const filter = registrationEventFilter(
+					reference.eventId,
+					reference.slug,
+				);
+				const page = z.coerce
+					.number()
+					.int()
+					.min(1)
+					.max(100000)
+					.parse(url.searchParams.get("page") || 1);
+				await connectDb();
+				const [registrations, total] = await Promise.all([
+					Registration.find(filter)
+						.sort({ registeredAt: -1, _id: 1 })
+						.skip((page - 1) * 50)
+						.limit(50)
+						.lean(),
+					Registration.countDocuments(filter),
+				]);
+				const payments = await Payment.find({
+					userId: { $in: registrations.map((entry: any) => entry._id) },
+				})
+					.select(
+						"userId amount status transactionId historicalDuplicate receiptUnavailable paymentScreenshotStorageId",
+					)
+					.lean();
+				return json({
+					success: true,
+					data: {
+						total,
+						page,
+						rows: plain(
+							registrations.map((entry: any) => ({
+								...entry,
+								payment:
+									payments.find(
+										(payment: any) => payment._id === entry.paymentId,
+									) ||
+									payments.find(
+										(payment: any) => payment.userId === entry._id,
+									) ||
+									null,
+							})),
+						),
+					},
+				});
+			}
 			if (path === "admin/media/upload" && method === "POST") {
 				const body = await readJson(request);
 				if (body.ownerKind === "registrations")
@@ -256,6 +397,7 @@ export async function handleApi(request: Request) {
 							await eventRegistrations(
 								url.searchParams.get("eventSlug") || "",
 								url.searchParams.get("email") || "",
+								url.searchParams.get("eventId") || undefined,
 							)
 						)[0] || null,
 				});
@@ -275,7 +417,8 @@ export async function handleApi(request: Request) {
 		}
 		if (path === "settings/payment" && method === "GET") {
 			const event = await getEventForRegistration(
-				url.searchParams.get("eventSlug") || "",
+				url.searchParams.get("eventSlug") || undefined,
+				url.searchParams.get("eventId") || undefined,
 			);
 			return json({ success: true, data: event?.payment || null });
 		}
@@ -287,17 +430,25 @@ export async function handleApi(request: Request) {
 				.toLowerCase()
 				.email()
 				.parse(url.searchParams.get("email"));
+			const eventId = identifier
+				.optional()
+				.parse(url.searchParams.get("eventId") || undefined);
 			const eventSlug = z
 				.string()
 				.min(1)
 				.max(120)
-				.parse(url.searchParams.get("eventSlug"));
+				.optional()
+				.parse(url.searchParams.get("eventSlug") || undefined);
+			const reference = await resolveRegistrationEvent(eventId, eventSlug);
 			await connectDb();
 			return json({
 				success: true,
 				data: {
 					isRegistered: Boolean(
-						await Registration.exists({ email, eventSlug }),
+						await Registration.exists({
+							email,
+							...registrationEventFilter(reference.eventId, reference.slug),
+						}),
 					),
 				},
 			});

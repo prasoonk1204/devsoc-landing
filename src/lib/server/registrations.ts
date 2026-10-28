@@ -5,6 +5,11 @@ import { Registration, Payment, Media, Event, plain } from "./models.ts";
 import { connectDb } from "./db.ts";
 import { getEventForRegistration } from "./content.ts";
 import { HttpError } from "./http.ts";
+import { identifier } from "../content-schemas.ts";
+import {
+	registrationEventFilter,
+	resolveRegistrationEvent,
+} from "./event-links.ts";
 
 export const registrationInput = z
 	.object({
@@ -39,16 +44,21 @@ export const registrationInput = z
 			.max(100)
 			.regex(/^[a-zA-Z0-9]+$/)
 			.transform((value) => value.toUpperCase()),
-		eventSlug: z.string().min(1).max(120),
+		eventId: identifier.optional(),
+		eventSlug: z.string().min(1).max(120).optional(),
 	})
-	.strict();
+	.strict()
+	.refine((value) => value.eventId || value.eventSlug, {
+		message: "Event ID is required",
+		path: ["eventId"],
+	});
 export async function completeRegistration(
 	input: unknown,
 	mediaId: string,
 	registrationId: string,
 ) {
 	const value = registrationInput.parse(input);
-	const event = await getEventForRegistration(value.eventSlug);
+	const event = await getEventForRegistration(value.eventSlug, value.eventId);
 	if (!event) throw new HttpError(403, "Registration is closed for this event");
 	const media = (await Media.findOne({
 		_id: mediaId,
@@ -65,7 +75,6 @@ export async function completeRegistration(
 			const currentEvent = await Event.updateOne(
 				{
 					_id: event._id,
-					slug: event.slug,
 					published: true,
 					registrationMode: "internal",
 					"payment.amount": event.payment.amount,
@@ -78,11 +87,23 @@ export async function completeRegistration(
 					409,
 					"Event registration settings changed. Reload before registering.",
 				);
+			if (
+				await Registration.exists({
+					...registrationEventFilter(event._id, event.slug),
+					email: value.email,
+				}).session(session)
+			)
+				throw new HttpError(
+					409,
+					"Email already registered or transaction ID already used",
+				);
 			await Registration.create(
 				[
 					{
 						...registrationFields,
 						_id: registrationId,
+						eventId: event._id,
+						eventSlug: event.slug,
 						eventTitle: event.title,
 						registeredAt: Date.now(),
 						paymentId,
@@ -97,6 +118,7 @@ export async function completeRegistration(
 						userId: registrationId,
 						transactionId,
 						transactionKey: transactionId,
+						eventId: event._id,
 						eventSlug: event.slug,
 						eventTitle: event.title,
 						amount: event.payment.amount,
@@ -123,10 +145,15 @@ export async function completeRegistration(
 		message: "Registration successful! Your payment is pending verification.",
 	};
 }
-export async function eventRegistrations(eventSlug: string, email?: string) {
+export async function eventRegistrations(
+	eventSlug?: string,
+	email?: string,
+	eventId?: string,
+) {
 	await connectDb();
+	const reference = await resolveRegistrationEvent(eventId, eventSlug);
 	const users = await Registration.find({
-		eventSlug,
+		...registrationEventFilter(reference.eventId, reference.slug),
 		...(email ? { email: email.trim().toLowerCase() } : {}),
 	})
 		.limit(500)

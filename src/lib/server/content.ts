@@ -7,6 +7,7 @@ import {
 	Media,
 	Event,
 	Registration,
+	Payment,
 	plain,
 } from "./models.ts";
 import {
@@ -16,6 +17,7 @@ import {
 	type ContentKind,
 } from "../content-schemas.ts";
 import { HttpError } from "./http.ts";
+import { missingEventId, registrationEventFilter } from "./event-links.ts";
 
 export async function getSite() {
 	await connectDb();
@@ -55,13 +57,18 @@ export async function saveContent(kind: ContentKind, input: unknown) {
 			if (kind === "events" && previous) {
 				if (
 					previous.slug !== (value as any).slug &&
-					(await Registration.exists({ eventSlug: previous.slug }).session(
-						session,
-					))
+					((await Registration.exists({
+						eventId: missingEventId,
+						eventSlug: previous.slug,
+					}).session(session)) ||
+						(await Payment.exists({
+							eventId: missingEventId,
+							eventSlug: previous.slug,
+						}).session(session)))
 				)
 					throw new HttpError(
 						409,
-						"Event slug cannot change after registrations exist",
+						"Run the event ID migration before changing this event's slug",
 					);
 				const site = (await Setting.findById("site")
 					.session(session)
@@ -130,7 +137,12 @@ export async function removeContent(kind: ContentKind, id: string) {
 				.lean()) as any;
 			if (kind === "events" && record) {
 				if (
-					await Registration.exists({ eventSlug: record.slug }).session(session)
+					(await Registration.exists(
+						registrationEventFilter(record._id, record.slug),
+					).session(session)) ||
+					(await Payment.exists(
+						registrationEventFilter(record._id, record.slug),
+					).session(session))
 				)
 					throw new HttpError(
 						409,
@@ -152,11 +164,15 @@ export async function removeContent(kind: ContentKind, id: string) {
 	}
 	// Keep detached media for rollback and explicit reference-checked cleanup.
 }
-export async function getEventForRegistration(slug: string) {
+export async function getEventForRegistration(slug?: string, eventId?: string) {
 	await connectDb();
+	if (!slug && !eventId) return null;
 	const site = await getSite();
 	const event = contentData(
-		await Event.findOne({ slug, published: true }).lean(),
+		await Event.findOne({
+			...(eventId ? { _id: eventId } : { slug }),
+			published: true,
+		}).lean(),
 	);
 	if (
 		site.maintenance ||

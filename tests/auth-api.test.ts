@@ -23,7 +23,7 @@ import { handleApi } from "../src/lib/server/api.ts";
 import { completeRegistration } from "../src/lib/server/registrations.ts";
 import { eventSchema } from "../src/lib/content-schemas.ts";
 
-const database = `devsoc_test_${randomUUID().replaceAll("-", "")}`;
+const database = `devsoc_test_${randomUUID().replaceAll("-", "").slice(0, 24)}`;
 const password = "synthetic-admin-password-only";
 let cookie = "";
 function request(
@@ -45,6 +45,7 @@ function request(
 }
 before(async () => {
 	process.env.MONGODB_URI =
+		process.env.TEST_MONGODB_URI ||
 		"mongodb://127.0.0.1:27018/?replicaSet=devsoc-local";
 	process.env.MONGODB_DB = database;
 	process.env.ADMIN_PASSWORD_HASH = await hashPassword(password);
@@ -54,7 +55,7 @@ before(async () => {
 	await Setting.create({ _id: "site", maintenance: false, eventOnlySlug: "" });
 });
 after(async () => {
-	assert.match(database, /^devsoc_test_[a-f0-9]{32}$/);
+	assert.match(database, /^devsoc_test_[a-f0-9]{24}$/);
 	assert.equal(mongoose.connection.name, database);
 	await mongoose.connection.dropDatabase();
 	await mongoose.disconnect();
@@ -76,6 +77,9 @@ test("anonymous and header-secret access cannot read or mutate protected APIs", 
 		"admin/content/newsletters",
 		"admin/content/members",
 		"admin/payments/pending",
+		"admin/registrations/events",
+		"admin/registrations?eventSlug=event",
+		"admin/media?ownerKind=settings&ownerId=site",
 		"registrations/event",
 		"registrations/user",
 		"settings",
@@ -247,5 +251,138 @@ test("registration transactions prevent duplicates and derive price/title from d
 	await assert.rejects(
 		completeRegistration(registration, "two", "two"),
 		/Registration is closed/,
+	);
+});
+
+test("admin event overview and paged registrations preserve every payment status", async () => {
+	await RateLimit.deleteMany({});
+	const loginResponse = await handleApi(
+		request("auth/login", "POST", { password }),
+	);
+	cookie = loginResponse.headers.get("set-cookie")!.split(";")[0];
+	await Event.create(
+		eventSchema.parse({
+			_id: "empty-event",
+			slug: "empty-event",
+			title: "Empty",
+			date: "TBD",
+			description: "No registrations",
+		}),
+	);
+	await Registration.insertMany(
+		Array.from({ length: 52 }, (_, index) => ({
+			_id: `history-${index}`,
+			eventSlug: "archived-event",
+			eventTitle: "Archived event",
+			email: `history-${index}@example.com`,
+			registeredAt: 1000 - index,
+			paymentId: index < 3 ? `history-payment-${index}` : undefined,
+		})),
+	);
+	await Payment.insertMany(
+		["pending", "verified", "rejected"].map((status, index) => ({
+			_id: `history-payment-${index}`,
+			userId: `history-${index}`,
+			eventSlug: "archived-event",
+			transactionId: `HISTORY-${index}`,
+			status,
+			amount: 50,
+		})),
+	);
+	const overview = (
+		await (await handleApi(request("admin/registrations/events"))).json()
+	).data;
+	assert.equal(
+		overview.some((event: any) => event.slug === "empty-event"),
+		false,
+	);
+	assert.equal(
+		overview.find((event: any) => event.slug === "archived-event").count,
+		52,
+	);
+	const first = (
+		await (
+			await handleApi(
+				request("admin/registrations?eventSlug=archived-event&page=1"),
+			)
+		).json()
+	).data;
+	assert.equal(first.total, 52);
+	assert.equal(first.rows.length, 50);
+	assert.deepEqual(
+		first.rows.slice(0, 3).map((entry: any) => entry.payment.status),
+		["pending", "verified", "rejected"],
+	);
+	assert.equal(first.rows[3].payment, null);
+	const second = (
+		await (
+			await handleApi(
+				request("admin/registrations?eventSlug=archived-event&page=2"),
+			)
+		).json()
+	).data;
+	assert.equal(second.rows.length, 2);
+	assert.equal(
+		first.rows.some((row: any) =>
+			second.rows.some((other: any) => other._id === row._id),
+		),
+		false,
+	);
+	for (const query of ["page=0", "page=1.5", "page=nope", "page=100001"])
+		assert.equal(
+			(
+				await handleApi(
+					request(`admin/registrations?eventSlug=archived-event&${query}`),
+				)
+			).status,
+			400,
+		);
+});
+
+test("previous image library stays scoped to public media for the selected owner", async () => {
+	await Media.insertMany([
+		{
+			_id: "library-public",
+			ownerKind: "settings",
+			ownerId: "site",
+			fileId: "library-public",
+			url: "https://ik.imagekit.io/test/public",
+			private: false,
+			name: "Logo",
+		},
+		{
+			_id: "library-private",
+			ownerKind: "settings",
+			ownerId: "site",
+			fileId: "library-private",
+			url: "https://ik.imagekit.io/test/private",
+			private: true,
+		},
+		{
+			_id: "library-other",
+			ownerKind: "settings",
+			ownerId: "other",
+			fileId: "library-other",
+			url: "https://ik.imagekit.io/test/other",
+			private: false,
+		},
+	]);
+	const response = await handleApi(
+		request("admin/media?ownerKind=settings&ownerId=site"),
+	);
+	assert.equal(response.status, 200);
+	const images = (await response.json()).data;
+	assert.deepEqual(
+		images.map((image: any) => image._id),
+		["library-public"],
+	);
+	assert.equal(images[0].fileId, undefined);
+	assert.equal(
+		(
+			await handleApi(
+				request("admin/media?ownerKind=registrations&ownerId=site"),
+			)
+		).status,
+		400,
 	);
 });
